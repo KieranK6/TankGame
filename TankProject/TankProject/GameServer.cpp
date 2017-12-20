@@ -162,7 +162,7 @@ void GameServer::tick()
 		sendToAll(missionSuccessPacket);
 	}
 
-	// Remove IDs of aircraft that have been destroyed (relevant if a client has two, and loses one)
+	// Remove IDs of tank that have been destroyed (relevant if a client has two, and loses one)
 	for (auto itr = mAircraftInfo.begin(); itr != mAircraftInfo.end(); )
 	{
 		if (itr->second.hitpoints <= 0)
@@ -362,8 +362,8 @@ void GameServer::updateClientState()
 	updateClientStatePacket << static_cast<float>(mBattleFieldRect.top + mBattleFieldRect.height);
 	updateClientStatePacket << static_cast<sf::Int32>(mAircraftInfo.size());
 
-	FOREACH(auto aircraft, mAircraftInfo)
-		updateClientStatePacket << aircraft.first << aircraft.second.position.x << aircraft.second.position.y;
+	FOREACH(auto tank, mAircraftInfo)
+		updateClientStatePacket << tank.first << tank.second.position.x << tank.second.position.y;
 
 	sendToAll(updateClientStatePacket);
 }

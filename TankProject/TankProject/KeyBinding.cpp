@@ -15,6 +15,8 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
 		mKeyMap[sf::Keyboard::Right] = PlayerAction::MoveRight;
 		mKeyMap[sf::Keyboard::Up] = PlayerAction::MoveUp;
 		mKeyMap[sf::Keyboard::Down] = PlayerAction::MoveDown;
+		mKeyMap[sf::Keyboard::Q] = PlayerAction::RotateTurretLeft;
+		mKeyMap[sf::Keyboard::E] = PlayerAction::RotateTurretRight;
 		mKeyMap[sf::Keyboard::Space] = PlayerAction::Fire;
 		mKeyMap[sf::Keyboard::M] = PlayerAction::LaunchMissile;
 	}

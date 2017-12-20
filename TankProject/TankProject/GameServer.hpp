@@ -37,7 +37,7 @@ private:
 		bool					timedOut;
 	};
 
-	// Structure to store information about current aircraft state
+	// Structure to store information about current tank state
 	struct AircraftInfo
 	{
 		sf::Vector2f				position;

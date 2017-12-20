@@ -13,6 +13,8 @@ namespace PlayerAction
 		MoveRight,
 		MoveUp,
 		MoveDown,
+		RotateTurretLeft,
+		RotateTurretRight,
 		Fire,
 		LaunchMissile,
 		Count

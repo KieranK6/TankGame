@@ -48,6 +48,7 @@ public:
 	void					setIdentifier(int identifier);
 	int						getMissileAmmo() const;
 	void					setMissileAmmo(int ammo);
+	void					AccelerateTurretRotation(float rotationVelocity);
 
 
 private:
@@ -63,6 +64,7 @@ private:
 
 	void					updateTexts();
 	void					updateRollAnimation();
+	void					updateTurret(sf::Time dt);
 
 
 private:
@@ -91,4 +93,9 @@ private:
 	TextNode*				mMissileDisplay;
 
 	int						mIdentifier;
+
+	Type					turretType;
+	sf::Sprite				turretSprite;
+	float					turretRotationVelocity;
+	float					turretOldRotation;
 };

@@ -12,20 +12,49 @@
 
 using namespace std::placeholders;
 
-struct AircraftMover
+enum Direction
 {
-	AircraftMover(float vx, float vy, int identifier)
+	right,
+	left
+};
+
+struct TankMover
+{
+	TankMover(float vx, float vy, int identifier)
 		: velocity(vx, vy), aircraftID(identifier)
 	{
 	}
 
-	void operator() (Tank& aircraft, sf::Time) const
+	void operator() (Tank& tank, sf::Time) const
 	{
-		if (aircraft.getIdentifier() == aircraftID)
-			aircraft.accelerate(velocity * aircraft.getMaxSpeed());
+		if (tank.getIdentifier() == aircraftID)
+			tank.accelerate(velocity * tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
+	int aircraftID;
+};
+
+struct TurretRotater
+{
+	TurretRotater(Direction rotationDirection, int identifier)
+		: turretRotationDirection(rotationDirection), aircraftID(identifier)
+	{
+	}
+
+	void operator() (Tank& tank, sf::Time) const
+	{
+		if (tank.getIdentifier() == aircraftID)
+		{
+			if (turretRotationDirection == Direction::left)
+				tank.AccelerateTurretRotation(-1);
+			else
+				tank.AccelerateTurretRotation(1);
+		}
+
+	}
+
+	Direction turretRotationDirection;
 	int aircraftID;
 };
 
@@ -36,10 +65,10 @@ struct AircraftFireTrigger
 	{
 	}
 
-	void operator() (Tank& aircraft, sf::Time) const
+	void operator() (Tank& tank, sf::Time) const
 	{
-		if (aircraft.getIdentifier() == aircraftID)
-			aircraft.fire();
+		if (tank.getIdentifier() == aircraftID)
+			tank.fire();
 	}
 
 	int aircraftID;
@@ -52,10 +81,10 @@ struct AircraftMissileTrigger
 	{
 	}
 
-	void operator() (Tank& aircraft, sf::Time) const
+	void operator() (Tank& tank, sf::Time) const
 	{
-		if (aircraft.getIdentifier() == aircraftID)
-			aircraft.launchMissile();
+		if (tank.getIdentifier() == aircraftID)
+			tank.launchMissile();
 	}
 
 	int aircraftID;
@@ -70,7 +99,7 @@ Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* bi
 	// Set initial action bindings
 	initializeActions();
 
-	// Assign all categories to player's aircraft
+	// Assign all categories to player's tank
 	FOREACH(auto& pair, mActionBinding)
 		pair.second.category = Category::PlayerTank;
 }
@@ -182,10 +211,12 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-	mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tank>(AircraftMover(-1, 0, mIdentifier));
-	mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tank>(AircraftMover(+1, 0, mIdentifier));
-	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(AircraftMover(0, -1, mIdentifier));
-	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(AircraftMover(0, +1, mIdentifier));
+	mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tank>(TankMover(-1, 0, mIdentifier));
+	mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tank>(TankMover(+1, 0, mIdentifier));
+	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(TankMover(0, -1, mIdentifier));
+	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(0, +1, mIdentifier));
+	mActionBinding[PlayerAction::RotateTurretLeft].action = derivedAction<Tank>(TurretRotater(Direction::left, mIdentifier));
+	mActionBinding[PlayerAction::RotateTurretRight].action = derivedAction<Tank>(TurretRotater(Direction::right, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(AircraftFireTrigger(mIdentifier));
 	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(AircraftMissileTrigger(mIdentifier));
 }

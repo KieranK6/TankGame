@@ -81,6 +81,29 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 		attachChild(std::move(missileDisplay));
 	}
 
+	switch (type)
+	{
+	case Hotchkiss:
+		turretType = HotchkissTurret;
+		break;
+
+	case T34:
+		turretType = T34Turret;
+		break;
+
+	case Panzer:
+		turretType = PanzerTurret;
+		break;
+
+	case Panther:
+		turretType = PantherTurret;
+	}
+
+	turretOldRotation = 0;
+	turretRotationVelocity = 0;
+	turretSprite = sf::Sprite(textures.get(TableTurrets[turretType].texture), TableTurrets[turretType].textureRect);
+	centerOrigin(turretSprite);
+
 	updateTexts();
 }
 
@@ -99,7 +122,10 @@ void Tank::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	if (isDestroyed() && mShowExplosion)
 		target.draw(mExplosion, states);
 	else
+	{
 		target.draw(mSprite, states);
+		target.draw(turretSprite, states);
+	}
 }
 
 void Tank::disablePickups()
@@ -112,6 +138,7 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	// Update texts and roll animation
 	updateTexts();
 	updateRollAnimation();
+	updateTurret(dt);
 
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
@@ -394,4 +421,14 @@ void Tank::updateRollAnimation()
 		mSprite.setTextureRect(textureRect);
 	}
 	*/
+}
+
+void Tank::updateTurret(sf::Time dt)
+{
+	turretSprite.rotate(turretRotationVelocity + dt.asSeconds());
+}
+
+void Tank::AccelerateTurretRotation(float rotationVelocity)
+{
+	turretRotationVelocity += rotationVelocity;
 }
