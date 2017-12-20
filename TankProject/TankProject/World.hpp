@@ -73,6 +73,7 @@ private:
 	enum Layer
 	{
 		Background,
+		Obstacles,
 		LowerAir,
 		UpperAir,
 		LayerCount

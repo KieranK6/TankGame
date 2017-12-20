@@ -20,6 +20,7 @@ namespace Textures
 		Explosion,
 		Particle,
 		FinishLine,
+		Obstacles,
 	};
 }
 

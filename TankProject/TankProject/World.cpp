@@ -183,6 +183,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
+	mTextures.load(Textures::Obstacles, "Media/Textures/Stone.png");
 }
 
 void World::adaptPlayerPosition()
@@ -336,6 +337,18 @@ void World::buildScene()
 	std::unique_ptr<SpriteNode> finishSprite(new SpriteNode(finishTexture));
 	finishSprite->setPosition(0.f, -76.f);
 	mSceneLayers[Background]->attachChild(std::move(finishSprite));
+
+	// Add obstacles to the scene
+	int rockCount = 10;
+
+
+	for (int i = 0; i < rockCount; i++)
+	{
+		sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
+		std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
+		obstacleSprite->setPosition(40.f, 4700.f - (i * 500));
+		mSceneLayers[Obstacles]->attachChild(std::move(obstacleSprite));
+	}
 
 	// Add particle node to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
