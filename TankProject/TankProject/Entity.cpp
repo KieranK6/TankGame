@@ -1,6 +1,10 @@
+#define _USE_MATH_DEFINES
+
 #include "Entity.hpp"
 
 #include <cassert>
+#include <math.h>
+#include <iostream>
 
 Entity::Entity(int hitpoints)
 	:mVelocity(), mHitpoints(hitpoints)
@@ -35,7 +39,8 @@ void Entity::accelerate(float vx, float vy)
 
 void Entity::updateCurrent(sf::Time dt, CommandQueue&)
 {
-	move(mVelocity * dt.asSeconds());
+	//move(mVelocity * dt.asSeconds());
+	move(cos((getRotation() + 90) * M_PI / 180) * dt.asSeconds() * mVelocity.x, sin((getRotation() + 90) * M_PI / 180) * dt.asSeconds() * mVelocity.y);
 }
 
 int Entity::getHitpoints() const

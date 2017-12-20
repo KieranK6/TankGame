@@ -44,8 +44,8 @@ namespace PlayerActions
 {
 	enum Action
 	{
-		MoveLeft,
-		MoveRight,
+		RotateLeft,
+		RotateRight,
 		MoveUp,
 		MoveDown,
 		Fire,

@@ -35,6 +35,29 @@ struct TankMover
 	int tankID;
 };
 
+struct TankRotater
+{
+	TankRotater(Direction rotationDirection, int identifier)
+		: tankRotationDirection(rotationDirection), tankID(identifier)
+	{
+	}
+
+	void operator() (Tank& tank, sf::Time) const
+	{
+		if (tank.getIdentifier() == tankID)
+		{
+			if (tankRotationDirection == Direction::left)
+				tank.rotate(-1 * tank.getMaxSpeed()/100);
+			else
+				tank.rotate(1 * tank.getMaxSpeed()/100);
+		}
+
+	}
+
+	Direction tankRotationDirection;
+	int tankID;
+};
+
 struct TurretRotater
 {
 	TurretRotater(Direction rotationDirection, int identifier)
@@ -211,10 +234,10 @@ Player::MissionStatus Player::getMissionStatus() const
 
 void Player::initializeActions()
 {
-	mActionBinding[PlayerAction::MoveLeft].action = derivedAction<Tank>(TankMover(-1, 0, mIdentifier));
-	mActionBinding[PlayerAction::MoveRight].action = derivedAction<Tank>(TankMover(+1, 0, mIdentifier));
-	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(TankMover(0, -1, mIdentifier));
-	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(0, +1, mIdentifier));
+	mActionBinding[PlayerAction::RotateLeft].action = derivedAction<Tank>(TankRotater(Direction::left, mIdentifier));
+	mActionBinding[PlayerAction::RotateRight].action = derivedAction<Tank>(TankRotater(Direction::right, mIdentifier));
+	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(TankMover(-1, -1, mIdentifier));
+	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(+1, +1, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretLeft].action = derivedAction<Tank>(TurretRotater(Direction::left, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretRight].action = derivedAction<Tank>(TurretRotater(Direction::right, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(AircraftFireTrigger(mIdentifier));

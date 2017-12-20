@@ -11,8 +11,8 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
 	// Set initial key bindings for player 1
 	if (controlPreconfiguration == 1)
 	{
-		mKeyMap[sf::Keyboard::Left] = PlayerAction::MoveLeft;
-		mKeyMap[sf::Keyboard::Right] = PlayerAction::MoveRight;
+		mKeyMap[sf::Keyboard::Left] = PlayerAction::RotateLeft;
+		mKeyMap[sf::Keyboard::Right] = PlayerAction::RotateRight;
 		mKeyMap[sf::Keyboard::Up] = PlayerAction::MoveUp;
 		mKeyMap[sf::Keyboard::Down] = PlayerAction::MoveDown;
 		mKeyMap[sf::Keyboard::Q] = PlayerAction::RotateTurretLeft;
@@ -23,8 +23,8 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
 	else if (controlPreconfiguration == 2)
 	{
 		// Player 2
-		mKeyMap[sf::Keyboard::A] = PlayerAction::MoveLeft;
-		mKeyMap[sf::Keyboard::D] = PlayerAction::MoveRight;
+		mKeyMap[sf::Keyboard::A] = PlayerAction::RotateLeft;
+		mKeyMap[sf::Keyboard::D] = PlayerAction::RotateRight;
 		mKeyMap[sf::Keyboard::W] = PlayerAction::MoveUp;
 		mKeyMap[sf::Keyboard::S] = PlayerAction::MoveDown;
 		mKeyMap[sf::Keyboard::F] = PlayerAction::Fire;
@@ -91,8 +91,8 @@ bool isRealtimeAction(PlayerAction::Type action)
 {
 	switch (action)
 	{
-	case PlayerAction::MoveLeft:
-	case PlayerAction::MoveRight:
+	case PlayerAction::RotateLeft:
+	case PlayerAction::RotateRight:
 	case PlayerAction::MoveDown:
 	case PlayerAction::MoveUp:
 	case PlayerAction::RotateTurretLeft:

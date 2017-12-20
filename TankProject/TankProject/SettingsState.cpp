@@ -14,8 +14,8 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 	// Build key binding buttons and labels
 	for (std::size_t x = 0; x < 2; ++x)
 	{
-		addButtonLabel(PlayerAction::MoveLeft, x, 0, "Move Left", context);
-		addButtonLabel(PlayerAction::MoveRight, x, 1, "Move Right", context);
+		addButtonLabel(PlayerAction::RotateLeft, x, 0, "Move Left", context);
+		addButtonLabel(PlayerAction::RotateRight, x, 1, "Move Right", context);
 		addButtonLabel(PlayerAction::MoveUp, x, 2, "Move Up", context);
 		addButtonLabel(PlayerAction::MoveDown, x, 3, "Move Down", context);
 		addButtonLabel(PlayerAction::Fire, x, 4, "Fire", context);
