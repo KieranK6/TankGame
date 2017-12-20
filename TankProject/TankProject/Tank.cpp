@@ -99,10 +99,11 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 		turretType = PantherTurret;
 	}
 
-	turretOldRotation = 0;
-	turretRotationVelocity = 0;
+	turretOldRotation = 0.0f;
+	turretRotationVelocity = 0.0f;
 	turretSprite = sf::Sprite(textures.get(TableTurrets[turretType].texture), TableTurrets[turretType].textureRect);
 	centerOrigin(turretSprite);
+	isRotating = false;
 
 	updateTexts();
 }
@@ -206,13 +207,24 @@ void Tank::remove()
 
 bool Tank::isAllied() const
 {
-	return mType == Hotchkiss;
+	return mType == Hotchkiss || mType == T34;
 }
 
 float Tank::getMaxSpeed() const
 {
 	return Table[mType].speed;
 }
+
+float Tank::getTurretRotationSpeed() const
+{
+	return TableTurrets[turretType].rotationSpeed;
+}
+
+float Tank::getMaxTurretRotationSpeed() const
+{
+	return TableTurrets[turretType].maxRotationSpeed;
+}
+
 
 void Tank::increaseFireRate()
 {
@@ -425,10 +437,30 @@ void Tank::updateRollAnimation()
 
 void Tank::updateTurret(sf::Time dt)
 {
-	turretSprite.rotate(turretRotationVelocity + dt.asSeconds());
+	turretSprite.rotate(turretRotationVelocity * dt.asSeconds());
+
+	if (isRotating)
+	{
+		isRotating = false;
+	}
+	else
+	{
+		turretRotationVelocity *= 0.9f;
+	}
 }
 
-void Tank::AccelerateTurretRotation(float rotationVelocity)
+void Tank::accelerateTurretRotation(float rotationVelocity)
 {
-	turretRotationVelocity += rotationVelocity;
+	if (-getMaxTurretRotationSpeed() < turretRotationVelocity &&
+		turretRotationVelocity < getMaxTurretRotationSpeed())
+	{
+		turretRotationVelocity += rotationVelocity;
+	}
+
+	isRotating = true;
+}
+
+void Tank::setTurretRotationVelocity(float rotationVelocity)
+{
+	turretRotationVelocity = rotationVelocity;
 }

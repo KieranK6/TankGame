@@ -211,7 +211,7 @@ void World::adaptPlayerVelocity()
 		// If moving diagonally, reduce velocity (to have always same velocity)
 		if (velocity.x != 0.f && velocity.y != 0.f)
 			tank->setVelocity(velocity / std::sqrt(2.f));
-
+		
 		// Add scrolling velocity
 		//tank->accelerate(0.f, mScrollSpeed);
 	}

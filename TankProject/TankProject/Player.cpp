@@ -21,73 +21,73 @@ enum Direction
 struct TankMover
 {
 	TankMover(float vx, float vy, int identifier)
-		: velocity(vx, vy), aircraftID(identifier)
+		: velocity(vx, vy), tankID(identifier)
 	{
 	}
 
 	void operator() (Tank& tank, sf::Time) const
 	{
-		if (tank.getIdentifier() == aircraftID)
+		if (tank.getIdentifier() == tankID)
 			tank.accelerate(velocity * tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
-	int aircraftID;
+	int tankID;
 };
 
 struct TurretRotater
 {
 	TurretRotater(Direction rotationDirection, int identifier)
-		: turretRotationDirection(rotationDirection), aircraftID(identifier)
+		: turretRotationDirection(rotationDirection), tankID(identifier)
 	{
 	}
 
 	void operator() (Tank& tank, sf::Time) const
 	{
-		if (tank.getIdentifier() == aircraftID)
+		if (tank.getIdentifier() == tankID)
 		{
 			if (turretRotationDirection == Direction::left)
-				tank.AccelerateTurretRotation(-1);
+				tank.accelerateTurretRotation(-1 * tank.getTurretRotationSpeed());
 			else
-				tank.AccelerateTurretRotation(1);
+				tank.accelerateTurretRotation(1 * tank.getTurretRotationSpeed());
 		}
 
 	}
 
 	Direction turretRotationDirection;
-	int aircraftID;
+	int tankID;
 };
 
 struct AircraftFireTrigger
 {
 	AircraftFireTrigger(int identifier)
-		: aircraftID(identifier)
+		: tankID(identifier)
 	{
 	}
 
 	void operator() (Tank& tank, sf::Time) const
 	{
-		if (tank.getIdentifier() == aircraftID)
+		if (tank.getIdentifier() == tankID)
 			tank.fire();
 	}
 
-	int aircraftID;
+	int tankID;
 };
 
 struct AircraftMissileTrigger
 {
 	AircraftMissileTrigger(int identifier)
-		: aircraftID(identifier)
+		: tankID(identifier)
 	{
 	}
 
 	void operator() (Tank& tank, sf::Time) const
 	{
-		if (tank.getIdentifier() == aircraftID)
+		if (tank.getIdentifier() == tankID)
 			tank.launchMissile();
 	}
 
-	int aircraftID;
+	int tankID;
 };
 
 Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* binding)

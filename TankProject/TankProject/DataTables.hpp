@@ -47,6 +47,7 @@ struct TankData
 struct TankTurretData
 {
 	float rotationSpeed;
+	float maxRotationSpeed;
 	Textures::ID texture;
 	sf::IntRect textureRect;
 	sf::Time fireInterval;

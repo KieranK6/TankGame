@@ -95,6 +95,8 @@ bool isRealtimeAction(PlayerAction::Type action)
 	case PlayerAction::MoveRight:
 	case PlayerAction::MoveDown:
 	case PlayerAction::MoveUp:
+	case PlayerAction::RotateTurretLeft:
+	case PlayerAction::RotateTurretRight:
 	case PlayerAction::Fire:
 		return true;
 

@@ -35,6 +35,8 @@ public:
 	virtual bool 			isMarkedForRemoval() const;
 	bool					isAllied() const;
 	float					getMaxSpeed() const;
+	float					getMaxTurretRotationSpeed() const;
+	float					getTurretRotationSpeed() const;
 	void					disablePickups();
 
 	void					increaseFireRate();
@@ -48,7 +50,8 @@ public:
 	void					setIdentifier(int identifier);
 	int						getMissileAmmo() const;
 	void					setMissileAmmo(int ammo);
-	void					AccelerateTurretRotation(float rotationVelocity);
+	void					accelerateTurretRotation(float rotationVelocity);
+	void					setTurretRotationVelocity(float rotationVelocity);
 
 
 private:
@@ -98,4 +101,5 @@ private:
 	sf::Sprite				turretSprite;
 	float					turretRotationVelocity;
 	float					turretOldRotation;
+	bool					isRotating;
 };
