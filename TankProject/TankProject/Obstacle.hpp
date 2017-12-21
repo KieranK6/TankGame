@@ -3,26 +3,34 @@
 #include "Command.hpp"
 #include "ResourceIdentifiers.hpp"
 
+#include "DataTables.hpp"
+#include <SFML/Graphics/RenderTarget.hpp>
+#include <SFML/Graphics/RenderStates.hpp>
+
 #include <SFML/Graphics/Sprite.hpp>
 
 class Obstacle : public Entity
 {
-
-	enum Type
+public:
+	enum ObType
 	{
 		Rock,
-		Barricade
+		Barricade,
+		TypeCount
 	};
 
 public:
-	Obstacle(Type type, const TextureHolder& textures);
+	Obstacle(ObType type, const TextureHolder& textures);
 
-	virtual sf::FloatRect	getBoundingRect() const;
 
 	~Obstacle();
+	sf::FloatRect	getBoundingRect() const;
+
+	
 
 private:
-	Type					mType;
+	ObType					mType;
 	sf::Sprite				mSprite;
+	int						mIdentifier;
 
 };

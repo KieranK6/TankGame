@@ -5,6 +5,7 @@
 #include "SpriteNode.hpp"
 #include "Tank.hpp"
 #include "Tank.hpp"
+#include "Obstacle.hpp"
 #include "CommandQueue.hpp"
 #include "Command.hpp"
 #include "Pickup.hpp"
@@ -62,6 +63,7 @@ private:
 	void handleCollisions();
 	void updateSounds();
 
+	void SpawnObstacles(int obstacleCount);
 	void buildScene();
 	void addEnemies();
 	void spawnEnemies();
@@ -124,3 +126,4 @@ private:
 	NetworkNode*						mNetworkNode;
 	SpriteNode*							mFinishSprite;
 };
+

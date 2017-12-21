@@ -236,8 +236,8 @@ void Player::initializeActions()
 {
 	mActionBinding[PlayerAction::RotateLeft].action = derivedAction<Tank>(TankRotater(Direction::left, mIdentifier));
 	mActionBinding[PlayerAction::RotateRight].action = derivedAction<Tank>(TankRotater(Direction::right, mIdentifier));
-	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(TankMover(-1, -1, mIdentifier));
-	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(+1, +1, mIdentifier));
+	mActionBinding[PlayerAction::MoveUp].action = derivedAction<Tank>(TankMover(-0.6f, -0.6f, mIdentifier));
+	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(+0.25f, +0.25f, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretLeft].action = derivedAction<Tank>(TurretRotater(Direction::left, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretRight].action = derivedAction<Tank>(TurretRotater(Direction::right, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(TankFireTrigger(mIdentifier));

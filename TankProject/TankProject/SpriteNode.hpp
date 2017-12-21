@@ -13,4 +13,7 @@ public:
 
 private:
 	virtual void drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
+
+public: 
+	sf::FloatRect SpriteNode::getBoundingRect() const;
 };

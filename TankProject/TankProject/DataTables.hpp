@@ -37,6 +37,7 @@ struct TankData
 {
 	int hitpoints;
 	float speed;
+	int ammoCount;
 	Textures::ID texture;
 	sf::IntRect textureRect;
 	sf::Time fireInterval;
@@ -52,6 +53,13 @@ struct TankTurretData
 	sf::IntRect textureRect;
 	sf::Time fireInterval;
 	std::vector<Direction> directions;
+};
+
+struct ObstacleData
+{
+	int hitpoints;
+	Textures::ID texture;
+	sf::IntRect textureRect;
 };
 
 struct ProjectileData
@@ -77,6 +85,7 @@ struct ParticleData
 
 std::vector<TankData> initializeTankData();
 std::vector<TankTurretData> initializeTankTurretData();
+std::vector<ObstacleData> initializeObstacleData();
 std::vector<ProjectileData> initializeProjectileData();
 std::vector<PickupData> initializePickupData();
 std::vector<ParticleData> initializeParticleData();
