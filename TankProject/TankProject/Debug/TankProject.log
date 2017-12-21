@@ -1,3 +1,34 @@
-﻿  World.cpp
+﻿  Application.cpp
+  Generating Code...
+  Compiling...
+  main.cpp
+  World.cpp
+  TitleState.cpp
+  TextNode.cpp
+  Tank.cpp
+  StateStack.cpp
+  State.cpp
+  SoundPlayer.cpp
+  SoundNode.cpp
+  SettingsState.cpp
+  Projectile.cpp
+c:\visualstudio\repos\tank_project\tankproject\tankproject\projectile.cpp(68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+  Player.cpp
+  Pickup.cpp
+  PauseState.cpp
+  ParticleNode.cpp
+  MusicPlayer.cpp
+  MultiplayerGameState.cpp
+  MenuState.cpp
+  Label.cpp
+  GameState.cpp
+  Generating Code...
+  Compiling...
+  GameServer.cpp
+  GameOverState.cpp
+  EmitterNode.cpp
+  DataTables.cpp
+  Button.cpp
+  BloomEffect.cpp
+  Generating Code...
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe
-  TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.pdb (Full PDB)

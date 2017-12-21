@@ -134,9 +134,9 @@ std::vector<PickupData> initializePickupData()
 	data[Pickup::HealthRefill].textureRect = sf::IntRect(0, 64, 40, 40);
 	data[Pickup::HealthRefill].action = [](Tank& a) { a.repair(25); };
 
-	data[Pickup::MissileRefill].texture = Textures::Entities;
-	data[Pickup::MissileRefill].textureRect = sf::IntRect(40, 64, 40, 40);
-	data[Pickup::MissileRefill].action = std::bind(&Tank::collectMissiles, _1, 3);
+	data[Pickup::AmmoRefill].texture = Textures::Entities;
+	data[Pickup::AmmoRefill].textureRect = sf::IntRect(40, 64, 40, 40);
+	data[Pickup::AmmoRefill].action = std::bind(&Tank::collectAmmo, _1, 5);
 
 	data[Pickup::FireSpread].texture = Textures::Entities;
 	data[Pickup::FireSpread].textureRect = sf::IntRect(80, 64, 40, 40);

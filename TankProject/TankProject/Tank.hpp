@@ -41,7 +41,7 @@ public:
 
 	void					increaseFireRate();
 	void					increaseSpread();
-	void					collectMissiles(unsigned int count);
+	void					collectAmmo(unsigned int count);
 
 	void 					fire();
 	void					launchMissile();

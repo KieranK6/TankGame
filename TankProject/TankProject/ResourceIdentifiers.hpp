@@ -13,7 +13,6 @@ namespace Textures
 	enum ID
 	{
 		Entities,
-		TankEntities,
 		TankChassisEntities,
 		TankTurretEntities,
 		Jungle,
