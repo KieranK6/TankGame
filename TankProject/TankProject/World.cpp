@@ -13,6 +13,7 @@
 #include <cmath>
 #include <limits>
 #include <iostream>
+#include <vector>
 
 
 World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, bool networked)
@@ -339,14 +340,23 @@ void World::buildScene()
 	mSceneLayers[Background]->attachChild(std::move(finishSprite));
 
 	// Add obstacles to the scene
-	int rockCount = 10;
+	int rockCount = 7;
+	std::vector<float> xPositions;
+	xPositions.push_back(150.f);
+	xPositions.push_back(400.f);
+	xPositions.push_back(750.f);
+	
+
 
 
 	for (int i = 0; i < rockCount; i++)
 	{
+		int xPos = rand() % 3;
+		float currentValue = xPositions.at(xPos);
+		
 		sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
 		std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
-		obstacleSprite->setPosition(40.f, 4700.f - (i * 500));
+		obstacleSprite->setPosition(currentValue , 3700.f - (i * 700));
 		mSceneLayers[Obstacles]->attachChild(std::move(obstacleSprite));
 	}
 
