@@ -249,9 +249,9 @@ void Tank::increaseSpread()
 		++mSpreadLevel;
 }
 
-void Tank::collectMissiles(unsigned int count)
+void Tank::collectAmmo(unsigned int count)
 {
-	mMissileAmmo += count;
+	ammoCount += count;
 }
 
 void Tank::fire()

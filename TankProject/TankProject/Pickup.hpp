@@ -14,7 +14,7 @@ public:
 	enum Type
 	{
 		HealthRefill,
-		MissileRefill,
+		AmmoRefill,
 		FireSpread,
 		FireRate,
 		TypeCount
