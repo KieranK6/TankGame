@@ -359,12 +359,12 @@ void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 	switch (mSpreadLevel)
 	{
 	case 1:
-		createProjectile(node, type, 0.0f, 0.5f, textures);
+		createProjectile(node, type, 0.0f, 0.0f, textures);
 		break;
 
 	case 2:
-		createProjectile(node, type, -0.33f, 0.33f, textures);
-		createProjectile(node, type, +0.33f, 0.33f, textures);
+		createProjectile(node, type, 0.0f, 0.0f, textures);
+		createProjectile(node, type, 0.0f, -0.3f, textures);
 		break;
 
 	case 3:
@@ -386,7 +386,7 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	projectile->setPosition(getWorldPosition() + offset * sign);
 	
 	projectile->setVelocity(-velocity);
-	projectile->setRotation(Tank::getRotation());
+	projectile->setRotation(Tank::getTotalTurretRotation());
 	
 	node.attachChild(std::move(projectile));
 }
@@ -469,4 +469,9 @@ void Tank::accelerateTurretRotation(float rotationVelocity)
 void Tank::setTurretRotationVelocity(float rotationVelocity)
 {
 	turretRotationVelocity = rotationVelocity;
+}
+
+float Tank::getTotalTurretRotation() const
+{
+	return turretSprite.getRotation() + getRotation();
 }

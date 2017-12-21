@@ -68,6 +68,7 @@ private:
 	void					updateTexts();
 	void					updateRollAnimation();
 	void					updateTurret(sf::Time dt);
+	float					getTotalTurretRotation() const;
 
 
 private:

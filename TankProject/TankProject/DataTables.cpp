@@ -18,7 +18,7 @@ std::vector<TankData> initializeTankData()
 
 	data[Tank::Hotchkiss].hitpoints = 100;
 	data[Tank::Hotchkiss].speed = 200.f;
-	data[Tank::Hotchkiss].fireInterval = sf::seconds(1);
+	data[Tank::Hotchkiss].fireInterval = sf::seconds(4);
 	data[Tank::Hotchkiss].texture = Textures::TankEntities;
 	data[Tank::Hotchkiss].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
@@ -82,7 +82,7 @@ std::vector<ProjectileData> initializeProjectileData()
 {
 	std::vector<ProjectileData> data(Projectile::TypeCount);
 
-	data[Projectile::AlliedBullet].damage = 10;
+	data[Projectile::AlliedBullet].damage = 100;
 	data[Projectile::AlliedBullet].speed = 300.f;
 	data[Projectile::AlliedBullet].texture = Textures::Entities;
 	data[Projectile::AlliedBullet].textureRect = sf::IntRect(175, 64, 3, 14);
