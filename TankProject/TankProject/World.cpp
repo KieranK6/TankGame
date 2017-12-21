@@ -25,7 +25,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mSounds(sounds)
 	, mSceneGraph()
 	, mSceneLayers()
-	, mWorldBounds(0.f, 0.f, mWorldView.getSize().x, 5000.f)
+	, mWorldBounds(0.f, 0.f, 1500.f, 2000.f)
 	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
 	, mScrollSpeed(-50.f)
 	, mScrollSpeedCompensation(1.f)
@@ -179,7 +179,8 @@ bool World::hasPlayerReachedEnd() const
 void World::loadTextures()
 {
 	mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
-	mTextures.load(Textures::TankEntities, "Media/Textures/EntitiesX.png");
+	mTextures.load(Textures::TankChassisEntities, "Media/Textures/EntitiesTankChassis.png");
+	mTextures.load(Textures::TankTurretEntities, "Media/Textures/EntitiesTankTurret.png");
 	mTextures.load(Textures::Jungle, "Media/Textures/Jungle.png");
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
@@ -457,7 +458,7 @@ void World::centerWorldToPlayer()
 void World::destroyEntitiesOutsideView()
 {
 	Command command;
-	command.category = Category::Projectile | Category::EnemyTank;
+	command.category = Category::Projectile; // | Category::EnemyTank;
 	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
 	{
 		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))

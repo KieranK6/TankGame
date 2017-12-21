@@ -50,6 +50,7 @@ public:
 	void					setIdentifier(int identifier);
 	int						getMissileAmmo() const;
 	void					setMissileAmmo(int ammo);
+	int						getAmmoCount() const;
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
 
@@ -94,9 +95,11 @@ private:
 	float					mTravelledDistance;
 	std::size_t				mDirectionIndex;
 	TextNode*				mHealthDisplay;
-	TextNode*				mMissileDisplay;
+	TextNode*				ammoDisplay;
 
 	int						mIdentifier;
+
+	int						ammoCount;
 
 	Type					turretType;
 	sf::Sprite				turretSprite;

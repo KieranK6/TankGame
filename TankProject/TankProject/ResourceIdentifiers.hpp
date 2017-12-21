@@ -14,6 +14,8 @@ namespace Textures
 	{
 		Entities,
 		TankEntities,
+		TankChassisEntities,
+		TankTurretEntities,
 		Jungle,
 		TitleScreen,
 		Buttons,

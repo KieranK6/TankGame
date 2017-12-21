@@ -44,7 +44,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	, mDropPickupCommand()
 	, mTravelledDistance(0.f)
 	, mDirectionIndex(0)
-	, mMissileDisplay(nullptr)
+	, ammoDisplay(nullptr)
 	, mIdentifier(0)
 {
 	mExplosion.setFrameSize(sf::Vector2i(256, 256));
@@ -80,9 +80,11 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	{
 		std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
 		missileDisplay->setPosition(0, 70);
-		mMissileDisplay = missileDisplay.get();
+		ammoDisplay = missileDisplay.get();
 		attachChild(std::move(missileDisplay));
 	}
+
+	ammoCount = Table[type].ammoCount;
 
 	switch (type)
 	{
@@ -228,6 +230,11 @@ float Tank::getMaxTurretRotationSpeed() const
 	return TableTurrets[turretType].maxRotationSpeed;
 }
 
+int	Tank::getAmmoCount() const
+{
+	return ammoCount;
+}
+
 
 void Tank::increaseFireRate()
 {
@@ -326,13 +333,16 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		fire();
 
 	// Check for automatic gunfire, allow only in intervals
-	if (mIsFiring && mFireCountdown <= sf::Time::Zero)
+	if (mIsFiring && mFireCountdown <= sf::Time::Zero && ammoCount > 0)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
 		playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
+		
+		ammoCount--;
+		std::cout << "Tank Ammo: " << ammoCount << std::endl;
 		mIsFiring = false;
 	}
 	else if (mFireCountdown > sf::Time::Zero)
@@ -405,19 +415,31 @@ void Tank::updateTexts()
 {
 	// Display hitpoints
 	if (isDestroyed())
+	{
 		mHealthDisplay->setString("");
+	}
 	else
+	{
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
+	}
+
 	mHealthDisplay->setPosition(0.f, 50.f);
 	mHealthDisplay->setRotation(-getRotation());
+	
 
-	// Display missiles, if available
-	if (mMissileDisplay)
+	// Display ammo count
+	if (ammoDisplay)
 	{
-		if (mMissileAmmo == 0 || isDestroyed())
-			mMissileDisplay->setString("");
+		ammoDisplay->setRotation(-getRotation());
+
+		if (isDestroyed())
+		{
+			ammoDisplay->setString("");
+		}
 		else
-			mMissileDisplay->setString("M: " + toString(mMissileAmmo));
+		{
+			ammoDisplay->setString("Ammo: " + toString(ammoCount));
+		}
 	}
 }
 

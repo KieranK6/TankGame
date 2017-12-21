@@ -37,6 +37,7 @@ struct TankData
 {
 	int hitpoints;
 	float speed;
+	int ammoCount;
 	Textures::ID texture;
 	sf::IntRect textureRect;
 	sf::Time fireInterval;
