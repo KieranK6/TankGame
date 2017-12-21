@@ -1,3 +1,2 @@
-﻿  Entity.cpp
-c:\visualstudio\repos\tank_project\tankproject\tankproject\entity.cpp(43): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+﻿  Tank.cpp
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe

@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "Projectile.hpp"
 #include "DataTables.hpp"
 #include "Utility.hpp"
@@ -62,6 +64,8 @@ void Projectile::updateCurrent(sf::Time dt, CommandQueue& commands)
 		setRotation(toDegree(angle) + 90.f);
 		setVelocity(newVelocity);
 	}
+
+	move(cos((getRotation() + 90) * M_PI / 180) * dt.asSeconds() * getVelocity().x, sin((getRotation() + 90) * M_PI / 180) * dt.asSeconds() * getVelocity().y);
 
 	Entity::updateCurrent(dt, commands);
 }

@@ -1,3 +1,5 @@
+#define _USE_MATH_DEFINES
+
 #include "Tank.hpp"
 #include "DataTables.hpp"
 #include "Utility.hpp"
@@ -11,6 +13,7 @@
 #include <SFML/Graphics/RenderStates.hpp>
 
 #include <cmath>
+#include <iostream>
 
 using namespace std::placeholders;
 
@@ -377,11 +380,14 @@ void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffse
 	std::unique_ptr<Projectile> projectile(new Projectile(type, textures));
 
 	sf::Vector2f offset(xOffset * mSprite.getGlobalBounds().width, yOffset * mSprite.getGlobalBounds().height);
-	sf::Vector2f velocity(0, projectile->getMaxSpeed());
+	sf::Vector2f velocity(projectile->getMaxSpeed(), projectile->getMaxSpeed());
 
 	float sign = isAllied() ? -1.f : +1.f;
 	projectile->setPosition(getWorldPosition() + offset * sign);
-	projectile->setVelocity(velocity * sign);
+	
+	projectile->setVelocity(-velocity);
+	projectile->setRotation(Tank::getRotation());
+	
 	node.attachChild(std::move(projectile));
 }
 

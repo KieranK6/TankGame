@@ -57,7 +57,7 @@ std::vector<TankTurretData> initializeTankTurretData()
 	data[Tank::HotchkissTurret].textureRect = sf::IntRect(4 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	data[Tank::T34Turret].rotationSpeed = 0.95f;
-	data[Tank::T34Turret].maxRotationSpeed = 110.0f;
+	data[Tank::T34Turret].maxRotationSpeed = 110.0f ;
 	data[Tank::T34Turret].fireInterval = sf::seconds(1);
 	data[Tank::T34Turret].texture = Textures::TankEntities;
 	data[Tank::T34Turret].textureRect = sf::IntRect(5 * pixelWidth, 0, pixelWidth, pixelHeight);

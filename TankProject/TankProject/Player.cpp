@@ -81,9 +81,9 @@ struct TurretRotater
 	int tankID;
 };
 
-struct AircraftFireTrigger
+struct TankFireTrigger
 {
-	AircraftFireTrigger(int identifier)
+	TankFireTrigger(int identifier)
 		: tankID(identifier)
 	{
 	}
@@ -240,7 +240,7 @@ void Player::initializeActions()
 	mActionBinding[PlayerAction::MoveDown].action = derivedAction<Tank>(TankMover(+1, +1, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretLeft].action = derivedAction<Tank>(TurretRotater(Direction::left, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretRight].action = derivedAction<Tank>(TurretRotater(Direction::right, mIdentifier));
-	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(AircraftFireTrigger(mIdentifier));
+	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(TankFireTrigger(mIdentifier));
 	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(AircraftMissileTrigger(mIdentifier));
 }
 
