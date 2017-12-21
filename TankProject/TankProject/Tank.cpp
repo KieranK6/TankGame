@@ -74,12 +74,13 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();
+	mHealthDisplay->setOrigin(0, -50);
 	attachChild(std::move(healthDisplay));
 
 	if (getCategory() == Category::PlayerTank)
 	{
 		std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
-		missileDisplay->setPosition(0, 70);
+		missileDisplay->setOrigin(0, -70);
 		ammoDisplay = missileDisplay.get();
 		attachChild(std::move(missileDisplay));
 	}
@@ -423,9 +424,8 @@ void Tank::updateTexts()
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
 	}
 
-	mHealthDisplay->setPosition(0.f, 50.f);
-	mHealthDisplay->setRotation(-getRotation());
 	
+	mHealthDisplay->setRotation(-getRotation());
 
 	// Display ammo count
 	if (ammoDisplay)
