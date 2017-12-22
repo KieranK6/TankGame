@@ -42,7 +42,9 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
-	SpawnObstacles(1);
+	SpawnObstacles(6);
+
+	//bool collisionSoundPlaying = false;
 	
 	SpawnEnemyBase();
 
@@ -290,9 +292,20 @@ void World::handleCollisions()
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
 
 			// Apply pickup effect to player, destroy projectile
-			std::cout << "Collision!!" << std::endl;
+			//std::cout << "Collision!!" << std::endl;
 			player.setVelocity(0.f, 0.f);
-			//player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
+			//collisionSoundPlaying = true;
+			player.playLocalSound(mCommandQueue, SoundEffect::Collision);
+		}
+
+		else if (matchesCategories(pair, Category::Obstacle, Category::AlliedProjectile)
+			|| matchesCategories(pair, Category::Obstacle, Category::EnemyProjectile))
+		{
+			auto& obstacle = static_cast<Tank&>(*pair.first);
+			auto& projectile = static_cast<Projectile&>(*pair.second);
+
+			// Destroy projectile
+			projectile.destroy();
 		}
 
 		else if (matchesCategories(pair, Category::Base, Category::AlliedProjectile))
@@ -371,33 +384,11 @@ void World::buildScene()
 	mSceneLayers[Background]->attachChild(std::move(jungleSprite));
 
 	// Add the finish line to the scene
-	sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
-	std::unique_ptr<SpriteNode> finishSprite(new SpriteNode(finishTexture));
-	finishSprite->setPosition(0.f, -76.f);
-	mSceneLayers[Background]->attachChild(std::move(finishSprite));
+	//sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
+	//std::unique_ptr<SpriteNode> finishSprite(new SpriteNode(finishTexture));
+	//finishSprite->setPosition(0.f, -76.f);
+	//mSceneLayers[Background]->attachChild(std::move(finishSprite));
 
-	/*
-	// Add obstacles to the scene
-	int rockCount = 7;
-	std::vector<float> xPositions;
-	xPositions.push_back(150.f);
-	xPositions.push_back(400.f);
-	xPositions.push_back(750.f);
-	
-
-
-
-	for (int i = 0; i < rockCount; i++)
-	{
-		int xPos = rand() % 3;
-		float currentValue = xPositions.at(xPos);
-		
-		sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
-		std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
-		obstacleSprite->setPosition(currentValue , 3700.f - (i * 700));
-		obstacleSprite->getBoundingRect();
-		mSceneLayers[LowerAir]->attachChild(std::move(obstacleSprite));
-	}*/
 
 	// Add particle node to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
@@ -448,17 +439,14 @@ void World::sortEnemies()
 void World::SpawnEnemyBase()
 {
 	std::unique_ptr<Base> base1(new Base(Base::EnemyBase, mTextures, mFonts));
-	//base1->setPosition(0.f, -76.f);
-	SpawnPoint spawn = mEnemySpawnPoints.back();
-	base1->setPosition(spawn.x, spawn.y);
+	base1->setPosition(0.f, -76.f);
+	//SpawnPoint spawn = mEnemySpawnPoints.back(); //Debug purposes
+	//base1->setPosition(spawn.x, spawn.y);  //Debug purposes
 	mSceneLayers[Background]->attachChild(std::move(base1));
 	std::cout << "Base spawned!" << std::endl;
 }
 
-void World::updateBase()
-{
-	//base1
-}
+
 
 void World::SpawnObstacles(int obstacleCount)
 {
@@ -468,34 +456,27 @@ void World::SpawnObstacles(int obstacleCount)
 	xPositions.push_back(750.f);
 	float currentValue = 0;
 	int xPos = 0;
+	int randomObsIndex = 0;
 
-	SpawnPoint spawn = mEnemySpawnPoints.back();
 
-	xPos = rand() % 3;
-	currentValue = xPositions.at(xPos);
-
-	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Barricade, mTextures));
-	ob1->setPosition(spawn.x + 300, spawn.y - 100);
-	ob1->setScale(.5f,.5f);
-	//ob1->
-	mSceneLayers[Background]->attachChild(std::move(ob1));
-
-	/*
 	for (int i = 0; i < obstacleCount; i++)
 	{
-		xPos = rand() % 3;
-		currentValue = xPositions.at(xPos);
+		xPos = rand() % 3; //Random number between 1 and 3, for getting an xPos for obstacle spawning
+		randomObsIndex = rand() % 2 + 1; //Random num between 1 and 2, for getting a random type of obstacle from vector of obstacle types
+		currentValue = xPositions.at(xPos); //sets current x value to one of the three possible values form xPositions vector
 
-		std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Rock, mTextures));
-		ob1->setPosition(spawn.x, spawn.y);
-		
+		Obstacle::ObType barricade = Obstacle::Barricade;
 
-		//sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
-		//std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
-		//obstacleSprite->setPosition(currentValue, 3700.f - (i * 700));
-		//obstacleSprite->getBoundingRect();
-		//mSceneLayers[LowerAir]->attachChild(std::move(obstacleSprite));
-	}*/
+		if (randomObsIndex == 1)
+		{
+			barricade = Obstacle::Stone;
+		}
+
+		std::unique_ptr<Obstacle> ob1(new Obstacle(barricade, mTextures)); //creates a pointer to an Obstacle object with a random texture
+		ob1->setPosition(currentValue + (i * 4), 400 + (200 * i)); //Spawns in obstacles at varied positions
+		ob1->setScale(.5f, .5f); //scales down object as too big by default
+		mSceneLayers[Background]->attachChild(std::move(ob1)); //attaches current object as child to the Background scene layer
+	}
 }
 
 
