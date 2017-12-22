@@ -103,13 +103,13 @@ std::vector<TankTurretData> initializeTankTurretData()
 	data[Tank::T34Turret].texture = Textures::TankTurretEntities;
 	data[Tank::T34Turret].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Tank::PantherTurret].rotationSpeed = 0.8f;
+	data[Tank::PantherTurret].rotationSpeed = 5.0f;
 	data[Tank::PantherTurret].maxRotationSpeed = 110.0f;
 	data[Tank::PantherTurret].fireInterval = sf::seconds(1);
 	data[Tank::PantherTurret].texture = Textures::TankTurretEntities;
 	data[Tank::PantherTurret].textureRect = sf::IntRect(2 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Tank::PanzerTurret].rotationSpeed = 0.85f;
+	data[Tank::PanzerTurret].rotationSpeed = 9.0f;
 	data[Tank::PanzerTurret].maxRotationSpeed = 110.0f;
 	data[Tank::PanzerTurret].fireInterval = sf::seconds(1);
 	data[Tank::PanzerTurret].texture = Textures::TankTurretEntities;

@@ -116,4 +116,5 @@ private:
 	float					turretOldRotation;
 	bool					isRotating;
 	sf::Vector2f			mTargetDirection;
+	bool					directionChange;
 };
