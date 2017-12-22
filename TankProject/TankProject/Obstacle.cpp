@@ -23,7 +23,7 @@ namespace
 Obstacle::Obstacle(ObType type, const TextureHolder& textures) : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
-, mIdentifier(0)
+
 {
 	
 }
@@ -36,5 +36,12 @@ Obstacle::~Obstacle()
 sf::FloatRect Obstacle::getBoundingRect() const
 {
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+}
+
+void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	
+		target.draw(mSprite, states);
+
 }
 

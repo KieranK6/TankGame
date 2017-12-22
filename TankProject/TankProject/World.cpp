@@ -199,7 +199,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
-	mTextures.load(Textures::Obstacles, "Media/Textures/Stone.png");
+	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png");
 }
 
 void World::adaptPlayerPosition()
@@ -437,9 +437,10 @@ void World::SpawnObstacles(int obstacleCount)
 	xPos = rand() % 3;
 	currentValue = xPositions.at(xPos);
 
-	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Rock, mTextures));
-	ob1->setPosition(spawn.x + 500, spawn.y);
-	mSceneLayers[Obstacles]->attachChild(std::move(ob1));
+	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Barricade, mTextures));
+	ob1->setPosition(spawn.x + 300, spawn.y - 100);
+	//ob1->
+	mSceneLayers[Background]->attachChild(std::move(ob1));
 
 	/*
 	for (int i = 0; i < obstacleCount; i++)

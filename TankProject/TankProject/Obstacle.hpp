@@ -14,7 +14,7 @@ class Obstacle : public Entity
 public:
 	enum ObType
 	{
-		Rock,
+		Stone,
 		Barricade,
 		TypeCount
 	};
@@ -26,11 +26,12 @@ public:
 	~Obstacle();
 	sf::FloatRect	getBoundingRect() const;
 
-	
+private:
+	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 
 private:
 	ObType					mType;
 	sf::Sprite				mSprite;
-	int						mIdentifier;
+	//int						mIdentifier;
 
 };
