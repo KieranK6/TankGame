@@ -9,6 +9,7 @@
 #include "Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SceneNode.hpp"
+#include "Base.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -42,6 +43,8 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	loadTextures();
 	buildScene();
 	SpawnObstacles(1);
+	
+	SpawnEnemyBase();
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
@@ -199,7 +202,8 @@ void World::loadTextures()
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
-	mTextures.load(Textures::Obstacles, "Media/Textures/Stone.png");
+	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png"); 
+	mTextures.load(Textures::EnemyBase, "Media/Textures/base.png");
 }
 
 void World::adaptPlayerPosition()
@@ -278,6 +282,27 @@ void World::handleCollisions()
 			pickup.apply(player);
 			pickup.destroy();
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
+		}
+
+		else if (matchesCategories(pair, Category::PlayerTank, Category::Obstacle))
+		{
+			auto& player = static_cast<Tank&>(*pair.first);
+			auto& obstacle = static_cast<Obstacle&>(*pair.second);
+
+			// Apply pickup effect to player, destroy projectile
+			std::cout << "Collision!!" << std::endl;
+			player.setVelocity(0.f, 0.f);
+			//player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
+		}
+
+		else if (matchesCategories(pair, Category::Base, Category::AlliedProjectile))
+		{
+			auto& base = static_cast<Base&>(*pair.first);
+			auto& projectile = static_cast<Projectile&>(*pair.second);
+
+			base.damage(projectile.getDamage());
+			//updateBase();
+			projectile.destroy();
 		}
 
 		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)
@@ -420,6 +445,21 @@ void World::sortEnemies()
 	});
 }
 
+void World::SpawnEnemyBase()
+{
+	std::unique_ptr<Base> base1(new Base(Base::EnemyBase, mTextures, mFonts));
+	//base1->setPosition(0.f, -76.f);
+	SpawnPoint spawn = mEnemySpawnPoints.back();
+	base1->setPosition(spawn.x, spawn.y);
+	mSceneLayers[Background]->attachChild(std::move(base1));
+	std::cout << "Base spawned!" << std::endl;
+}
+
+void World::updateBase()
+{
+	//base1
+}
+
 void World::SpawnObstacles(int obstacleCount)
 {
 	std::vector<float> xPositions;
@@ -434,9 +474,11 @@ void World::SpawnObstacles(int obstacleCount)
 	xPos = rand() % 3;
 	currentValue = xPositions.at(xPos);
 
-	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Rock, mTextures));
-	ob1->setPosition(spawn.x + 500, spawn.y);
-	mSceneLayers[Obstacles]->attachChild(std::move(ob1));
+	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Barricade, mTextures));
+	ob1->setPosition(spawn.x + 300, spawn.y - 100);
+	ob1->setScale(.5f,.5f);
+	//ob1->
+	mSceneLayers[Background]->attachChild(std::move(ob1));
 
 	/*
 	for (int i = 0; i < obstacleCount; i++)

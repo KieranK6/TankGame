@@ -51,6 +51,13 @@ struct ObstacleData
 	sf::IntRect textureRect;
 };
 
+struct BaseData
+{
+	int hitpoints;
+	Textures::ID texture;
+	sf::IntRect textureRect;
+};
+
 struct ProjectileData
 {
 	int damage;
@@ -75,6 +82,7 @@ struct ParticleData
 std::vector<TankData> initializeTankData();
 std::vector<TankTurretData> initializeTankTurretData();
 std::vector<ObstacleData> initializeObstacleData();
+std::vector<BaseData> initializeBaseData();
 std::vector<ProjectileData> initializeProjectileData();
 std::vector<PickupData> initializePickupData();
 std::vector<ParticleData> initializeParticleData();

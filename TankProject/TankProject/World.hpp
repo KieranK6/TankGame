@@ -64,13 +64,18 @@ private:
 	void updateSounds();
 
 	void SpawnObstacles(int obstacleCount);
+	void SpawnEnemyBase();
 	void buildScene();
 	void addEnemies();
 	void spawnEnemies();
 	void centerWorldToPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
+<<<<<<< HEAD
 	void enemyTurretTargeting();
+=======
+	void updateBase();
+>>>>>>> bde488072604e414639fec0c772dc8931045a1e0
 
 private:
 	enum Layer

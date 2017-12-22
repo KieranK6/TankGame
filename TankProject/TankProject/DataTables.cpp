@@ -5,6 +5,7 @@
 #include "Pickup.hpp"
 #include "Particle.hpp"
 #include "Obstacle.hpp"
+#include "Base.hpp"
 
 // For std::bind() placeholders _1, _2, ...
 using namespace std::placeholders;
@@ -51,8 +52,8 @@ std::vector<TankData> initializeTankData()
 //used count and added pixel variables to make implementation quicker. 
 std::vector<ObstacleData> initializeObstacleData()
 {
-	int pixelWidth = 64;
-	int pixelHeight = 64;
+	int pixelWidth = 300;
+	int pixelHeight = 250;
 
 	std::vector<ObstacleData> data(Obstacle::TypeCount);
 
@@ -60,11 +61,25 @@ std::vector<ObstacleData> initializeObstacleData()
 	data[Obstacle::Barricade].texture = Textures::Obstacles;
 	data[Obstacle::Barricade].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Obstacle::Rock].hitpoints = 150;
-	data[Obstacle::Rock].texture = Textures::Obstacles;
-	data[Obstacle::Rock].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
+	data[Obstacle::Stone].hitpoints = 150;
+	data[Obstacle::Stone].texture = Textures::Obstacles;
+	data[Obstacle::Stone].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
 
+	return data;
+}
 
+std::vector<BaseData> initializeBaseData()
+{
+	int pixelWidth = 512;
+	int pixelHeight = 410;
+
+	std::vector<BaseData> data(Obstacle::TypeCount);
+
+	data[Base::EnemyBase].hitpoints = 300;
+	data[Base::EnemyBase].texture = Textures::EnemyBase;
+	data[Base::EnemyBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+	
 
 	return data;
 }
