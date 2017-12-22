@@ -283,6 +283,17 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
+		else if (matchesCategories(pair, Category::PlayerTank, Category::Obstacle))
+		{
+			auto& player = static_cast<Tank&>(*pair.first);
+			auto& obstacle = static_cast<Obstacle&>(*pair.second);
+
+			// Apply pickup effect to player, destroy projectile
+			std::cout << "Collision!!" << std::endl;
+			player.setVelocity(0.f, 0.f);
+			//player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
+		}
+
 		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)
 			|| matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
 		{

@@ -45,3 +45,8 @@ void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 
 }
 
+unsigned int Obstacle::getCategory() const
+{
+		return Category::Obstacle;
+}
+

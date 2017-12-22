@@ -21,6 +21,7 @@ public:
 
 public:
 	Obstacle(ObType type, const TextureHolder& textures);
+	unsigned int Obstacle::getCategory() const;
 
 
 	~Obstacle();

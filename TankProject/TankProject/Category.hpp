@@ -18,6 +18,7 @@ namespace Category
 		ParticleSystem		= 1 << 7,
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
+		Obstacle			= 1 << 10,
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		Projectile = AlliedProjectile | EnemyProjectile,
