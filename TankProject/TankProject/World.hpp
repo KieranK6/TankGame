@@ -64,6 +64,7 @@ private:
 	void updateSounds();
 
 	void SpawnObstacles(int obstacleCount);
+	void SpawnEnemyBase();
 	void buildScene();
 	void addEnemies();
 	void spawnEnemies();

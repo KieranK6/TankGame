@@ -9,6 +9,7 @@
 #include "Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SceneNode.hpp"
+#include "Base.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -42,6 +43,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	loadTextures();
 	buildScene();
 	SpawnObstacles(1);
+	SpawnEnemyBase();
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
@@ -199,7 +201,8 @@ void World::loadTextures()
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
-	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png");
+	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png"); 
+	mTextures.load(Textures::EnemyBase, "Media/Textures/base.png");
 }
 
 void World::adaptPlayerPosition()
@@ -432,6 +435,16 @@ void World::sortEnemies()
 	{
 		return lhs.y < rhs.y;
 	});
+}
+
+void World::SpawnEnemyBase()
+{
+	std::unique_ptr<Base> base1(new Base(Base::EnemyBase, mTextures));
+	//base1->setPosition(0.f, -76.f);
+	SpawnPoint spawn = mEnemySpawnPoints.back();
+	base1->setPosition(spawn.x, spawn.y);
+	mSceneLayers[Background]->attachChild(std::move(base1));
+	std::cout << "Base spawned!" << std::endl;
 }
 
 void World::SpawnObstacles(int obstacleCount)
