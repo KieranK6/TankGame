@@ -37,6 +37,7 @@ private:
 	bType					mType;
 	sf::Sprite				mSprite;
 	TextNode*				mHealthDisplay;
+
 	Animation				mExplosion;
 	bool 					mShowExplosion;
 	bool					mExplosionBegan;
