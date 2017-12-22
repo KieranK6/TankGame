@@ -351,14 +351,13 @@ void Tank::checkPickupDrop(CommandQueue& commands)
 
 void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
-	// Enemies try to fire all the time
+	// Enemies rotate towards you 
 	if (!isAllied())
 	{
 		if (mTargetDirection != sf::Vector2f(0,0))
 		{
 			updateEnemyTurretRotation(dt);
 		}
-		fire();
 	}
 
 	// Check for automatic gunfire, allow only in intervals
@@ -533,26 +532,18 @@ float Tank::getTotalTurretRotation() const
 
 void Tank::guideTurretTowards(sf::Vector2f position)
 {
-	mTargetDirection = unitVector(getWorldPosition() - position);
+	mTargetDirection = unitVector(position - getWorldPosition());
 }
 
 void Tank::updateEnemyTurretRotation(sf::Time dt)
 {
-	float angle = toDegree(std::atan2(mTargetDirection.y, mTargetDirection.x) + 90.f);
+	float angle = toDegree(std::atan2(mTargetDirection.y, mTargetDirection.x)) - 90;
 
-	turretSprite.setRotation(toDegree(angle) + 90.f);
-	/*
-	if (differenceAngle < 0) // move clockwise
-	{
-		accelerateTurretRotation(+1 * getTurretRotationSpeed());
-	}
-	else if (differenceAngle > 0) // move anticlockwise
-	{
-		accelerateTurretRotation(-1 * getTurretRotationSpeed());
-	}
-	else //dont move, back on
-	{
+	float differenceAngle = turretSprite.getRotation() - angle;
 
-	}
-	*/
+	std::cout << differenceAngle << std::endl;
+
+	turretSprite.setRotation(angle);		// - 90 to have it face the player.. forward is to the right on a sprite
+
+	fire();
 }

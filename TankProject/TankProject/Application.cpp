@@ -30,7 +30,7 @@ Application::Application()
 	mWindow.setKeyRepeatEnabled(false);
 	mWindow.setVerticalSyncEnabled(true);
 
-	mFonts.load(Fonts::Main, "Media/Sansation.ttf");
+	mFonts.load(Fonts::Main, "Media/WorldConflict.ttf");
 
 	mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
 	mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");

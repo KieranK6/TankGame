@@ -12,13 +12,10 @@ namespace GUI
 
 	Button::Button(State::Context context)
 		: mCallback()
-		, mSprite(context.textures->get(Textures::Buttons))
-		, mText("", context.fonts->get(Fonts::Main), 16)
+		, mText("", context.fonts->get(Fonts::Main), 50)
 		, mIsToggle(false)
 		, mSounds(*context.sounds)
 	{
-		changeTexture(Normal);
-
 		sf::FloatRect bounds = mSprite.getLocalBounds();
 		mText.setPosition(bounds.width / 2.f, bounds.height / 2.f);
 	}
@@ -47,15 +44,13 @@ namespace GUI
 	void Button::select()
 	{
 		Component::select();
-
-		changeTexture(Selected);
+		mText.setFillColor(sf::Color::Black);
 	}
 
 	void Button::deselect()
 	{
 		Component::deselect();
-
-		changeTexture(Normal);
+		mText.setFillColor(sf::Color::White);
 	}
 
 	void Button::activate()
@@ -64,14 +59,20 @@ namespace GUI
 
 		// If we are toggle then we should show that the button is pressed and thus "toggled".
 		if (mIsToggle)
-			changeTexture(Pressed);
+		{
+			mText.setFillColor(sf::Color::Red);
+		}
 
 		if (mCallback)
+		{
 			mCallback();
+		}
 
 		// If we are not a toggle then deactivate the button since we are just momentarily activated.
 		if (!mIsToggle)
+		{
 			deactivate();
+		}
 
 		mSounds.play(SoundEffect::Button);
 	}
@@ -84,9 +85,13 @@ namespace GUI
 		{
 			// Reset texture to right one depending on if we are selected or not.
 			if (isSelected())
-				changeTexture(Selected);
+			{
+				mText.setFillColor(sf::Color::Red);
+			}
 			else
-				changeTexture(Normal);
+			{
+				mText.setFillColor(sf::Color::White);
+			}
 		}
 	}
 

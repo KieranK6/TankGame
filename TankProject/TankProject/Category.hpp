@@ -19,14 +19,9 @@ namespace Category
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
 		EnemyRotation		= 1 << 10,
-<<<<<<< HEAD
-		Obstacle			= 1 << 11,
-		Base				= 1 << 12,
-=======
 		Obstacle			= 1 << 10,
 		Base				= 1 << 11,
 
->>>>>>> f75a6958aa9715b8e5b6ba167fc3372b5c9e5ebe
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		Projectile = AlliedProjectile | EnemyProjectile,
