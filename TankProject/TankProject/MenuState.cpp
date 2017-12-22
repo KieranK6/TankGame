@@ -16,6 +16,17 @@ MenuState::MenuState(StateStack& stack, Context context)
 	sf::Texture& texture = context.textures->get(Textures::TitleScreen);
 	mBackgroundSprite.setTexture(texture);
 
+	menuBacking.setFillColor(sf::Color(0, 0, 0, 150));
+	menuBacking.setPosition(sf::Vector2f(windowSize.x / 4, 220));
+	menuBacking.setSize(sf::Vector2f(windowSize.x / 2, windowSize.y / 2));
+
+	TitleText.setFont(context.fonts->get(Fonts::Main));
+	TitleText.setString("Freedom By Force");
+	TitleText.setCharacterSize(75);
+	TitleText.setFillColor(sf::Color::Black);
+	centerOrigin(TitleText);
+	TitleText.setPosition(sf::Vector2f(windowSize.x / 2, 150));
+
 	auto playButton = std::make_shared<GUI::Button>(context);
 	playButton->setPosition(0.5f * windowSize.x, 300);
 	playButton->setText("Play");
@@ -56,6 +67,8 @@ void MenuState::draw()
 	window.setView(window.getDefaultView());
 
 	window.draw(mBackgroundSprite);
+	window.draw(menuBacking);
+	window.draw(TitleText);
 	window.draw(mGUIContainer);
 }
 

@@ -44,7 +44,7 @@ namespace GUI
 	void Button::select()
 	{
 		Component::select();
-		mText.setFillColor(sf::Color::Black);
+		mText.setFillColor(sf::Color(216, 210, 149, 255));
 	}
 
 	void Button::deselect()
