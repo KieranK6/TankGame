@@ -46,6 +46,9 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	, mDirectionIndex(0)
 	, ammoDisplay(nullptr)
 	, mIdentifier(0)
+	, speedBoostMultiplier(1.0f)
+	, turretRotationVelocity(0.0f)
+	, isRotating(false)
 {
 	mExplosion.setFrameSize(sf::Vector2i(256, 256));
 	mExplosion.setNumFrames(16);
@@ -105,11 +108,9 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 		turretType = PantherTurret;
 	}
 
-	turretOldRotation = 0.0f;
 	turretRotationVelocity = 0.0f;
 	turretSprite = sf::Sprite(textures.get(TableTurrets[turretType].texture), TableTurrets[turretType].textureRect);
 	centerOrigin(turretSprite);
-	isRotating = false;
 
 	updateTexts();
 }
@@ -146,6 +147,7 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	updateTexts();
 	updateRollAnimation();
 	updateTurret(dt);
+	checkSpeedBoost(dt);
 
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
@@ -179,7 +181,7 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 		return;
 	}
 
-	// Check if bullets or missiles are fired
+	// Check if bullets are fired
 	checkProjectileLaunch(dt, commands);
 
 	// Update enemy movement pattern; apply velocity
@@ -236,38 +238,68 @@ int	Tank::getAmmoCount() const
 	return ammoCount;
 }
 
+float Tank::getSpeedBoost() const
+{
+	return speedBoostMultiplier;
+}
 
+int	Tank::getIdentifier()
+{
+	return mIdentifier;
+}
+
+void Tank::setIdentifier(int identifier)
+{
+	mIdentifier = identifier;
+}
+
+
+
+
+
+// ---- Boosts ----
 void Tank::increaseFireRate()
 {
 	if (mFireRateLevel < 10)
 		++mFireRateLevel;
 }
 
-void Tank::increaseSpread()
-{
-	if (mSpreadLevel < 3)
-		++mSpreadLevel;
-}
-
+//ammo pickup
 void Tank::collectAmmo(unsigned int count)
 {
 	ammoCount += count;
 }
+
+//tank speed increase pickup
+void Tank::increaseTankSpeed(int lengthInSeconds)
+{
+	hasSpeedBoost = true;
+
+	speedBoostMultiplier = 1.66f;
+
+	speedBoostCountdown = sf::seconds(lengthInSeconds);
+}
+
+//repair tank pickup, does not go above original limit
+void Tank::increaseHealth(int amount)
+{
+	if (amount + getHitpoints() > Table[mType].hitpoints)
+	{
+		amount = Table[mType].hitpoints;
+	}
+
+	setHitpoints(amount);
+}
+
+
+
+
 
 void Tank::fire()
 {
 	// Only ships with fire interval != 0 are able to fire
 	if (Table[mType].fireInterval != sf::Time::Zero)
 		mIsFiring = true;
-}
-
-void Tank::launchMissile()
-{
-	if (mMissileAmmo > 0)
-	{
-		mIsLaunchingMissile = true;
-		--mMissileAmmo;
-	}
 }
 
 void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
@@ -285,15 +317,7 @@ void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 	commands.push(command);
 }
 
-int	Tank::getIdentifier()
-{
-	return mIdentifier;
-}
 
-void Tank::setIdentifier(int identifier)
-{
-	mIdentifier = identifier;
-}
 
 void Tank::updateMovementPattern(sf::Time dt)
 {
@@ -367,23 +391,7 @@ void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const
 {
 	Projectile::Type type = isAllied() ? Projectile::AlliedBullet : Projectile::EnemyBullet;
 
-	switch (mSpreadLevel)
-	{
-	case 1:
-		createProjectile(node, type, 0.0f, 0.0f, textures);
-		break;
-
-	case 2:
-		createProjectile(node, type, 0.0f, 0.0f, textures);
-		createProjectile(node, type, 0.0f, -0.3f, textures);
-		break;
-
-	case 3:
-		createProjectile(node, type, -0.5f, 0.33f, textures);
-		createProjectile(node, type, 0.0f, 0.5f, textures);
-		createProjectile(node, type, +0.5f, 0.33f, textures);
-		break;
-	}
+	createProjectile(node, type, 0.0f, 0.0f, textures);
 }
 
 void Tank::createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const
@@ -463,6 +471,26 @@ void Tank::updateRollAnimation()
 	*/
 }
 
+//updates countdown for boost if active, if finished disables update and returns multiplier to normal
+void Tank::checkSpeedBoost(sf::Time dt)
+{
+	if (hasSpeedBoost)
+	{
+		if (speedBoostCountdown > sf::Time::Zero)
+		{
+			speedBoostCountdown -= dt;
+		}
+		else
+		{
+			hasSpeedBoost = false;
+			speedBoostMultiplier = 1.0f;
+			
+		}
+	}
+}
+
+
+//method to update turret rotation, continues moving with enough velocity
 void Tank::updateTurret(sf::Time dt)
 {
 	turretSprite.rotate(turretRotationVelocity * dt.asSeconds());

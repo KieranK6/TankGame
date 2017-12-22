@@ -181,7 +181,7 @@ void World::loadTextures()
 	mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
 	mTextures.load(Textures::TankChassisEntities, "Media/Textures/EntitiesTankChassis.png");
 	mTextures.load(Textures::TankTurretEntities, "Media/Textures/EntitiesTankTurret.png");
-	mTextures.load(Textures::Jungle, "Media/Textures/Jungle.png");
+	mTextures.load(Textures::Desert, "Media/Textures/Desert.png");
 	mTextures.load(Textures::Explosion, "Media/Textures/Explosion.png");
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
@@ -322,7 +322,7 @@ void World::buildScene()
 	}
 
 	// Prepare the tiled background
-	sf::Texture& jungleTexture = mTextures.get(Textures::Jungle);
+	sf::Texture& jungleTexture = mTextures.get(Textures::Desert);
 	jungleTexture.setRepeated(true);
 
 	float viewHeight = mWorldView.getSize().y;

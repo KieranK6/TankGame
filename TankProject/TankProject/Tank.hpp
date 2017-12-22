@@ -37,11 +37,14 @@ public:
 	float					getMaxSpeed() const;
 	float					getMaxTurretRotationSpeed() const;
 	float					getTurretRotationSpeed() const;
+	float					getSpeedBoost() const;
 	void					disablePickups();
 
 	void					increaseFireRate();
 	void					increaseSpread();
 	void					collectAmmo(unsigned int count);
+	void					increaseHealth(int amount);
+	void					increaseTankSpeed(int lengthInSeconds);
 
 	void 					fire();
 	void					launchMissile();
@@ -61,6 +64,7 @@ private:
 	void					updateMovementPattern(sf::Time dt);
 	void					checkPickupDrop(CommandQueue& commands);
 	void					checkProjectileLaunch(sf::Time dt, CommandQueue& commands);
+	void					checkSpeedBoost(sf::Time dt);
 
 	void					createBullets(SceneNode& node, const TextureHolder& textures) const;
 	void					createProjectile(SceneNode& node, Projectile::Type type, float xOffset, float yOffset, const TextureHolder& textures) const;
@@ -90,6 +94,9 @@ private:
 	int						mFireRateLevel;
 	int						mSpreadLevel;
 	int						mMissileAmmo;
+	bool					hasSpeedBoost;
+	sf::Time				speedBoostCountdown;
+	float					speedBoostMultiplier;
 
 	Command 				mDropPickupCommand;
 	float					mTravelledDistance;

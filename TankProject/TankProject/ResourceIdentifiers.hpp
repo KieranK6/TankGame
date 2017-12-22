@@ -15,7 +15,7 @@ namespace Textures
 		Entities,
 		TankChassisEntities,
 		TankTurretEntities,
-		Jungle,
+		Desert,
 		TitleScreen,
 		Buttons,
 		Explosion,
