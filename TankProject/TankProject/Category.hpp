@@ -18,12 +18,10 @@ namespace Category
 		ParticleSystem		= 1 << 7,
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
-<<<<<<< HEAD
 		EnemyRotation		= 1 << 10,
-=======
 		Obstacle			= 1 << 10,
 		Base				= 1 << 11,
->>>>>>> bde488072604e414639fec0c772dc8931045a1e0
+
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		Projectile = AlliedProjectile | EnemyProjectile,

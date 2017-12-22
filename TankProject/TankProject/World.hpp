@@ -71,11 +71,11 @@ private:
 	void centerWorldToPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
-<<<<<<< HEAD
+
 	void enemyTurretTargeting();
-=======
+
 	void updateBase();
->>>>>>> bde488072604e414639fec0c772dc8931045a1e0
+
 
 private:
 	enum Layer
