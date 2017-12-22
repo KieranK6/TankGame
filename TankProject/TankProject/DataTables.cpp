@@ -140,7 +140,7 @@ std::vector<PickupData> initializePickupData()
 
 	data[Pickup::TankSpeedUp].texture = Textures::Entities;
 	data[Pickup::TankSpeedUp].textureRect = sf::IntRect(80, 64, 40, 40);
-	data[Pickup::TankSpeedUp].action = std::bind(&Tank::increaseTankSpeed, _1, 10);
+	data[Pickup::TankSpeedUp].action = std::bind(&Tank::increaseTankSpeed, _1, 10.0f);
 
 	data[Pickup::FireRate].texture = Textures::Entities;
 	data[Pickup::FireRate].textureRect = sf::IntRect(120, 64, 40, 40);

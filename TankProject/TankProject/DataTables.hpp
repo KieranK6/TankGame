@@ -22,17 +22,6 @@ struct Direction
 	float distance;
 };
 
-struct AircraftData
-{
-	int hitpoints;
-	float speed;
-	Textures::ID texture;
-	sf::IntRect textureRect;
-	sf::Time fireInterval;
-	std::vector<Direction> directions;
-	bool hasRollAnimation;
-};
-
 struct TankData
 {
 	int hitpoints;

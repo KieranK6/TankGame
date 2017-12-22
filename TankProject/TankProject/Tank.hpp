@@ -41,13 +41,13 @@ public:
 	void					disablePickups();
 
 	void					increaseFireRate();
-	void					increaseSpread();
+	//void					increaseSpread();
 	void					collectAmmo(unsigned int count);
 	void					increaseHealth(int amount);
-	void					increaseTankSpeed(int lengthInSeconds);
+	void					increaseTankSpeed(float lengthInSeconds);
 
 	void 					fire();
-	void					launchMissile();
+	//void					launchMissile();
 	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
 	int						getIdentifier();
 	void					setIdentifier(int identifier);
@@ -56,6 +56,7 @@ public:
 	int						getAmmoCount() const;
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
+	void					guideTurretTowards(sf::Vector2f position);
 
 
 private:
@@ -74,6 +75,7 @@ private:
 	void					updateRollAnimation();
 	void					updateTurret(sf::Time dt);
 	float					getTotalTurretRotation() const;
+	void					updateEnemyTurretRotation(sf::Time dt);
 
 
 private:
@@ -113,4 +115,5 @@ private:
 	float					turretRotationVelocity;
 	float					turretOldRotation;
 	bool					isRotating;
+	sf::Vector2f			mTargetDirection;
 };

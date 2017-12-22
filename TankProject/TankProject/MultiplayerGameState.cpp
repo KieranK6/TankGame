@@ -139,7 +139,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 				foundLocalPlane = true;
 			}
 
-			if (!mWorld.getAircraft(itr->first))
+			if (!mWorld.getTank(itr->first))
 			{
 				itr = mPlayers.erase(itr);
 
@@ -223,7 +223,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 
 			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
 			{
-				if (Tank* tank = mWorld.getAircraft(identifier))
+				if (Tank* tank = mWorld.getTank(identifier))
 					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
 			}
 
@@ -368,7 +368,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		sf::Int32 aircraftIdentifier;
 		packet >> aircraftIdentifier;
 
-		mWorld.removeAircraft(aircraftIdentifier);
+		mWorld.removeTank(aircraftIdentifier);
 		mPlayers.erase(aircraftIdentifier);
 	} break;
 
@@ -482,7 +482,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			sf::Int32 aircraftIdentifier;
 			packet >> aircraftIdentifier >> aircraftPosition.x >> aircraftPosition.y;
 
-			Tank* tank = mWorld.getAircraft(aircraftIdentifier);
+			Tank* tank = mWorld.getTank(aircraftIdentifier);
 			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), aircraftIdentifier) != mLocalPlayerIdentifiers.end();
 			if (tank && !isLocalPlane)
 			{

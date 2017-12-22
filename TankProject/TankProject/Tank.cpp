@@ -271,7 +271,7 @@ void Tank::collectAmmo(unsigned int count)
 }
 
 //tank speed increase pickup
-void Tank::increaseTankSpeed(int lengthInSeconds)
+void Tank::increaseTankSpeed(float lengthInSeconds)
 {
 	hasSpeedBoost = true;
 
@@ -317,11 +317,9 @@ void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 	commands.push(command);
 }
 
-
-
 void Tank::updateMovementPattern(sf::Time dt)
 {
-	// Enemy airplane: Movement pattern
+	// Enemy tank: Movement pattern
 	const std::vector<Direction>& directions = Table[mType].directions;
 	if (!directions.empty())
 	{
@@ -355,19 +353,26 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies try to fire all the time
 	if (!isAllied())
+	{
+		if (mTargetDirection != sf::Vector2f(0,0))
+		{
+			updateEnemyTurretRotation(dt);
+		}
 		fire();
+	}
 
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero && ammoCount > 0)
 	{
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
+
 		playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
 		
 		ammoCount--;
-		std::cout << "Tank Ammo: " << ammoCount << std::endl;
+
 		mIsFiring = false;
 	}
 	else if (mFireCountdown > sf::Time::Zero)
@@ -524,4 +529,30 @@ void Tank::setTurretRotationVelocity(float rotationVelocity)
 float Tank::getTotalTurretRotation() const
 {
 	return turretSprite.getRotation() + getRotation();
+}
+
+void Tank::guideTurretTowards(sf::Vector2f position)
+{
+	mTargetDirection = unitVector(getWorldPosition() - position);
+}
+
+void Tank::updateEnemyTurretRotation(sf::Time dt)
+{
+	float angle = toDegree(std::atan2(mTargetDirection.y, mTargetDirection.x) + 90.f);
+
+	turretSprite.setRotation(toDegree(angle) + 90.f);
+	/*
+	if (differenceAngle < 0) // move clockwise
+	{
+		accelerateTurretRotation(+1 * getTurretRotationSpeed());
+	}
+	else if (differenceAngle > 0) // move anticlockwise
+	{
+		accelerateTurretRotation(-1 * getTurretRotationSpeed());
+	}
+	else //dont move, back on
+	{
+
+	}
+	*/
 }

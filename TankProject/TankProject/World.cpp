@@ -60,9 +60,9 @@ void World::update(sf::Time dt)
 	FOREACH(Tank* a, mPlayerTanks)
 		a->setVelocity(0.f, 0.f);
 
-	// Setup commands to destroy entities, and guide missiles
+	// Setup commands to destroy entities, and guide turrets
 	destroyEntitiesOutsideView();
-	guideMissiles();
+	enemyTurretTargeting();
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -110,7 +110,7 @@ CommandQueue& World::getCommandQueue()
 	return mCommandQueue;
 }
 
-Tank* World::getAircraft(int identifier) const
+Tank* World::getTank(int identifier) const
 {
 	FOREACH(Tank* a, mPlayerTanks)
 	{
@@ -121,9 +121,9 @@ Tank* World::getAircraft(int identifier) const
 	return nullptr;
 }
 
-void World::removeAircraft(int identifier)
+void World::removeTank(int identifier)
 {
-	Tank* tank = getAircraft(identifier);
+	Tank* tank = getTank(identifier);
 	if (tank)
 	{
 		tank->destroy();
@@ -184,7 +184,7 @@ bool World::hasAlivePlayer() const
 
 bool World::hasPlayerReachedEnd() const
 {
-	if (Tank* tank = getAircraft(1))
+	if (Tank* tank = getTank(1))
 		return !mWorldBounds.contains(tank->getPosition());
 	else
 		return false;
@@ -228,9 +228,6 @@ void World::adaptPlayerVelocity()
 		// If moving diagonally, reduce velocity (to have always same velocity)
 		if (velocity.x != 0.f && velocity.y != 0.f)
 			tank->setVelocity(velocity / std::sqrt(2.f));
-		
-		// Add scrolling velocity
-		//tank->accelerate(0.f, mScrollSpeed);
 	}
 }
 
@@ -518,6 +515,33 @@ void World::destroyEntitiesOutsideView()
 	});
 
 	mCommandQueue.push(command);
+}
+
+void World::enemyTurretTargeting()
+{
+	// Setup command that stores all enemys in active enemies
+	Command enemyCollector;
+	enemyCollector.category = Category::EnemyTank;
+	enemyCollector.action = derivedAction<Tank>([this](Tank& enemy, sf::Time)
+	{
+		if (!enemy.isDestroyed())
+			mActiveEnemies.push_back(&enemy);
+	});
+
+	// Setup command that targets turrets toward player
+	Command turretGuider;
+	turretGuider.category = Category::EnemyTank;
+	turretGuider.action = derivedAction<Tank>([this](Tank& tank, sf::Time)
+	{
+		Tank* player = mPlayerTanks.at(0);
+
+		tank.guideTurretTowards(player->getWorldPosition());
+	});
+
+	// Push commands, reset active enemies
+	mCommandQueue.push(enemyCollector);
+	mCommandQueue.push(turretGuider);
+	mActiveEnemies.clear();
 }
 
 void World::guideMissiles()

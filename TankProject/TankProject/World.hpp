@@ -38,7 +38,7 @@ public:
 	sf::FloatRect getViewBounds() const;
 	CommandQueue& getCommandQueue();
 	Tank* addTank(int identifier);
-	void removeAircraft(int identifier);
+	void removeTank(int identifier);
 	void setCurrentBattleFieldPosition(float lineY);
 	void setWorldHeight(float height);
 
@@ -50,7 +50,7 @@ public:
 
 	void setWorldScrollCompensation(float compensation);
 
-	Tank* getAircraft(int identifier) const;
+	Tank* getTank(int identifier) const;
 	sf::FloatRect getBattlefieldBounds() const;
 
 	void createPickup(sf::Vector2f position, Pickup::Type type);
@@ -70,6 +70,7 @@ private:
 	void centerWorldToPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
+	void enemyTurretTargeting();
 
 private:
 	enum Layer
