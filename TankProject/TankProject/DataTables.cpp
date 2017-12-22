@@ -75,7 +75,7 @@ std::vector<BaseData> initializeBaseData()
 
 	std::vector<BaseData> data(Obstacle::TypeCount);
 
-	data[Base::EnemyBase].hitpoints = 100;
+	data[Base::EnemyBase].hitpoints = 300;
 	data[Base::EnemyBase].texture = Textures::EnemyBase;
 	data[Base::EnemyBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 

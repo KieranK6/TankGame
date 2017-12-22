@@ -71,6 +71,7 @@ private:
 	void centerWorldToPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
+	void updateBase();
 
 private:
 	enum Layer
