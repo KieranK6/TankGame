@@ -4,6 +4,7 @@
 #include "Projectile.hpp"
 #include "Pickup.hpp"
 #include "Particle.hpp"
+#include "Obstacle.hpp"
 
 // For std::bind() placeholders _1, _2, ...
 using namespace std::placeholders;
@@ -43,6 +44,27 @@ std::vector<TankData> initializeTankData()
 	data[Tank::Panther].fireInterval = sf::seconds(1);
 	data[Tank::Panther].texture = Textures::TankChassisEntities;
 	data[Tank::Panther].textureRect = sf::IntRect(3 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+	return data;
+}
+
+//used count and added pixel variables to make implementation quicker. 
+std::vector<ObstacleData> initializeObstacleData()
+{
+	int pixelWidth = 64;
+	int pixelHeight = 64;
+
+	std::vector<ObstacleData> data(Obstacle::TypeCount);
+
+	data[Obstacle::Barricade].hitpoints = 100;
+	data[Obstacle::Barricade].texture = Textures::Obstacles;
+	data[Obstacle::Barricade].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+	data[Obstacle::Rock].hitpoints = 150;
+	data[Obstacle::Rock].texture = Textures::Obstacles;
+	data[Obstacle::Rock].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+
 
 	return data;
 }

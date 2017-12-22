@@ -55,6 +55,13 @@ struct TankTurretData
 	std::vector<Direction> directions;
 };
 
+struct ObstacleData
+{
+	int hitpoints;
+	Textures::ID texture;
+	sf::IntRect textureRect;
+};
+
 struct ProjectileData
 {
 	int damage;
@@ -78,6 +85,7 @@ struct ParticleData
 
 std::vector<TankData> initializeTankData();
 std::vector<TankTurretData> initializeTankTurretData();
+std::vector<ObstacleData> initializeObstacleData();
 std::vector<ProjectileData> initializeProjectileData();
 std::vector<PickupData> initializePickupData();
 std::vector<ParticleData> initializeParticleData();

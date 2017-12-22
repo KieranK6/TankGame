@@ -8,6 +8,7 @@
 #include "NetworkNode.hpp"
 #include "Utility.hpp"
 #include <SFML/Graphics/RenderTarget.hpp>
+#include "SceneNode.hpp"
 
 #include <algorithm>
 #include <cmath>
@@ -40,6 +41,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
+	SpawnObstacles(1);
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
@@ -77,6 +79,7 @@ void World::update(sf::Time dt)
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
 	spawnEnemies();
+	
 
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
@@ -138,6 +141,17 @@ Tank* World::addTank(int identifier)
 	mSceneLayers[UpperAir]->attachChild(std::move(player));
 	return mPlayerTanks.back();
 }
+/*
+Obstacle* World::addObstacle(int identifier)
+{
+	std::unique_ptr<Tank> player(new Tank(Tank::Hotchkiss, mTextures, mFonts));
+	player->setPosition(mWorldView.getCenter());
+	player->setIdentifier(identifier);
+
+	mPlayerTanks.push_back(player.get());
+	mSceneLayers[UpperAir]->attachChild(std::move(player));
+	return mPlayerTanks.back();
+}*/
 
 void World::createPickup(sf::Vector2f position, Pickup::Type type)
 {
@@ -340,6 +354,7 @@ void World::buildScene()
 	finishSprite->setPosition(0.f, -76.f);
 	mSceneLayers[Background]->attachChild(std::move(finishSprite));
 
+	/*
 	// Add obstacles to the scene
 	int rockCount = 7;
 	std::vector<float> xPositions;
@@ -358,8 +373,9 @@ void World::buildScene()
 		sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
 		std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
 		obstacleSprite->setPosition(currentValue , 3700.f - (i * 700));
-		mSceneLayers[Obstacles]->attachChild(std::move(obstacleSprite));
-	}
+		obstacleSprite->getBoundingRect();
+		mSceneLayers[LowerAir]->attachChild(std::move(obstacleSprite));
+	}*/
 
 	// Add particle node to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
@@ -405,6 +421,42 @@ void World::sortEnemies()
 	{
 		return lhs.y < rhs.y;
 	});
+}
+
+void World::SpawnObstacles(int obstacleCount)
+{
+	std::vector<float> xPositions;
+	xPositions.push_back(150.f);
+	xPositions.push_back(400.f);
+	xPositions.push_back(750.f);
+	float currentValue = 0;
+	int xPos = 0;
+
+	SpawnPoint spawn = mEnemySpawnPoints.back();
+
+	xPos = rand() % 3;
+	currentValue = xPositions.at(xPos);
+
+	std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Rock, mTextures));
+	ob1->setPosition(spawn.x + 500, spawn.y);
+	mSceneLayers[Obstacles]->attachChild(std::move(ob1));
+
+	/*
+	for (int i = 0; i < obstacleCount; i++)
+	{
+		xPos = rand() % 3;
+		currentValue = xPositions.at(xPos);
+
+		std::unique_ptr<Obstacle> ob1(new Obstacle(Obstacle::Rock, mTextures));
+		ob1->setPosition(spawn.x, spawn.y);
+		
+
+		//sf::Texture& obstacleTexture = mTextures.get(Textures::Obstacles);
+		//std::unique_ptr<SpriteNode> obstacleSprite(new SpriteNode(obstacleTexture));
+		//obstacleSprite->setPosition(currentValue, 3700.f - (i * 700));
+		//obstacleSprite->getBoundingRect();
+		//mSceneLayers[LowerAir]->attachChild(std::move(obstacleSprite));
+	}*/
 }
 
 
