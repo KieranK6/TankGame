@@ -24,7 +24,8 @@ SoundPlayer::SoundPlayer()
 	mSoundBuffers.load(SoundEffect::Explosion2, "Media/Sound/Explosion2.wav");
 	mSoundBuffers.load(SoundEffect::LaunchMissile, "Media/Sound/LaunchMissile.wav");
 	mSoundBuffers.load(SoundEffect::CollectPickup, "Media/Sound/CollectPickup.wav");
-	mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav");
+	mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav"); 
+	mSoundBuffers.load(SoundEffect::Collision, "Media/Sound/Collision.wav");
 	//mSoundBuffers.load(SoundEffect::);
 
 	//Listener points towards the screen
