@@ -28,7 +28,7 @@ struct TankMover
 	void operator() (Tank& tank, sf::Time) const
 	{
 		if (tank.getIdentifier() == tankID)
-			tank.accelerate(velocity * tank.getMaxSpeed());
+			tank.accelerate(velocity * tank.getSpeedBoost() * tank.getMaxSpeed());
 	}
 
 	sf::Vector2f velocity;
@@ -92,22 +92,6 @@ struct TankFireTrigger
 	{
 		if (tank.getIdentifier() == tankID)
 			tank.fire();
-	}
-
-	int tankID;
-};
-
-struct AircraftMissileTrigger
-{
-	AircraftMissileTrigger(int identifier)
-		: tankID(identifier)
-	{
-	}
-
-	void operator() (Tank& tank, sf::Time) const
-	{
-		if (tank.getIdentifier() == tankID)
-			tank.launchMissile();
 	}
 
 	int tankID;
@@ -241,7 +225,6 @@ void Player::initializeActions()
 	mActionBinding[PlayerAction::RotateTurretLeft].action = derivedAction<Tank>(TurretRotater(Direction::left, mIdentifier));
 	mActionBinding[PlayerAction::RotateTurretRight].action = derivedAction<Tank>(TurretRotater(Direction::right, mIdentifier));
 	mActionBinding[PlayerAction::Fire].action = derivedAction<Tank>(TankFireTrigger(mIdentifier));
-	mActionBinding[PlayerAction::LaunchMissile].action = derivedAction<Tank>(AircraftMissileTrigger(mIdentifier));
 }
 
 

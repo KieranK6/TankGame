@@ -15,7 +15,7 @@ public:
 	{
 		HealthRefill,
 		AmmoRefill,
-		FireSpread,
+		TankSpeedUp,
 		FireRate,
 		TypeCount
 	};

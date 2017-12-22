@@ -57,6 +57,7 @@ void Entity::setHitpoints(int points)
 void Entity::repair(int points)
 {
 	assert(points > 0);
+
 	mHitpoints += points;
 }
 
