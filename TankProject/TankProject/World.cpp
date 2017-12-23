@@ -561,6 +561,7 @@ void World::destroyEntitiesOutsideView()
 	mCommandQueue.push(command);
 }
 
+//targets enemy turrets towards player
 void World::enemyTurretTargeting()
 {
 	// Setup command that stores all enemys in active enemies

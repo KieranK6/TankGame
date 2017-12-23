@@ -90,6 +90,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 
 	ammoCount = Table[type].ammoCount;
 
+	//adds turret type depending on what type of tank it is
 	switch (type)
 	{
 	case Hotchkiss:
@@ -494,7 +495,7 @@ void Tank::checkSpeedBoost(sf::Time dt)
 }
 
 
-//method to update turret rotation, continues moving with enough velocity
+//method to update turret rotation, continues moving with enough velocity, makes it seem heavy and realistic 
 void Tank::updateTurret(sf::Time dt)
 {
 	turretSprite.rotate(turretRotationVelocity * dt.asSeconds());
@@ -535,6 +536,8 @@ void Tank::guideTurretTowards(sf::Vector2f position)
 	mTargetDirection = unitVector(position - getWorldPosition());
 }
 
+
+//very important method. To be changed to use velocity so tanks dont lock on. Was unable to work out the maths
 void Tank::updateEnemyTurretRotation(sf::Time dt)
 {
 	float angle = toDegree(std::atan2(mTargetDirection.y, mTargetDirection.x)) - 90;

@@ -10,7 +10,7 @@
 // For std::bind() placeholders _1, _2, ...
 using namespace std::placeholders;
 
-//used count and added pixel variables to make implementation quicker. 
+//used count and added pixel variables to make implementation quicker.  added by ciaran
 std::vector<TankData> initializeTankData()
 {
 	int pixelWidth = 64;
@@ -84,6 +84,7 @@ std::vector<BaseData> initializeBaseData()
 	return data;
 }
 
+//seperated turret sprites for more accurate rotation and barrels longer than tanks
 std::vector<TankTurretData> initializeTankTurretData()
 {
 	int pixelWidth = 128;

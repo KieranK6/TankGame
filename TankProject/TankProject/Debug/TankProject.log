@@ -1,4 +1,7 @@
-﻿  SceneNode.cpp
+﻿  World.cpp
+c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(445): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(497): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+  Tank.cpp
   DataTables.cpp
   Generating Code...
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe
