@@ -11,14 +11,20 @@ TitleState::TitleState(StateStack& stack, Context context)
 	,mShowText(true)
 	,mTextEffectTime(sf::Time::Zero)
 {
+	sf::Vector2f windowSize(context.window->getSize());
 	mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
+
+	TitleText.setFont(context.fonts->get(Fonts::Main));
+	TitleText.setString("Freedom By Force");
+	TitleText.setCharacterSize(75);
+	TitleText.setFillColor(sf::Color::Black);
+	centerOrigin(TitleText);
+	TitleText.setPosition(sf::Vector2f(windowSize.x / 2, 150));
 
 	mText.setFont(context.fonts->get(Fonts::Main));
 	mText.setString("Press any key to start");
 	mText.setCharacterSize(50);
 	mText.setFillColor(sf::Color::Black);
-	//mText.setOutlineThickness(10);
-	//mText.setOutlineColor(sf::Color(255, 255, 255, 1));
 	centerOrigin(mText);
 	mText.setPosition(sf::Vector2f(context.window->getSize() / 2u));
 }
@@ -27,7 +33,7 @@ void TitleState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
 	window.draw(mBackgroundSprite);
-
+	window.draw(TitleText);
 	if (mShowText)
 	{
 		window.draw(mText);

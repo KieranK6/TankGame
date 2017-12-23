@@ -22,6 +22,7 @@ PauseState::PauseState(StateStack& stack, Context context, bool letUpdatesThroug
 	mPausedText.setFont(font);
 	mPausedText.setString("Game Paused");
 	mPausedText.setCharacterSize(70);
+	mPausedText.setFillColor(sf::Color::Black);
 	centerOrigin(mPausedText);
 	mPausedText.setPosition(0.5f * windowSize.x, 0.25f * windowSize.y);
 

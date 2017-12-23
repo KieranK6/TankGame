@@ -12,6 +12,7 @@
 #include "BloomEffect.hpp"
 #include "SoundPlayer.hpp"
 #include "NetworkProtocol.hpp"
+#include "Base.hpp"
 
 #include <SFML/System/NonCopyable.hpp>
 #include <SFML/Graphics/View.hpp>
@@ -20,8 +21,6 @@
 #include <array>
 #include <queue>
 
-//This class was worked on by Ciaran Mooney and Kieran Keegan
-
 //Foward declaration
 namespace sf
 {
@@ -29,6 +28,7 @@ namespace sf
 }
 
 class NetworkNode;
+class Base;
 
 class World : private sf::NonCopyable
 {
@@ -48,8 +48,7 @@ public:
 	void sortEnemies();
 
 	bool hasAlivePlayer() const;
-	bool hasPlayerReachedEnd() const;
-	//bool hasPlayerDefeatedBase() const;
+	bool hasBaseBeenDestroyed() const;
 
 	void setWorldScrollCompensation(float compensation);
 
@@ -69,14 +68,13 @@ private:
 	void SpawnObstacles(int obstacleCount);
 	void SpawnEnemyBase();
 	void buildScene();
-	void addEnemies();
+	void addEnemies(int enemyCount);
 	void spawnEnemies();
 	void centerWorldToPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
 
 	void enemyTurretTargeting();
-
 	void updateBase();
 
 
@@ -134,5 +132,6 @@ private:
 	bool								mNetworkedWorld;
 	NetworkNode*						mNetworkNode;
 	SpriteNode*							mFinishSprite;
+	bool								isBaseDestroyed;
 };
 

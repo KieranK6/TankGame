@@ -4,6 +4,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
+#include <SFML/Graphics/RectangleShape.hpp>
 
 class MenuState : public State
 {
@@ -16,5 +17,7 @@ public:
 
 private:
 	sf::Sprite mBackgroundSprite;
+	sf::Text TitleText;
+	sf::RectangleShape menuBacking;
 	GUI::Container mGUIContainer;
 };
