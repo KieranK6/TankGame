@@ -62,7 +62,7 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	drawChildren(target, states);
 
 	// Draw bounding rectangle - disabled by default
-	drawBoundingRect(target, states);
+	//drawBoundingRect(target, states);
 }
 
 void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
@@ -87,7 +87,7 @@ void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) con
 	shape.setOutlineColor(sf::Color::Green);
 	shape.setOutlineThickness(1.f);
 
-	target.draw(shape);
+	//target.draw(shape);
 }
 
 sf::Vector2f SceneNode::getWorldPosition() const

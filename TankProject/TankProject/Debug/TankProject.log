@@ -1,2 +1,4 @@
-﻿  GameState.cpp
+﻿  SceneNode.cpp
+  DataTables.cpp
+  Generating Code...
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe
