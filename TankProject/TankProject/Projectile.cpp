@@ -13,6 +13,8 @@
 #include <cassert>
 
 
+
+
 namespace
 {
 	const std::vector<ProjectileData> Table = initializeProjectileData();

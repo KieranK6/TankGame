@@ -20,6 +20,8 @@
 #include <array>
 #include <queue>
 
+//This class was worked on by Ciaran Mooney and Kieran Keegan
+
 //Foward declaration
 namespace sf
 {
@@ -47,6 +49,7 @@ public:
 
 	bool hasAlivePlayer() const;
 	bool hasPlayerReachedEnd() const;
+	//bool hasPlayerDefeatedBase() const;
 
 	void setWorldScrollCompensation(float compensation);
 

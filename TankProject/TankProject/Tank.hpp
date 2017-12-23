@@ -8,6 +8,8 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+//This class was worked on by Ciaran Mooney
+
 
 class Tank : public Entity
 {

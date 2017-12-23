@@ -146,17 +146,7 @@ Tank* World::addTank(int identifier)
 	mSceneLayers[UpperAir]->attachChild(std::move(player));
 	return mPlayerTanks.back();
 }
-/*
-Obstacle* World::addObstacle(int identifier)
-{
-	std::unique_ptr<Tank> player(new Tank(Tank::Hotchkiss, mTextures, mFonts));
-	player->setPosition(mWorldView.getCenter());
-	player->setIdentifier(identifier);
 
-	mPlayerTanks.push_back(player.get());
-	mSceneLayers[UpperAir]->attachChild(std::move(player));
-	return mPlayerTanks.back();
-}*/
 
 void World::createPickup(sf::Vector2f position, Pickup::Type type)
 {
@@ -316,6 +306,8 @@ void World::handleCollisions()
 			base.damage(projectile.getDamage());
 			//updateBase();
 			projectile.destroy();
+			base.playLocalSound(mCommandQueue, SoundEffect::Oohrah);
+			
 		}
 
 		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)

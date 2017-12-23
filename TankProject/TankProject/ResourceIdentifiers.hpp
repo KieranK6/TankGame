@@ -66,6 +66,7 @@ namespace SoundEffect
 		CollectPickup,
 		Button,
 		Collision,
+		Oohrah,
 	};
 }
 
