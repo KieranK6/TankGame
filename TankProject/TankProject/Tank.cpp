@@ -541,8 +541,6 @@ void Tank::updateEnemyTurretRotation(sf::Time dt)
 
 	float differenceAngle = turretSprite.getRotation() - angle;
 
-	std::cout << differenceAngle << std::endl;
-
 	turretSprite.setRotation(angle);		// - 90 to have it face the player.. forward is to the right on a sprite
 
 	fire();

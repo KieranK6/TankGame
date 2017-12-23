@@ -37,6 +37,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mNetworkedWorld(networked)
 	, mNetworkNode(nullptr)
 	, mFinishSprite(nullptr)
+	, isBaseDestroyed(false)
 {
 	mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
@@ -187,12 +188,9 @@ bool World::hasAlivePlayer() const
 	return mPlayerTanks.size() > 0;
 }
 
-bool World::hasPlayerReachedEnd() const
+bool World::hasBaseBeenDestroyed() const
 {
-	if (Tank* tank = getTank(1))
-		return !mWorldBounds.contains(tank->getPosition());
-	else
-		return false;
+	return isBaseDestroyed;
 }
 
 void World::loadTextures()
@@ -314,7 +312,10 @@ void World::handleCollisions()
 			auto& projectile = static_cast<Projectile&>(*pair.second);
 
 			base.damage(projectile.getDamage());
-			//updateBase();
+
+			if (base.isDestroyed())
+				isBaseDestroyed = true;
+
 			projectile.destroy();
 		}
 
@@ -371,15 +372,15 @@ void World::buildScene()
 	}
 
 	// Prepare the tiled background
-	sf::Texture& jungleTexture = mTextures.get(Textures::Desert);
-	jungleTexture.setRepeated(true);
+	sf::Texture& desertTexture = mTextures.get(Textures::Desert);
+	desertTexture.setRepeated(true);
 
 	float viewHeight = mWorldView.getSize().y;
 	sf::IntRect textureRect(mWorldBounds);
 	textureRect.height += static_cast<int>(viewHeight);
 
 	// Add the background sprite to the scene
-	std::unique_ptr<SpriteNode> jungleSprite(new SpriteNode(jungleTexture, textureRect));
+	std::unique_ptr<SpriteNode> jungleSprite(new SpriteNode(desertTexture, textureRect));
 	jungleSprite->setPosition(mWorldBounds.left, mWorldBounds.top - viewHeight);
 	mSceneLayers[Background]->attachChild(std::move(jungleSprite));
 
@@ -411,16 +412,38 @@ void World::buildScene()
 	}
 
 	// Add enemy tank
-	addEnemies();
+	addEnemies(10);
 }
 
-void World::addEnemies()
+void World::addEnemies(int enemyCount)
 {
 	if (mNetworkedWorld)
 		return;
 
-	// Add enemies to the spawn point container
-	addEnemy(Tank::Panzer, 0.f, 500.0f);
+	std::vector<float> xPositions;
+	xPositions.push_back(mWorldBounds.width / 4 * 1);
+	xPositions.push_back(mWorldBounds.width / 4 * 2);
+	xPositions.push_back(mWorldBounds.width / 4 * 3);
+
+	float currentValue = 0;
+	int xPos = 0;
+	int randomEnemyType = 0;
+
+	Tank::Type spawnType = Tank::Type::Panzer;
+
+	for (int i = 0; i < enemyCount; i++)
+	{
+		xPos = rand() % 3; //Random number between 1 and 3, for getting an xPos for obstacle spawning
+		randomEnemyType = rand() % 2 + 1; //Random num between 1 and 2, for getting a random type of enemy
+		currentValue = xPositions.at(xPos); //sets current x value to one of the three possible values form xPositions vector
+
+		if (randomEnemyType == 1)
+		{
+			spawnType = Tank::Type::Panther;
+		}
+
+		addEnemy(spawnType, xPositions[xPos], 700 + (300 * i));
+	}
 
 
 	// Sort all enemies according to their y value, such that lower enemies are checked first for spawning
@@ -438,12 +461,10 @@ void World::sortEnemies()
 
 void World::SpawnEnemyBase()
 {
+	//Base m(Base::EnemyBase, mTextures, mFonts);
 	std::unique_ptr<Base> base1(new Base(Base::EnemyBase, mTextures, mFonts));
-	base1->setPosition(0.f, -76.f);
-	//SpawnPoint spawn = mEnemySpawnPoints.back(); //Debug purposes
-	//base1->setPosition(spawn.x, spawn.y);  //Debug purposes
+	base1->setPosition(mWorldBounds.width / 2 - base1->getBoundingRect().width/2, 0.f);
 	mSceneLayers[Background]->attachChild(std::move(base1));
-	std::cout << "Base spawned!" << std::endl;
 }
 
 
@@ -482,7 +503,7 @@ void World::SpawnObstacles(int obstacleCount)
 
 void World::addEnemy(Tank::Type type, float relX, float relY)
 {
-	SpawnPoint spawn(type, mSpawnPosition.x + relX, mSpawnPosition.y - relY);
+	SpawnPoint spawn(type, relX, relY);
 	mEnemySpawnPoints.push_back(spawn);
 }
 
@@ -577,39 +598,6 @@ void World::guideMissiles()
 		if (!enemy.isDestroyed())
 			mActiveEnemies.push_back(&enemy);
 	});
-
-	// Setup command that guides all missiles to the enemy which is currently closest to the player
-	Command missileGuider;
-	missileGuider.category = Category::AlliedProjectile;
-	missileGuider.action = derivedAction<Projectile>([this](Projectile& missile, sf::Time)
-	{
-		// Ignore unguided bullets
-		if (!missile.isGuided())
-			return;
-
-		float minDistance = std::numeric_limits<float>::max();
-		Tank* closestEnemy = nullptr;
-
-		// Find closest enemy
-		FOREACH(Tank* enemy, mActiveEnemies)
-		{
-			float enemyDistance = distance(missile, *enemy);
-
-			if (enemyDistance < minDistance)
-			{
-				closestEnemy = enemy;
-				minDistance = enemyDistance;
-			}
-		}
-
-		if (closestEnemy)
-			missile.guideTowards(closestEnemy->getWorldPosition());
-	});
-
-	// Push commands, reset active enemies
-	mCommandQueue.push(enemyCollector);
-	mCommandQueue.push(missileGuider);
-	mActiveEnemies.clear();
 }
 
 sf::FloatRect World::getViewBounds() const
