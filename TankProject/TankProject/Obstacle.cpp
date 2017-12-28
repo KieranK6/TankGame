@@ -20,7 +20,7 @@ namespace
 	const std::vector<ObstacleData> Table = initializeObstacleData();
 }
 
-Obstacle::Obstacle(ObType type, const TextureHolder& textures) : Entity(Table[type].hitpoints)
+Obstacle::Obstacle(ObType type, const TextureHolder& textures) : Entity(Table[type].hitpoints) //Constructor, inherits from entity, has hitpoints type and texture defined in datatables
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 
@@ -35,13 +35,13 @@ Obstacle::~Obstacle()
 
 sf::FloatRect Obstacle::getBoundingRect() const
 {
-	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
+	return getWorldTransform().transformRect(mSprite.getGlobalBounds()); //returns boudning rectangle used for collision detection
 }
 
 void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	
-		target.draw(mSprite, states);
+		target.draw(mSprite, states); //draws sprite onto target
 
 }
 

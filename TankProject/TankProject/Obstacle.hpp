@@ -9,6 +9,9 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 
+//This class was worked on by Kieran Keegan
+
+
 class Obstacle : public Entity
 {
 public:

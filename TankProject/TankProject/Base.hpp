@@ -10,6 +10,9 @@
 #include "Animation.hpp"
 
 #include <SFML/Graphics/Sprite.hpp>
+
+//This class was worked on by Kieran Keegan
+
 class Base : public Entity
 {
 public:
