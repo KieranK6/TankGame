@@ -32,6 +32,7 @@ bool GameState::update(sf::Time dt)
 	else if (mWorld.hasBaseBeenDestroyed())
 	{
 		mPlayer.setMissionStatus(Player::MissionSuccess);
+		getContext().sounds->play(SoundEffect::Freedum);
 		requestStackPush(States::MissionSuccess);
 	}
 

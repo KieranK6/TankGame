@@ -27,7 +27,7 @@ SoundPlayer::SoundPlayer()
 	mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav"); 
 	mSoundBuffers.load(SoundEffect::Collision, "Media/Sound/Collision.wav");
 	mSoundBuffers.load(SoundEffect::Oohrah, "Media/Sound/oohrah.wav");
-	//mSoundBuffers.load(SoundEffect::);
+	mSoundBuffers.load(SoundEffect::Freedum, "Media/Sound/freedum.wav");
 
 	//Listener points towards the screen
 	sf::Listener::setDirection(0.f, 0.f, -1.f);

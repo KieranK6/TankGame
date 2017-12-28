@@ -67,6 +67,7 @@ namespace SoundEffect
 		Button,
 		Collision,
 		Oohrah,
+		Freedum,
 	};
 }
 
