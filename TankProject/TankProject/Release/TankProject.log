@@ -1,9 +1,12 @@
-﻿  Application.cpp
+﻿  Animation.cpp
+  Application.cpp
   Base.cpp
   BloomEffect.cpp
   Button.cpp
   Command.cpp
   CommandQueue.cpp
+  Component.cpp
+  Container.cpp
   DataTables.cpp
   EmitterNode.cpp
   Entity.cpp
@@ -11,20 +14,22 @@ Entity.cpp(43): warning C4244: 'argument': conversion from 'double' to 'float', 
   GameOverState.cpp
   GameServer.cpp
   GameState.cpp
+  KeyBinding.cpp
   Label.cpp
   main.cpp
   MenuState.cpp
   MultiplayerGameState.cpp
+  Compiling...
   MusicPlayer.cpp
   NetworkNode.cpp
   Obstacle.cpp
   ParticleNode.cpp
-  Compiling...
   PauseState.cpp
   Pickup.cpp
   Player.cpp
+  PostEffect.cpp
   Projectile.cpp
-Projectile.cpp(68): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
+Projectile.cpp(70): warning C4244: 'argument': conversion from 'double' to 'float', possible loss of data
   SceneNode.cpp
   SettingsState.cpp
   SoundNode.cpp
@@ -35,11 +40,13 @@ Projectile.cpp(68): warning C4244: 'argument': conversion from 'double' to 'floa
   Tank.cpp
   TextNode.cpp
   TitleState.cpp
+  Utility.cpp
+  Compiling...
   World.cpp
+World.cpp(437): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+World.cpp(489): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   Generating code
-  956 of 7162 functions (13.3%) were compiled, the rest were copied from previous compilation.
-    460 functions were new in current compilation
-    766 functions had inline decision re-evaluated but remain unchanged
+  All 7040 functions were compiled because no usable IPDB/IOBJ from previous compilation was found.
   Finished generating code
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Release\TankProject.exe
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Release\TankProject.pdb (Full PDB)

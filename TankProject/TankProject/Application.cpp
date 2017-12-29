@@ -124,5 +124,5 @@ void Application::registerStates()
 	mStateStack.registerState<PauseState>(States::NetworkPause, true);
 	mStateStack.registerState<SettingsState>(States::Settings);
 	mStateStack.registerState<GameOverState>(States::GameOver, "Failure!");
-	mStateStack.registerState<GameOverState>(States::MissionSuccess, "Freedom delivered! Hoorah!");
+	mStateStack.registerState<GameOverState>(States::MissionSuccess, "Freedom delivered!");
 }
