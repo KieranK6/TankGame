@@ -27,8 +27,8 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mSounds(sounds)
 	, mSceneGraph()
 	, mSceneLayers()
-	, mWorldBounds(0.f, 0.f, 1500.f, 2000.f)
-	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height - mWorldView.getSize().y / 2.f)
+	, mWorldBounds(0.f, 0.f, 3000.f, 1500.f)
+	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height / 2.f)
 	, mScrollSpeed(-50.f)
 	, mScrollSpeedCompensation(1.f)
 	, mPlayerTanks()
@@ -43,7 +43,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
-	SpawnObstacles(6);
+	//SpawnObstacles(6);
 
 	//bool collisionSoundPlaying = false;
 	
@@ -84,7 +84,7 @@ void World::update(sf::Time dt)
 
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
-	spawnEnemies();
+	//spawnEnemies();
 	
 
 	// Regular update step, adapt position (correct if outside view)

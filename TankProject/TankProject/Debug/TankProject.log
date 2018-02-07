@@ -1,4 +1,4 @@
-﻿  TitleState.cpp
-c:\visualstudio\repos\tank_project\tankproject\tankproject\titlestate.cpp(48): warning C4244: '+=': conversion from 'float' to 'sf::Uint8', possible loss of data
-c:\visualstudio\repos\tank_project\tankproject\tankproject\titlestate.cpp(52): warning C4244: '-=': conversion from 'float' to 'sf::Uint8', possible loss of data
+﻿  World.cpp
+c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(437): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(489): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe
