@@ -4,6 +4,7 @@
 #include "StateIdentifiers.hpp"
 #include "TitleState.hpp"
 #include "GameState.hpp"
+#include "MultiplayerMenuState.h"
 #include "MultiplayerGameState.hpp"
 #include "MenuState.hpp"
 #include "PauseState.hpp"
@@ -117,6 +118,7 @@ void Application::registerStates()
 {
 	mStateStack.registerState<TitleState>(States::Title);
 	mStateStack.registerState<MenuState>(States::Menu);
+	mStateStack.registerState<MultiplayerMenuState>(States::MultiplayerMenu);
 	mStateStack.registerState<GameState>(States::Game);
 	mStateStack.registerState<MultiplayerGameState>(States::HostGame, true);
 	mStateStack.registerState<MultiplayerGameState>(States::JoinGame, false);

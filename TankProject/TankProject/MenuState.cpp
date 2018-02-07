@@ -18,7 +18,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 
 	menuBacking.setFillColor(sf::Color(0, 0, 0, 150));
 	menuBacking.setPosition(sf::Vector2f(windowSize.x / 4, 220));
-	menuBacking.setSize(sf::Vector2f(windowSize.x / 2, windowSize.y / 2));
+	menuBacking.setSize(sf::Vector2f(windowSize.x / 2, 460));
 
 	TitleText.setFont(context.fonts->get(Fonts::Main));
 	TitleText.setString("Freedom By Force");
@@ -28,16 +28,24 @@ MenuState::MenuState(StateStack& stack, Context context)
 	TitleText.setPosition(sf::Vector2f(windowSize.x / 2, 150));
 
 	auto playButton = std::make_shared<GUI::Button>(context);
-	playButton->setPosition(0.5f * windowSize.x, 300);
-	playButton->setText("Play");
+	playButton->setPosition(0.5f * windowSize.x, 300);\
+	playButton->setText("Training");
 	playButton->setCallback([this]()
 	{
 		requestStackPop();
 		requestStackPush(States::Game);
 	});
 
+	auto multiplayerButton = std::make_shared<GUI::Button>(context);
+	multiplayerButton->setPosition(0.5f * windowSize.x, 400);
+	multiplayerButton->setText("Multiplayer");
+	multiplayerButton->setCallback([this]()
+	{
+		requestStackPush(States::MultiplayerMenu);
+	});
+
 	auto settingsButton = std::make_shared<GUI::Button>(context);
-	settingsButton->setPosition(0.5f * windowSize.x, 400);
+	settingsButton->setPosition(0.5f * windowSize.x, 500);
 	settingsButton->setText("Settings");
 	settingsButton->setCallback([this]()
 	{
@@ -45,7 +53,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 	});
 
 	auto exitButton = std::make_shared<GUI::Button>(context);
-	exitButton->setPosition(0.5f * windowSize.x, 500);
+	exitButton->setPosition(0.5f * windowSize.x, 600);
 	exitButton->setText("Exit");
 	exitButton->setCallback([this]()
 	{
@@ -53,6 +61,7 @@ MenuState::MenuState(StateStack& stack, Context context)
 	});
 
 	mGUIContainer.pack(playButton);
+	mGUIContainer.pack(multiplayerButton);
 	mGUIContainer.pack(settingsButton);
 	mGUIContainer.pack(exitButton);
 

@@ -49,7 +49,8 @@ namespace PlayerActions
 		MoveUp,
 		MoveDown,
 		Fire,
-		LaunchMissile,
+		RotateTurretLeft,
+		RotateTurretRight,
 		ActionCount
 	};
 }

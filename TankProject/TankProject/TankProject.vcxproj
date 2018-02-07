@@ -40,6 +40,7 @@
     <ClInclude Include="Label.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="MultiplayerGameState.hpp" />
+    <ClInclude Include="MultiplayerMenuState.h" />
     <ClInclude Include="MusicPlayer.hpp" />
     <ClInclude Include="NetworkNode.hpp" />
     <ClInclude Include="NetworkProtocol.hpp" />
@@ -94,6 +95,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
     <ClCompile Include="MultiplayerGameState.cpp" />
+    <ClCompile Include="MultiplayerMenuState.cpp" />
     <ClCompile Include="MusicPlayer.cpp" />
     <ClCompile Include="NetworkNode.cpp" />
     <ClCompile Include="Obstacle.cpp" />

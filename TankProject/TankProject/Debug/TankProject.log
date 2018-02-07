@@ -1,2 +1,4 @@
-﻿  SoundPlayer.cpp
+﻿  TitleState.cpp
+c:\visualstudio\repos\tank_project\tankproject\tankproject\titlestate.cpp(48): warning C4244: '+=': conversion from 'float' to 'sf::Uint8', possible loss of data
+c:\visualstudio\repos\tank_project\tankproject\tankproject\titlestate.cpp(52): warning C4244: '-=': conversion from 'float' to 'sf::Uint8', possible loss of data
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe

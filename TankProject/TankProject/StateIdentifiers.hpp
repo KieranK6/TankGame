@@ -6,6 +6,7 @@ namespace States
 		None,
 		Title,
 		Menu,
+		MultiplayerMenu,
 		Game,
 		Loading,
 		Pause,

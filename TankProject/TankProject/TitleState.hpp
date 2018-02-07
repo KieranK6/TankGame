@@ -19,6 +19,7 @@ private:
 	sf::Text TitleText;
 	sf::Text mText;
 
-	bool mShowText;
+	bool mFadeText;
 	sf::Time mTextEffectTime;
+	sf::Color mTextColor;
 };

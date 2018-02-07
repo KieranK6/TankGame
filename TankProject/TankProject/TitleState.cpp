@@ -8,7 +8,7 @@
 TitleState::TitleState(StateStack& stack, Context context)
 	: State(stack, context)
 	,mText()
-	,mShowText(true)
+	,mFadeText(true)
 	,mTextEffectTime(sf::Time::Zero)
 {
 	sf::Vector2f windowSize(context.window->getSize());
@@ -24,7 +24,7 @@ TitleState::TitleState(StateStack& stack, Context context)
 	mText.setFont(context.fonts->get(Fonts::Main));
 	mText.setString("Press any key to start");
 	mText.setCharacterSize(50);
-	mText.setFillColor(sf::Color::Black);
+	mText.setFillColor(sf::Color(0, 0, 0, 0));
 	centerOrigin(mText);
 	mText.setPosition(sf::Vector2f(context.window->getSize() / 2u));
 }
@@ -34,21 +34,33 @@ void TitleState::draw()
 	sf::RenderWindow& window = *getContext().window;
 	window.draw(mBackgroundSprite);
 	window.draw(TitleText);
-	if (mShowText)
-	{
-		window.draw(mText);
-	}
+	window.draw(mText);
 }
 
 bool TitleState::update(sf::Time dt)
 {
+	
 	mTextEffectTime += dt;
-	if (mTextEffectTime >= sf::seconds(0.5f))
+	mTextColor = mText.getFillColor();
+
+	if (mFadeText && mTextColor.a < 254)
 	{
-		mShowText = !mShowText;
+		mTextColor.a += 2.0f;
+	}
+	else if(!mFadeText && mTextColor.a > 2)
+	{
+		mTextColor.a -= 2.0f;
+	}
+	
+	mText.setFillColor(mTextColor);
+
+	if (mTextEffectTime >= sf::seconds(4.0f))
+	{
+		mFadeText = !mFadeText;
 		mTextEffectTime = sf::Time::Zero;
 	}
 	return true;
+	
 }
 
 bool TitleState::handleEvent(const sf::Event& event)
