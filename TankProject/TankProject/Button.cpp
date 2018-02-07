@@ -111,4 +111,9 @@ namespace GUI
 		sf::IntRect textureRect(0, 50 * buttonType, 200, 50);
 		mSprite.setTextureRect(textureRect);
 	}
+
+	void Button::setFont(sf::Font& font)
+	{
+		mText.setFont(font);
+	}
 }

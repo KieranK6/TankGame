@@ -16,7 +16,6 @@ namespace PlayerAction
 		RotateTurretLeft,
 		RotateTurretRight,
 		Fire,
-		LaunchMissile,
 		Count
 	};
 }

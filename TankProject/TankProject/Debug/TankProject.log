@@ -1,4 +1,4 @@
-﻿  World.cpp
-c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(437): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-c:\visualstudio\repos\tank_project\tankproject\tankproject\world.cpp(489): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+﻿  SettingsState.cpp
+c:\visualstudio\repos\tank_project\tankproject\tankproject\settingsstate.cpp(20): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
+c:\visualstudio\repos\tank_project\tankproject\tankproject\settingsstate.cpp(24): warning C4244: 'argument': conversion from 'unsigned int' to 'float', possible loss of data
   TankProject.vcxproj -> C:\VisualStudio\repos\tank_project\TankProject\Debug\TankProject.exe

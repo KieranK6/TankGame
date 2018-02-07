@@ -32,4 +32,9 @@ namespace GUI
 		mText.setString(text);
 	}
 
+	void Label::setFont(const sf::Font& font)
+	{
+		mText.setFont(font);
+	}
+
 }

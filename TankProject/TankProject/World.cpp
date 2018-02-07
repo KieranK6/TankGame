@@ -403,8 +403,11 @@ void World::buildScene()
 		mSceneGraph.attachChild(std::move(networkNode));
 	}
 
+	// Add renderline ring around player
+
+
 	// Add enemy tank
-	addEnemies(10);
+	//addEnemies(10);
 }
 
 void World::addEnemies(int enemyCount)

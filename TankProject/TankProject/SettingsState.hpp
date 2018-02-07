@@ -7,7 +7,7 @@
 
 #include <SFML/Graphics/Sprite.hpp>
 #include <SFML/Graphics/Text.hpp>
-
+#include <SFML/Graphics/RectangleShape.hpp>
 #include <array>
 
 
@@ -31,4 +31,6 @@ private:
 	GUI::Container										mGUIContainer;
 	std::array<GUI::Button::Ptr, 2 * PlayerAction::Count>	mBindingButtons;
 	std::array<GUI::Label::Ptr, 2 * PlayerAction::Count> 	mBindingLabels;
+	sf::Text TitleText;
+	sf::RectangleShape menuBacking;
 };

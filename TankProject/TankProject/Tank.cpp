@@ -381,15 +381,6 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		mFireCountdown -= dt;
 		mIsFiring = false;
 	}
-
-	// Check for missile launch
-	if (mIsLaunchingMissile)
-	{
-		commands.push(mMissileCommand);
-		playLocalSound(commands, SoundEffect::LaunchMissile);
-
-		mIsLaunchingMissile = false;
-	}
 }
 
 void Tank::createBullets(SceneNode& node, const TextureHolder& textures) const

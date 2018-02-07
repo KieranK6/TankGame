@@ -42,6 +42,7 @@ namespace Fonts
 	enum ID
 	{
 		Main,
+		Clear,
 	};
 }
 
@@ -62,7 +63,6 @@ namespace SoundEffect
 		EnemyGunfire,
 		Explosion1,
 		Explosion2,
-		LaunchMissile,
 		CollectPickup,
 		Button,
 		Collision,

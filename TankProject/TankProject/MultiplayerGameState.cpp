@@ -336,15 +336,15 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Sent by the server to order to spawn player 1 airplane on connect
 	case Server::SpawnSelf:
 	{
-		sf::Int32 aircraftIdentifier;
-		sf::Vector2f aircraftPosition;
-		packet >> aircraftIdentifier >> aircraftPosition.x >> aircraftPosition.y;
+		sf::Int32 tankIdentifier;
+		sf::Vector2f tankPosition;
+		packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
 
-		Tank* tank = mWorld.addTank(aircraftIdentifier);
-		tank->setPosition(aircraftPosition);
+		Tank* tank = mWorld.addTank(tankIdentifier);
+		tank->setPosition(tankPosition);
 
-		mPlayers[aircraftIdentifier].reset(new Player(&mSocket, aircraftIdentifier, getContext().keys1));
-		mLocalPlayerIdentifiers.push_back(aircraftIdentifier);
+		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys1));
+		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 
 		mGameStarted = true;
 	} break;
@@ -352,73 +352,73 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::PlayerConnect:
 	{
-		sf::Int32 aircraftIdentifier;
-		sf::Vector2f aircraftPosition;
-		packet >> aircraftIdentifier >> aircraftPosition.x >> aircraftPosition.y;
+		sf::Int32 tankIdentifier;
+		sf::Vector2f tankPosition;
+		packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
 
-		Tank* tank = mWorld.addTank(aircraftIdentifier);
-		tank->setPosition(aircraftPosition);
+		Tank* tank = mWorld.addTank(tankIdentifier);
+		tank->setPosition(tankPosition);
 
-		mPlayers[aircraftIdentifier].reset(new Player(&mSocket, aircraftIdentifier, nullptr));
+		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, nullptr));
 	} break;
 
 	// 
 	case Server::PlayerDisconnect:
 	{
-		sf::Int32 aircraftIdentifier;
-		packet >> aircraftIdentifier;
+		sf::Int32 tankIdentifier;
+		packet >> tankIdentifier;
 
-		mWorld.removeTank(aircraftIdentifier);
-		mPlayers.erase(aircraftIdentifier);
+		mWorld.removeTank(tankIdentifier);
+		mPlayers.erase(tankIdentifier);
 	} break;
 
 	// 
 	case Server::InitialState:
 	{
-		sf::Int32 aircraftCount;
+		sf::Int32 tankCount;
 		float worldHeight, currentScroll;
 		packet >> worldHeight >> currentScroll;
 
 		mWorld.setWorldHeight(worldHeight);
 		mWorld.setCurrentBattleFieldPosition(currentScroll);
 
-		packet >> aircraftCount;
-		for (sf::Int32 i = 0; i < aircraftCount; ++i)
+		packet >> tankCount;
+		for (sf::Int32 i = 0; i < tankCount; ++i)
 		{
-			sf::Int32 aircraftIdentifier;
+			sf::Int32 tankIdentifier;
 			sf::Int32 hitpoints;
 			sf::Int32 missileAmmo;
-			sf::Vector2f aircraftPosition;
-			packet >> aircraftIdentifier >> aircraftPosition.x >> aircraftPosition.y >> hitpoints >> missileAmmo;
+			sf::Vector2f tankPosition;
+			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y >> hitpoints >> missileAmmo;
 
-			Tank* tank = mWorld.addTank(aircraftIdentifier);
-			tank->setPosition(aircraftPosition);
+			Tank* tank = mWorld.addTank(tankIdentifier);
+			tank->setPosition(tankPosition);
 			tank->setHitpoints(hitpoints);
 			tank->setMissileAmmo(missileAmmo);
 
-			mPlayers[aircraftIdentifier].reset(new Player(&mSocket, aircraftIdentifier, nullptr));
+			mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, nullptr));
 		}
 	} break;
 
 	//
 	case Server::AcceptCoopPartner:
 	{
-		sf::Int32 aircraftIdentifier;
-		packet >> aircraftIdentifier;
+		sf::Int32 tankIdentifier;
+		packet >> tankIdentifier;
 
-		mWorld.addTank(aircraftIdentifier);
-		mPlayers[aircraftIdentifier].reset(new Player(&mSocket, aircraftIdentifier, getContext().keys2));
-		mLocalPlayerIdentifiers.push_back(aircraftIdentifier);
+		mWorld.addTank(tankIdentifier);
+		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys2));
+		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 	} break;
 
 	// Player event (like missile fired) occurs
 	case Server::PlayerEvent:
 	{
-		sf::Int32 aircraftIdentifier;
+		sf::Int32 tankIdentifier;
 		sf::Int32 action;
-		packet >> aircraftIdentifier >> action;
+		packet >> tankIdentifier >> action;
 
-		auto itr = mPlayers.find(aircraftIdentifier);
+		auto itr = mPlayers.find(tankIdentifier);
 		if (itr != mPlayers.end())
 			itr->second->handleNetworkEvent(static_cast<Player::Action>(action), mWorld.getCommandQueue());
 	} break;
@@ -426,12 +426,12 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Player's movement or fire keyboard state changes
 	case Server::PlayerRealtimeChange:
 	{
-		sf::Int32 aircraftIdentifier;
+		sf::Int32 tankIdentifier;
 		sf::Int32 action;
 		bool actionEnabled;
-		packet >> aircraftIdentifier >> action >> actionEnabled;
+		packet >> tankIdentifier >> action >> actionEnabled;
 
-		auto itr = mPlayers.find(aircraftIdentifier);
+		auto itr = mPlayers.find(tankIdentifier);
 		if (itr != mPlayers.end())
 			itr->second->handleNetworkRealtimeChange(static_cast<Player::Action>(action), actionEnabled);
 	} break;
@@ -474,19 +474,19 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		float currentViewPosition = mWorld.getViewBounds().top + mWorld.getViewBounds().height;
 
 		// Set the world's scroll compensation according to whether the view is behind or too advanced
-		mWorld.setWorldScrollCompensation(currentViewPosition / currentWorldPosition);
+		//mWorld.setWorldScrollCompensation(currentViewPosition / currentWorldPosition);
 
 		for (sf::Int32 i = 0; i < aircraftCount; ++i)
 		{
-			sf::Vector2f aircraftPosition;
-			sf::Int32 aircraftIdentifier;
-			packet >> aircraftIdentifier >> aircraftPosition.x >> aircraftPosition.y;
+			sf::Vector2f tankPosition;
+			sf::Int32 tankIdentifier;
+			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
 
-			Tank* tank = mWorld.getTank(aircraftIdentifier);
-			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), aircraftIdentifier) != mLocalPlayerIdentifiers.end();
+			Tank* tank = mWorld.getTank(tankIdentifier);
+			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), tankIdentifier) != mLocalPlayerIdentifiers.end();
 			if (tank && !isLocalPlane)
 			{
-				sf::Vector2f interpolatedPosition = tank->getPosition() + (aircraftPosition - tank->getPosition()) * 0.1f;
+				sf::Vector2f interpolatedPosition = tank->getPosition() + (tankPosition - tank->getPosition()) * 0.1f;
 				tank->setPosition(interpolatedPosition);
 			}
 		}

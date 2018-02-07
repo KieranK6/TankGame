@@ -32,6 +32,7 @@ Application::Application()
 	mWindow.setVerticalSyncEnabled(true);
 
 	mFonts.load(Fonts::Main, "Media/WorldConflict.ttf");
+	mFonts.load(Fonts::Clear, "Media/Quantico.ttf");
 
 	mTextures.load(Textures::TitleScreen, "Media/Textures/TitleScreen.png");
 	mTextures.load(Textures::Buttons, "Media/Textures/Buttons.png");

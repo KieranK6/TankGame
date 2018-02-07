@@ -11,15 +11,28 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 {
 	mBackgroundSprite.setTexture(context.textures->get(Textures::TitleScreen));
 
+	
+	TitleText.setFont(context.fonts->get(Fonts::Main));
+	TitleText.setString("Settings");
+	TitleText.setCharacterSize(75);
+	TitleText.setFillColor(sf::Color::Black);
+	centerOrigin(TitleText);
+	TitleText.setPosition(sf::Vector2f(context.window->getSize().x / 2, 75));
+
+	menuBacking.setFillColor(sf::Color(0, 0, 0, 150));
+	menuBacking.setPosition(sf::Vector2f( 5, 135));
+	menuBacking.setSize(sf::Vector2f((context.window->getSize().x - 10), (context.window->getSize().y / 4) * 2));
+
 	// Build key binding buttons and labels
 	for (std::size_t x = 0; x < 2; ++x)
 	{
-		addButtonLabel(PlayerAction::RotateLeft, x, 0, "Move Left", context);
-		addButtonLabel(PlayerAction::RotateRight, x, 1, "Move Right", context);
+		addButtonLabel(PlayerAction::RotateLeft, x, 0, "Rotate Left", context);
+		addButtonLabel(PlayerAction::RotateRight, x, 1, "Rotate Right", context);
 		addButtonLabel(PlayerAction::MoveUp, x, 2, "Move Up", context);
 		addButtonLabel(PlayerAction::MoveDown, x, 3, "Move Down", context);
 		addButtonLabel(PlayerAction::Fire, x, 4, "Fire", context);
-		addButtonLabel(PlayerAction::LaunchMissile, x, 5, "Missile", context);
+		addButtonLabel(PlayerAction::RotateTurretLeft, x, 5, "Turret CCW", context);
+		addButtonLabel(PlayerAction::RotateTurretRight, x, 6, "Turret CW", context);
 	}
 
 	updateLabels();
@@ -35,8 +48,9 @@ SettingsState::SettingsState(StateStack& stack, Context context)
 void SettingsState::draw()
 {
 	sf::RenderWindow& window = *getContext().window;
-
 	window.draw(mBackgroundSprite);
+	window.draw(menuBacking);
+	window.draw(TitleText);
 	window.draw(mGUIContainer);
 }
 
@@ -101,12 +115,15 @@ void SettingsState::addButtonLabel(std::size_t index, std::size_t x, std::size_t
 	// For x==0, start at index 0, otherwise start at half of array
 	index += PlayerAction::Count * x;
 	mBindingButtons[index] = std::make_shared<GUI::Button>(context);
-	mBindingButtons[index]->setPosition(400.f*x + 80.f, 50.f*y + 300.f);
+	mBindingButtons[index]->setPosition(500.f*x + 200.f, 50.f*y + 175.f);
 	mBindingButtons[index]->setText(text);
+	mBindingButtons[index]->setFont(context.fonts->get(Fonts::Clear));
 	mBindingButtons[index]->setToggle(true);
+	mBindingButtons[index]->setScale(sf::Vector2f(0.8f, 0.8f));
 
 	mBindingLabels[index] = std::make_shared<GUI::Label>("", *context.fonts);
-	mBindingLabels[index]->setPosition(400.f*x + 300.f, 50.f*y + 315.f);
+	mBindingLabels[index]->setFont(context.fonts->get(Fonts::Clear));
+	mBindingLabels[index]->setPosition(500.f*x + 320.f, 50.f*y + 175.f);
 
 	mGUIContainer.pack(mBindingButtons[index]);
 	mGUIContainer.pack(mBindingLabels[index]);
