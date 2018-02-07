@@ -22,11 +22,13 @@ KeyBinding::KeyBinding(int controlPreconfiguration)
 	else if (controlPreconfiguration == 2)
 	{
 		// Player 2
-		mKeyMap[sf::Keyboard::A] = PlayerAction::RotateLeft;
-		mKeyMap[sf::Keyboard::D] = PlayerAction::RotateRight;
-		mKeyMap[sf::Keyboard::W] = PlayerAction::MoveUp;
-		mKeyMap[sf::Keyboard::S] = PlayerAction::MoveDown;
-		mKeyMap[sf::Keyboard::F] = PlayerAction::Fire;
+		mKeyMap[sf::Keyboard::Numpad4] = PlayerAction::RotateLeft;
+		mKeyMap[sf::Keyboard::Numpad6] = PlayerAction::RotateRight;
+		mKeyMap[sf::Keyboard::Numpad8] = PlayerAction::MoveUp;
+		mKeyMap[sf::Keyboard::Numpad5] = PlayerAction::MoveDown;
+		mKeyMap[sf::Keyboard::LControl] = PlayerAction::RotateTurretLeft;
+		mKeyMap[sf::Keyboard::LAlt] = PlayerAction::RotateTurretRight;
+		mKeyMap[sf::Keyboard::Numpad0] = PlayerAction::Fire;
 	}
 }
 

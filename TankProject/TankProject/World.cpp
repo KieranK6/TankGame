@@ -549,7 +549,7 @@ void World::destroyEntitiesOutsideView()
 	command.category = Category::Projectile; // | Category::EnemyTank;
 	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
 	{
-		if (!getBattlefieldBounds().intersects(e.getBoundingRect()))
+		if (!mWorldBounds.intersects(e.getBoundingRect()))
 			e.remove();
 	});
 
