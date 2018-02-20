@@ -38,6 +38,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	, mGameStarted(false)
 	, mClientTimeout(sf::seconds(2.f))
 	, mTimeSinceLastPacket(sf::seconds(0.f))
+	, playerTank(mWorld.addTank(1))
 {
 	mBroadcastText.setFont(context.fonts->get(Fonts::Main));
 	mBroadcastText.setPosition(1024.f / 2, 100.f);
@@ -128,6 +129,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 	if (mConnected)
 	{
 		mWorld.update(dt);
+		mWorld.centerWorldToPlayer(playerTank);
 
 		// Remove players whose aircrafts were destroyed
 		bool foundLocalPlane = false;
@@ -337,11 +339,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::SpawnSelf:
 	{
 		sf::Int32 tankIdentifier;
-		sf::Vector2f tankPosition;
+		sf::Vector2f tankPosition = playerTank->getPosition();
 		packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
-
-		Tank* tank = mWorld.addTank(tankIdentifier);
-		tank->setPosition(tankPosition);
 
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys1));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
@@ -379,8 +378,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		float worldHeight, currentScroll;
 		packet >> worldHeight >> currentScroll;
 
-		mWorld.setWorldHeight(worldHeight);
-		mWorld.setCurrentBattleFieldPosition(currentScroll);
+		//mWorld.setWorldHeight(worldHeight);
+		//mWorld.setCurrentBattleFieldPosition(currentScroll);
 
 		packet >> tankCount;
 		for (sf::Int32 i = 0; i < tankCount; ++i)

@@ -16,6 +16,7 @@
 #include <limits>
 #include <iostream>
 #include <vector>
+#include <math.h>
 
 
 World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, bool networked)
@@ -60,9 +61,6 @@ void World::setWorldScrollCompensation(float compensation)
 
 void World::update(sf::Time dt)
 {
-	// Move the world to player position
-	centerWorldToPlayer();
-
 	FOREACH(Tank* a, mPlayerTanks)
 		a->setVelocity(0.f, 0.f);
 
@@ -372,9 +370,9 @@ void World::buildScene()
 	textureRect.height += static_cast<int>(viewHeight);
 
 	// Add the background sprite to the scene
-	std::unique_ptr<SpriteNode> jungleSprite(new SpriteNode(desertTexture, textureRect));
-	jungleSprite->setPosition(mWorldBounds.left, mWorldBounds.top - viewHeight);
-	mSceneLayers[Background]->attachChild(std::move(jungleSprite));
+	std::unique_ptr<SpriteNode> desertBackground(new SpriteNode(desertTexture, textureRect));
+	desertBackground->setPosition(mWorldBounds.left, mWorldBounds.top - viewHeight);
+	mSceneLayers[Background]->attachChild(std::move(desertBackground));
 
 	// Add the finish line to the scene
 	//sf::Texture& finishTexture = mTextures.get(Textures::FinishLine);
@@ -523,9 +521,38 @@ void World::spawnEnemies()
 	}
 }
 
-void World::centerWorldToPlayer()
+/*
+void World::drawRingAroundPlayer()
 {
 	playerPositionUpdate = mPlayerTanks.at(0)->getPosition();
+
+	float x;
+	float y;
+
+	float angle = 0.f;
+
+	for (int i = 0; i < 100; i++)
+	{
+		x = (sin(toRadian(angle)) * 50) + playerPositionUpdate.x;
+		y = (cos(toRadian(angle)) * 50) + playerPositionUpdate.y;
+
+		line[i].position = sf::Vector2f(x, y);
+
+		if (!circleSetUp)
+		{
+			line[i].color = sf::Color::Green;
+		}
+
+		angle += (360.f / 100);
+	}
+
+	if (!circleSetUp)
+		circleSetUp = !circleSetUp;
+} */
+
+void World::centerWorldToPlayer(Tank* centredTo)
+{
+	playerPositionUpdate = centredTo->getPosition();
 	worldPositionUpdate = mWorldView.getCenter();
 
 	if ((playerPositionUpdate.x + mWorldView.getSize().x / 2 < mWorldBounds.left + mWorldBounds.width)

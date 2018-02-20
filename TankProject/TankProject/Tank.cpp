@@ -146,7 +146,6 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 {
 	// Update texts and roll animation
 	updateTexts();
-	updateRollAnimation();
 	updateTurret(dt);
 	checkSpeedBoost(dt);
 
@@ -447,25 +446,6 @@ void Tank::updateTexts()
 	}
 }
 
-void Tank::updateRollAnimation()
-{
-	/*
-	if (Table[mType].hasRollAnimation)
-	{
-		sf::IntRect textureRect = Table[mType].textureRect;
-
-		// Roll left: Texture rect offset once
-		if (getVelocity().x < 0.f)
-			textureRect.left += textureRect.width;
-
-		// Roll right: Texture rect offset twice
-		else if (getVelocity().x > 0.f)
-			textureRect.left += 2 * textureRect.width;
-
-		mSprite.setTextureRect(textureRect);
-	}
-	*/
-}
 
 //updates countdown for boost if active, if finished disables update and returns multiplier to normal
 void Tank::checkSpeedBoost(sf::Time dt)

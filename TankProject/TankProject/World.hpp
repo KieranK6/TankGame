@@ -43,7 +43,7 @@ public:
 	void removeTank(int identifier);
 	void setCurrentBattleFieldPosition(float lineY);
 	void setWorldHeight(float height);
-
+	void centerWorldToPlayer(Tank* centredTo);
 	void addEnemy(Tank::Type type, float relX, float relY);
 	void sortEnemies();
 
@@ -70,7 +70,7 @@ private:
 	void buildScene();
 	void addEnemies(int enemyCount);
 	void spawnEnemies();
-	void centerWorldToPlayer();
+	//void drawRingAroundPlayer();
 	void destroyEntitiesOutsideView();
 	void guideMissiles();
 
@@ -126,6 +126,9 @@ private:
 
 	std::vector<SpawnPoint>				mEnemySpawnPoints;
 	std::vector<Tank*>					mActiveEnemies;
+	
+	//sf::Vertex							line[100];
+	//bool								circleSetUp = false;
 
 	BloomEffect							mBloomEffect;
 

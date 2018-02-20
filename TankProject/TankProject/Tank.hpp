@@ -74,7 +74,6 @@ private:
 	void					createPickup(SceneNode& node, const TextureHolder& textures) const;
 
 	void					updateTexts();
-	void					updateRollAnimation();
 	void					updateTurret(sf::Time dt);
 	float					getTotalTurretRotation() const;
 	void					updateEnemyTurretRotation(sf::Time dt);

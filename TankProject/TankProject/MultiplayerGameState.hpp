@@ -5,6 +5,7 @@
 #include "Player.hpp"
 #include "GameServer.hpp"
 #include "NetworkProtocol.hpp"
+#include "Tank.hpp"
 
 #include <SFML/System/Clock.hpp>
 #include <SFML/Graphics/Text.hpp>
@@ -40,6 +41,7 @@ private:
 	sf::RenderWindow&			mWindow;
 	TextureHolder&				mTextureHolder;
 
+	Tank* playerTank;
 	std::map<int, PlayerPtr>	mPlayers;
 	std::vector<sf::Int32>		mLocalPlayerIdentifiers;
 	sf::TcpSocket				mSocket;

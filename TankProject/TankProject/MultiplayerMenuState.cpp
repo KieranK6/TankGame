@@ -34,6 +34,7 @@ MultiplayerMenuState::MultiplayerMenuState(StateStack& stack, Context context)
 	hostButton->setCallback([this]()
 	{
 		requestStackPop();
+		requestStackPop();
 		requestStackPush(States::HostGame);
 	});
 
@@ -42,6 +43,7 @@ MultiplayerMenuState::MultiplayerMenuState(StateStack& stack, Context context)
 	playButton->setText("Join");
 	playButton->setCallback([this]()
 	{
+		requestStackPop();
 		requestStackPop();
 		requestStackPush(States::JoinGame);
 	});
