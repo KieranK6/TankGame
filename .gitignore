@@ -4,3 +4,9 @@
 
 /TankProject/TankProject.VC.VC.opendb
 /TankProject/Debug
+
+TankProject/\.vs/
+
+TankProject/TankProject\.VC\.db
+
+TankProject/TankProject/Debug/
