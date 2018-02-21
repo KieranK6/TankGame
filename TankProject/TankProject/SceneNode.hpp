@@ -33,6 +33,7 @@ public:
 
 	sf::Vector2f			getWorldPosition() const;
 	sf::Transform			getWorldTransform() const;
+	float					getRadius();
 
 	void					onCommand(const Command& command, sf::Time dt);
 	virtual unsigned int	getCategory() const;
@@ -43,6 +44,7 @@ public:
 	virtual sf::FloatRect	getBoundingRect() const;
 	virtual bool			isMarkedForRemoval() const;
 	virtual bool			isDestroyed() const;
+	void					SceneNode::drawBoundingCirc(sf::RenderTarget& target, sf::RenderStates, float mRadius) const;
 
 
 private:
@@ -53,12 +55,14 @@ private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
 	void					drawChildren(sf::RenderTarget& target, sf::RenderStates states) const;
 	void					drawBoundingRect(sf::RenderTarget& target, sf::RenderStates states) const;
+	
 
 
 private:
 	std::vector<Ptr>		mChildren;
 	SceneNode*				mParent;
 	Category::Type			mDefaultCategory;
+	float					mRadius;
 };
 
 bool	collision(const SceneNode& lhs, const SceneNode& rhs);

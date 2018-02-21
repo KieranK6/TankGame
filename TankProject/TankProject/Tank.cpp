@@ -134,12 +134,18 @@ void Tank::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(mSprite, states);
 		target.draw(turretSprite, states);
+		drawBoundingCirc(target, states, mRadius);
 	}
 }
 
 void Tank::disablePickups()
 {
 	mPickupsEnabled = false;
+}
+
+float Tank::getTankRadius() const
+{
+	return mRadius;
 }
 
 void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
@@ -202,6 +208,12 @@ sf::FloatRect Tank::getBoundingRect() const
 {
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
+
+//sf::CircleShape Tank::getBoundingCircle() const
+//{
+//	return getWorldTransform().transformCircle(mSprite.getGlobalBounds());
+//}
+
 
 bool Tank::isMarkedForRemoval() const
 {

@@ -43,7 +43,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
-	//SpawnObstacles(6);
+	SpawnObstacles(1);
 
 	//bool collisionSoundPlaying = false;
 	
@@ -92,6 +92,8 @@ void World::update(sf::Time dt)
 	adaptPlayerPosition();
 
 	updateSounds();
+
+	
 }
 
 void World::draw()
@@ -276,14 +278,65 @@ void World::handleCollisions()
 
 		else if (matchesCategories(pair, Category::PlayerTank, Category::Obstacle))
 		{
-			auto& player = static_cast<Tank&>(*pair.first);
+			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
+
+			float radiusTank = tank.getTankRadius();
+			float radiusObstacle = obstacle.getObstacleRadius();
+
+			float tankX = tank.getPosition().x;
+			float tankY = tank.getPosition().y;
+			float obstacleX = obstacle.getPosition().x;
+			float obstacleY = obstacle.getPosition().y;
+
+
+			float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
+			float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
+
+			float distance = std::sqrt((dx * dx) + (dy * dy));
+
+			sf::Vector2f moveAmount = tank.getVelocity();
+			
+			if (distance < (radiusObstacle + radiusTank))
+			{ ///bottom and right
+				//Collision
+				
+				tank.move(-(moveAmount/8.f));
+			}
+			else if (distance > (radiusObstacle + radiusTank))
+			{ ///top and left
+				tank.move((moveAmount / 8.f));
+			}
+				
+
+
+			//handleCircleCollions(player, obstacle);
 
 			// Apply pickup effect to player, destroy projectile
 			//std::cout << "Collision!!" << std::endl;
-			player.setVelocity(0.f, 0.f);
+
+			////Get Velocity
+			//sf::Vector2f playerVelocity = player.getVelocity();
+			//playerVelocity = playerVelocity / 8.f;
+
+			////Get magnitude
+			//float playerMAG = getMagnitude(playerVelocity);
+			////Normalise vector
+			//sf::Vector2f normalisedVelocity = normaliseVector(playerVelocity, playerMAG);
+
+			//sf::Vector2f hashVel;
+
+
+			//if(playerVelocity.y <= 0)
+			//{ //works
+			//	player.move(normalisedVelocity);
+			//} //doesnt work
+			//else 
+			//	player.move(-normalisedVelocity);
+			
+	
 			//collisionSoundPlaying = true;
-			player.playLocalSound(mCommandQueue, SoundEffect::Collision);
+			//player.playLocalSound(mCommandQueue, SoundEffect::Collision);
 		}
 
 		else if (matchesCategories(pair, Category::Obstacle, Category::AlliedProjectile)
@@ -322,6 +375,50 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 	}
+}
+
+void World::handleCircleCollions(Tank& tank, Obstacle& obstacle)
+{
+	float radiusTank = tank.getRadius();
+	float radiusObstacle = obstacle.getRadius();
+	
+	//radius of circ + radius of collided obj
+
+	float tankX = tank.getPosition().x;
+	float tankY = tank.getPosition().y;
+	float obstacleX = obstacle.getPosition().x;
+	float obstacleY = obstacle.getPosition().y;
+
+
+	float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
+	float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
+
+	float distance = std::sqrt((dx * dx) + (dy * dy));
+
+	if (distance < (radiusObstacle + radiusTank))
+	{
+		//Collision
+		sf::Vector2f moveAmount = tank.getVelocity();
+		tank.move(-moveAmount);
+	}
+
+
+
+}
+
+sf::Vector2f World::normaliseVector(sf::Vector2f passedVector, float magnitude)
+{
+	sf::Vector2f returnVector;
+
+	returnVector.x = (1.f / magnitude) * passedVector.x;
+	returnVector.y = (1.f / magnitude) * passedVector.y;
+
+	return returnVector;
+}
+
+float World::getMagnitude(sf::Vector2f passedVelocity)
+{
+	return sqrt((passedVelocity.x*passedVelocity.x) + (passedVelocity.y*passedVelocity.y));;
 }
 
 void World::updateSounds()

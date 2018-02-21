@@ -4,6 +4,7 @@
 #include "Utility.hpp"
 
 #include <SFML/Graphics/RectangleShape.hpp>
+#include <SFML/Graphics/CircleShape.hpp>
 #include <SFML/Graphics/RenderTarget.hpp>
 
 #include <algorithm>
@@ -14,7 +15,8 @@
 SceneNode::SceneNode(Category::Type category)
 	: mChildren()
 	, mParent(nullptr)
-	, mDefaultCategory(category)
+	, mDefaultCategory(category),
+	mRadius(mRadius)
 {
 }
 
@@ -62,7 +64,10 @@ void SceneNode::draw(sf::RenderTarget& target, sf::RenderStates states) const
 	drawChildren(target, states);
 
 	// Draw bounding rectangle - disabled by default
-	//drawBoundingRect(target, states);
+	drawBoundingRect(target, states);
+
+	//Draw bounding circle
+	//drawBoundingCirc(target, states);
 }
 
 void SceneNode::drawCurrent(sf::RenderTarget&, sf::RenderStates) const
@@ -87,12 +92,28 @@ void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) con
 	shape.setOutlineColor(sf::Color::Green);
 	shape.setOutlineThickness(1.f);
 
-	//target.draw(shape);
+	target.draw(shape);
+}
+
+void SceneNode::drawBoundingCirc(sf::RenderTarget& target, sf::RenderStates, float mRadius) const
+{
+	sf::CircleShape circle(mRadius);
+	circle.setPosition(sf::Vector2f(getPosition().x - mRadius, getPosition().y - mRadius));
+	circle.setFillColor(sf::Color::Transparent);
+	circle.setOutlineThickness(1.f);
+	circle.setOutlineColor(sf::Color::Blue);
+	
+	target.draw(circle);
 }
 
 sf::Vector2f SceneNode::getWorldPosition() const
 {
 	return getWorldTransform() * sf::Vector2f();
+}
+
+float SceneNode::getRadius()
+{
+	return mRadius;
 }
 
 sf::Transform SceneNode::getWorldTransform() const
@@ -167,7 +188,28 @@ bool SceneNode::isDestroyed() const
 
 bool collision(const SceneNode& lhs, const SceneNode& rhs)
 {
-	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
+	sf::FloatRect Rect1 = lhs.getBoundingRect();
+	sf::FloatRect Rect2 = rhs.getBoundingRect();
+	 //right = left + width
+	//bottom = top + height
+
+	float OneRight = Rect1.left + Rect1.width;
+	float OneBottom = Rect1.top + Rect1.height;
+	float TwoRight = Rect2.left + Rect2.width;
+	float TwoBottom = Rect2.top + Rect2.height;
+	
+
+	if (Rect1.left >= TwoRight || OneRight <= Rect2.left ||
+		Rect1.top >= TwoBottom || OneBottom <= Rect2.top) {
+
+		return false;
+
+	}
+	else {
+
+		return true;
+
+	}
 }
 
 float distance(const SceneNode& lhs, const SceneNode& rhs)

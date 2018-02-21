@@ -6,6 +6,8 @@
 #include "TextNode.hpp"
 #include "Animation.hpp"
 
+
+#include <SFML/Graphics.hpp>
 #include <SFML/Graphics/Sprite.hpp>
 
 //This class was worked on by Ciaran Mooney
@@ -41,6 +43,11 @@ public:
 	float					getTurretRotationSpeed() const;
 	float					getSpeedBoost() const;
 	void					disablePickups();
+
+	float					getTankRadius() const;
+	
+
+	sf::CircleShape Tank::getBoundingCircle() const;
 
 	void					increaseFireRate();
 	//void					increaseSpread();
@@ -94,6 +101,8 @@ private:
 	bool					mPlayedExplosionSound;
 	bool					mSpawnedPickup;
 	bool					mPickupsEnabled;
+
+	float					mRadius = 26.f;
 
 	int						mFireRateLevel;
 	int						mSpreadLevel;
