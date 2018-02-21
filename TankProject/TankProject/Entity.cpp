@@ -29,6 +29,7 @@ sf::Vector2f Entity::getVelocity() const
 void Entity::accelerate(sf::Vector2f velocity)
 {
 	mVelocity += velocity;
+	
 }
 
 void Entity::accelerate(float vx, float vy)

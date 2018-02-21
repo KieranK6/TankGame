@@ -68,6 +68,11 @@ namespace SoundEffect
 		Collision,
 		Oohrah,
 		Freedum,
+		TankIdle,
+		TankMove,
+		TankTurretRotate,
+		TankFire,
+		TankReload,
 	};
 }
 

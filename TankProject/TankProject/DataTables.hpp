@@ -30,6 +30,7 @@ struct TankData
 	Textures::ID texture;
 	sf::IntRect textureRect;
 	sf::Time fireInterval;
+	sf::Time rotateInterval;
 	std::vector<Direction> directions;
 	int turretDataID;
 };
@@ -41,6 +42,7 @@ struct TankTurretData
 	Textures::ID texture;
 	sf::IntRect textureRect;
 	sf::Time fireInterval;
+	sf::Time rotateInterval;
 	std::vector<Direction> directions;
 };
 

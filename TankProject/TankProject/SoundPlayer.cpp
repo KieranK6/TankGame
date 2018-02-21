@@ -18,15 +18,29 @@ SoundPlayer::SoundPlayer()
 	:mSoundBuffers()
 	, mSounds()
 {
+	//legacy
 	mSoundBuffers.load(SoundEffect::AlliedGunfire, "Media/Sound/AlliedGunfire.wav");
 	mSoundBuffers.load(SoundEffect::EnemyGunfire, "Media/Sound/EnemyGunfire.wav");
+	//Explosions
 	mSoundBuffers.load(SoundEffect::Explosion1, "Media/Sound/Explosion1.wav");
 	mSoundBuffers.load(SoundEffect::Explosion2, "Media/Sound/Explosion2.wav");
+	//Pickups
 	mSoundBuffers.load(SoundEffect::CollectPickup, "Media/Sound/collectPickup.wav");
+	//UI
 	mSoundBuffers.load(SoundEffect::Button, "Media/Sound/Button.wav"); 
+	//Collision
 	mSoundBuffers.load(SoundEffect::Collision, "Media/Sound/Collision.wav");
+	//Dialog
 	mSoundBuffers.load(SoundEffect::Oohrah, "Media/Sound/oohrah.wav");
 	mSoundBuffers.load(SoundEffect::Freedum, "Media/Sound/freedum.wav");
+	//Tank movement
+	mSoundBuffers.load(SoundEffect::TankIdle, "Media/Sound/EngineLoop.wav");
+	mSoundBuffers.load(SoundEffect::TankMove, "Media/Sound/MovementLoop.wav");
+	mSoundBuffers.load(SoundEffect::TankTurretRotate, "Media/Sound/TankTurretRotate.wav");
+	//Tank Firing
+	mSoundBuffers.load(SoundEffect::TankFire, "Media/Sound/TankFire.wav");
+	mSoundBuffers.load(SoundEffect::TankReload, "Media/Sound/TankReload.wav");
+
 
 	//Listener points towards the screen
 	sf::Listener::setDirection(0.f, 0.f, -1.f);
@@ -36,6 +50,7 @@ void SoundPlayer::play(SoundEffect::ID effect)
 {
 	play(effect, getListenerPosition()); //e.g sound for a button
 }
+
 
 void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
 {
@@ -48,6 +63,22 @@ void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position)
 	sound.setMinDistance(MinDistance3D);
 	sound.play();    //sound for explosions or enemy gunfire
 }
+
+void SoundPlayer::play(SoundEffect::ID effect, sf::Vector2f position, bool looped)
+{
+	mSounds.push_back(sf::Sound());
+	sf::Sound& sound = mSounds.back();
+
+	sound.setBuffer(mSoundBuffers.get(effect));
+	sound.setPosition(position.x, -position.y, 0.f);
+	sound.setAttenuation(Attenuation);
+	sound.setMinDistance(MinDistance3D);
+	sound.play();    //sound for explosions or enemy gunfire
+	if (looped)
+		sound.setLoop(true);
+}
+
+
 
 void SoundPlayer::removeStoppedSounds()
 {

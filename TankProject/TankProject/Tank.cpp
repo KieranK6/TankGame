@@ -32,6 +32,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	, mFireCommand()
 	, mMissileCommand()
 	, mFireCountdown(sf::Time::Zero)
+	, mRotateCountdown(sf::Time::Zero)
 	, mIsFiring(false)
 	, mIsLaunchingMissile(false)
 	, mShowExplosion(true)
@@ -39,6 +40,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	, mSpawnedPickup(false)
 	, mPickupsEnabled(true)
 	, mFireRateLevel(1)
+	, mRotateRateLevel(1)
 	, mSpreadLevel(1)
 	, mMissileAmmo(2)
 	, mDropPickupCommand()
@@ -112,6 +114,8 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	turretRotationVelocity = 0.0f;
 	turretSprite = sf::Sprite(textures.get(TableTurrets[turretType].texture), TableTurrets[turretType].textureRect);
 	centerOrigin(turretSprite);
+
+	playLocalSound(SoundEffect::TankIdle, true);
 
 	updateTexts();
 }
@@ -187,8 +191,28 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 		return;
 	}
 
+
+
+	if (isTankRotating)
+	{
+		
+		playLocalSound(commands, SoundEffect::TankTurretRotate);
+	
+	}
+
+	
+
+	/*if () 
+	{
+		playLocalSound(commands, SoundEffect::TankMove);
+	}
+	else
+		playLocalSound(commands, SoundEffect::TankIdle);
+*/
 	// Check if bullets are fired
 	checkProjectileLaunch(dt, commands);
+
+	
 
 	// Update enemy movement pattern; apply velocity
 	updateMovementPattern(dt);
@@ -356,6 +380,43 @@ void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 	commands.push(command);
 }
 
+void Tank::playLocalSound(SoundEffect::ID effect, bool looped)
+{
+	sf::Vector2f worldPosition = getWorldPosition();
+
+	Command command;
+	command.category = Category::SoundEffect;
+	command.action = derivedAction<SoundNode>(
+		[effect, worldPosition, looped](SoundNode& node, sf::Time)
+	{
+		node.playSound(effect, worldPosition, looped);
+	});
+
+	
+
+	
+}
+
+void Tank::playRotateSound()
+{
+	isTankRotating = true;
+	//sf::Time dt;
+
+	//if (isTankRotating == false && mRotateCountdown <= sf::Time::Zero)
+	//{
+	//	mRotateCountdown += Table[mType].rotateInterval / (mRotateRateLevel + 1.f);
+
+	//	isTankRotating = true;
+	//}
+	//else if (mRotateCountdown > sf::Time::Zero)
+	//{
+	//	// Interval not expired: Decrease it further
+
+	//	mRotateCountdown -= dt;
+	//	isTankRotating = false;
+	//}
+}
+
 void Tank::updateMovementPattern(sf::Time dt)
 {
 	// Enemy tank: Movement pattern
@@ -405,7 +466,8 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 		// Interval expired: We can fire a new bullet
 		commands.push(mFireCommand);
 
-		playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
+		//playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
+		playLocalSound(commands, SoundEffect::TankFire);
 
 		mFireCountdown += Table[mType].fireInterval / (mFireRateLevel + 1.f);
 		
@@ -416,6 +478,7 @@ void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 	else if (mFireCountdown > sf::Time::Zero)
 	{
 		// Interval not expired: Decrease it further
+		
 		mFireCountdown -= dt;
 		mIsFiring = false;
 	}
@@ -512,11 +575,13 @@ void Tank::updateTurret(sf::Time dt)
 
 	if (isRotating)
 	{
+		isTankRotating = true;
 		isRotating = false;
 	}
 	else
 	{
 		turretRotationVelocity *= 0.9f;
+		isTankRotating = false;
 	}
 }
 
@@ -545,6 +610,21 @@ void Tank::guideTurretTowards(sf::Vector2f position)
 {
 	mTargetDirection = unitVector(position - getWorldPosition());
 }
+
+//void Tank::rotationSound()
+//{
+	//if (isRotating)
+	//{
+	//	//commands.push(mFireCommand);
+
+	//	//playLocalSound(commands, isAllied() ? SoundEffect::AlliedGunfire : SoundEffect::EnemyGunfire);
+	//	playLocalSound(commands, SoundEffect::TankTurretRotate);
+	//}
+	//else
+	//{
+	//	return;
+	//}
+//}
 
 
 //very important method. To be changed to use velocity so tanks dont lock on. Was unable to work out the maths
