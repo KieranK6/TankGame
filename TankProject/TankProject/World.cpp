@@ -379,8 +379,8 @@ void World::handleCollisions()
 
 void World::handleCircleCollions(Tank& tank, Obstacle& obstacle)
 {
-	float radiusTank = tank.getRadius();
-	float radiusObstacle = obstacle.getRadius();
+	float radiusTank = tank.getTankRadius();
+	float radiusObstacle = obstacle.getObstacleRadius();
 	
 	//radius of circ + radius of collided obj
 

@@ -44,7 +44,7 @@ public:
 	float					getSpeedBoost() const;
 	void					disablePickups();
 
-	float					getTankRadius() const;
+	float					getTankRadius();
 	
 
 	sf::CircleShape Tank::getBoundingCircle() const;

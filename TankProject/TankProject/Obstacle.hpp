@@ -26,7 +26,7 @@ public:
 	Obstacle(ObType type, const TextureHolder& textures);
 	unsigned int Obstacle::getCategory() const;
 
-	float getObstacleRadius() const;
+	float getObstacleRadius();
 
 
 	~Obstacle();

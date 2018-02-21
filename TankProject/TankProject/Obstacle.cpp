@@ -50,7 +50,7 @@ unsigned int Obstacle::getCategory() const
 		return Category::Obstacle;
 }
 
-float Obstacle::getObstacleRadius() const
+float Obstacle::getObstacleRadius() 
 {
 	return mObRadius;
 }

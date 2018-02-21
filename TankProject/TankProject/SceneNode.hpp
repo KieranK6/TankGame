@@ -33,7 +33,6 @@ public:
 
 	sf::Vector2f			getWorldPosition() const;
 	sf::Transform			getWorldTransform() const;
-	float					getRadius();
 
 	void					onCommand(const Command& command, sf::Time dt);
 	virtual unsigned int	getCategory() const;

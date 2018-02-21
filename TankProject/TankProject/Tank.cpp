@@ -143,7 +143,7 @@ void Tank::disablePickups()
 	mPickupsEnabled = false;
 }
 
-float Tank::getTankRadius() const
+float Tank::getTankRadius()
 {
 	return mRadius;
 }

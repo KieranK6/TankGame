@@ -111,10 +111,6 @@ sf::Vector2f SceneNode::getWorldPosition() const
 	return getWorldTransform() * sf::Vector2f();
 }
 
-float SceneNode::getRadius()
-{
-	return mRadius;
-}
 
 sf::Transform SceneNode::getWorldTransform() const
 {
