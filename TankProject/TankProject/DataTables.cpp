@@ -56,7 +56,7 @@ std::vector<TankData> initializeTankData()
 //used count and added pixel variables to make implementation quicker. 
 std::vector<ObstacleData> initializeObstacleData()
 {
-	int pixelWidth = 250;
+	int pixelWidth = 240;
 	int pixelHeight = 200;
 
 	std::vector<ObstacleData> data(Obstacle::TypeCount);

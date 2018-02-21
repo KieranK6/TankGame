@@ -44,7 +44,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
-	SpawnObstacles(1);
+	SpawnObstacles(5);
 
 	//bool collisionSoundPlaying = false;
 	
