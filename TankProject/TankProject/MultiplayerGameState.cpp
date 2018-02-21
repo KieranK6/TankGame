@@ -38,7 +38,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	, mGameStarted(false)
 	, mClientTimeout(sf::seconds(2.f))
 	, mTimeSinceLastPacket(sf::seconds(0.f))
-	, playerTank(mWorld.addTank(1))
+	, playerTank(mWorld.addTank(1, Tank::Hotchkiss))
 {
 	mBroadcastText.setFont(context.fonts->get(Fonts::Main));
 	mBroadcastText.setPosition(1024.f / 2, 100.f);
@@ -335,12 +335,15 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		}
 	} break;
 
-	// Sent by the server to order to spawn player 1 airplane on connect
+	// Sent by the server to order to spawn player 1 tank on connect
 	case Server::SpawnSelf:
 	{
 		sf::Int32 tankIdentifier;
-		sf::Vector2f tankPosition = playerTank->getPosition();
-		packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
+		bool isLiberator;
+		sf::Vector2f tankPosition;// = playerTank->getPosition();
+		float tankRotation, turretRotation;
+
+		packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation;
 
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys1));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
@@ -352,11 +355,26 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::PlayerConnect:
 	{
 		sf::Int32 tankIdentifier;
+		bool isLiberator;
 		sf::Vector2f tankPosition;
-		packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
+		float tankRotation, turretRotation;
+		Tank::Type type;
 
-		Tank* tank = mWorld.addTank(tankIdentifier);
+		packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation;
+
+		if (isLiberator)
+		{
+			type = Tank::Hotchkiss;
+		}
+		else
+		{
+			type = Tank::Panzer;
+		}
+
+		Tank* tank = mWorld.addTank(tankIdentifier, type);
 		tank->setPosition(tankPosition);
+		tank->setRotation(tankRotation);
+		tank->setTurretRotation(turretRotation);
 
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, nullptr));
 	} break;
@@ -385,12 +403,19 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		for (sf::Int32 i = 0; i < tankCount; ++i)
 		{
 			sf::Int32 tankIdentifier;
+			bool isLiberator;
 			sf::Int32 hitpoints;
 			sf::Int32 missileAmmo;
 			sf::Vector2f tankPosition;
-			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y >> hitpoints >> missileAmmo;
+			packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> hitpoints >> missileAmmo;
 
-			Tank* tank = mWorld.addTank(tankIdentifier);
+			Tank::Type type = Tank::Panzer;
+			if (isLiberator)
+			{
+				type = Tank::Hotchkiss;
+			}
+
+			Tank* tank = mWorld.addTank(tankIdentifier, type);
 			tank->setPosition(tankPosition);
 			tank->setHitpoints(hitpoints);
 			tank->setMissileAmmo(missileAmmo);
@@ -405,7 +430,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		sf::Int32 tankIdentifier;
 		packet >> tankIdentifier;
 
-		mWorld.addTank(tankIdentifier);
+		mWorld.addTank(tankIdentifier, playerTank->getAllyType());
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys2));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 	} break;

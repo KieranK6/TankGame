@@ -12,17 +12,15 @@
 #include <memory>
 #include <map>
 
-
 class GameServer
 {
 public:
 	explicit							GameServer(sf::Vector2f battlefieldSize);
 	~GameServer();
 
-	void								notifyPlayerSpawn(sf::Int32 aircraftIdentifier);
-	void								notifyPlayerRealtimeChange(sf::Int32 aircraftIdentifier, sf::Int32 action, bool actionEnabled);
-	void								notifyPlayerEvent(sf::Int32 aircraftIdentifier, sf::Int32 action);
-
+	void								notifyPlayerSpawn(sf::Int32 tankIdentifier);
+	void								notifyPlayerRealtimeChange(sf::Int32 tankIdentifier, sf::Int32 action, bool actionEnabled);
+	void								notifyPlayerEvent(sf::Int32 tankIdentifier, sf::Int32 action);
 
 private:
 	// A GameServerRemotePeer refers to one instance of the game, may it be local or from another computer
@@ -32,15 +30,17 @@ private:
 
 		sf::TcpSocket			socket;
 		sf::Time				lastPacketTime;
-		std::vector<sf::Int32>	aircraftIdentifiers;
+		std::vector<sf::Int32>	tankIdentifiers;
 		bool					ready;
 		bool					timedOut;
 	};
 
 	// Structure to store information about current tank state
-	struct AircraftInfo
+	struct TankInfo
 	{
 		sf::Vector2f				position;
+		float						tankRotation;
+		float						turretRotation;
 		sf::Int32					hitpoints;
 		sf::Int32                   missileAmmo;
 		std::map<sf::Int32, bool>	realtimeActions;
@@ -82,11 +82,11 @@ private:
 	sf::FloatRect						mBattleFieldRect;
 	float								mBattleFieldScrollSpeed;
 
-	std::size_t							mAircraftCount;
-	std::map<sf::Int32, AircraftInfo>	mAircraftInfo;
+	std::size_t							mTankCount;
+	std::map<sf::Int32, TankInfo>		mTankInfo;
 
 	std::vector<PeerPtr>				mPeers;
-	sf::Int32							mAircraftIdentifierCounter;
+	sf::Int32							mTankIdentifierCounter;
 	bool								mWaitingThreadEnd;
 
 	sf::Time							mLastSpawnTime;

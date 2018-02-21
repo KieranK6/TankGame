@@ -137,9 +137,9 @@ void World::removeTank(int identifier)
 	}
 }
 
-Tank* World::addTank(int identifier)
+Tank* World::addTank(int identifier, Tank::Type type)
 {
-	std::unique_ptr<Tank> player(new Tank(Tank::Hotchkiss, mTextures, mFonts));
+	std::unique_ptr<Tank> player(new Tank(type, mTextures, mFonts));
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 

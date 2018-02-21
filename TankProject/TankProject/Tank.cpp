@@ -265,6 +265,33 @@ void Tank::setIdentifier(int identifier)
 	mIdentifier = identifier;
 }
 
+float Tank::getTurretRotation()
+{
+	return turretSprite.getRotation();
+}
+
+void Tank::setTurretRotation(float rotation)
+{
+	turretSprite.setRotation(rotation);
+}
+
+Tank::Type Tank::getType()
+{
+	return mType;
+}
+
+Tank::Type Tank::getAllyType()
+{
+	if (mType == Tank::Hotchkiss)
+	{
+		return Tank::T34;
+	}
+	else
+	{
+		return Tank::Panther;
+	}
+}
+
 
 
 

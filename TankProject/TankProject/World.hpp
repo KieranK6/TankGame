@@ -39,7 +39,7 @@ public:
 
 	sf::FloatRect getViewBounds() const;
 	CommandQueue& getCommandQueue();
-	Tank* addTank(int identifier);
+	Tank* addTank(int identifier, Tank::Type type);
 	void removeTank(int identifier);
 	void setCurrentBattleFieldPosition(float lineY);
 	void setWorldHeight(float height);

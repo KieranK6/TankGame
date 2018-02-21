@@ -7,7 +7,7 @@ GameState::GameState(StateStack& stack, Context context)
 	: State(stack, context)
 	, mWorld(*context.window, *context.fonts, *context.sounds, false)
 	, mPlayer(nullptr, 1, context.keys1)
-	, playerTank(mWorld.addTank(1))
+	, playerTank(mWorld.addTank(1, Tank::Hotchkiss))
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
 

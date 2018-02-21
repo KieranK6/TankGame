@@ -43,6 +43,10 @@ public:
 	float					getTurretRotationSpeed() const;
 	float					getSpeedBoost() const;
 	void					disablePickups();
+	float					getTurretRotation();
+	void					setTurretRotation(float rotation);
+	Tank::Type				getType();
+	Tank::Type				getAllyType();
 
 	float					getTankRadius();
 	
