@@ -26,6 +26,8 @@ public:
 	Obstacle(ObType type, const TextureHolder& textures);
 	unsigned int Obstacle::getCategory() const;
 
+	float getObstacleRadius();
+
 
 	~Obstacle();
 	sf::FloatRect	getBoundingRect() const;
@@ -36,6 +38,7 @@ private:
 private:
 	ObType					mType;
 	sf::Sprite				mSprite;
+	float					mObRadius = 40.f;
 	//int						mIdentifier;
 
 };

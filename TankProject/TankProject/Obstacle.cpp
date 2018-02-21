@@ -25,7 +25,7 @@ Obstacle::Obstacle(ObType type, const TextureHolder& textures) : Entity(Table[ty
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 
 {
-	
+	centerOrigin(mSprite);
 }
 
 
@@ -42,11 +42,16 @@ void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 {
 	
 		target.draw(mSprite, states); //draws sprite onto target
-
+		drawBoundingCirc(target, states, mObRadius);
 }
 
 unsigned int Obstacle::getCategory() const
 {
 		return Category::Obstacle;
+}
+
+float Obstacle::getObstacleRadius() 
+{
+	return mObRadius;
 }
 

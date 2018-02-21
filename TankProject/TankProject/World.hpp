@@ -63,6 +63,7 @@ private:
 	void adaptPlayerPosition();
 	void adaptPlayerVelocity();
 	void handleCollisions();
+	void handleCircleCollions(Tank&, Obstacle&);
 	void updateSounds();
 
 	void SpawnObstacles(int obstacleCount);
@@ -77,6 +78,8 @@ private:
 	void enemyTurretTargeting();
 	void updateBase();
 
+	sf::Vector2f normaliseVector(sf::Vector2f passedVector, float magnitude);
+	float getMagnitude(sf::Vector2f passedVelocity);
 
 private:
 	enum Layer
