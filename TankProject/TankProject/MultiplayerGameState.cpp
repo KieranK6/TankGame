@@ -38,10 +38,14 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	, mGameStarted(false)
 	, mClientTimeout(sf::seconds(2.f))
 	, mTimeSinceLastPacket(sf::seconds(0.f))
-	, playerTank(mWorld.addTank(1, Tank::Hotchkiss))
 {
 	mBroadcastText.setFont(context.fonts->get(Fonts::Main));
 	mBroadcastText.setPosition(1024.f / 2, 100.f);
+
+	if (mWorld.getTank(1) == nullptr && isHost)
+	{
+		playerTank = mWorld.addTank(1, Tank::Hotchkiss);
+	}
 
 	mPlayerInvitationText.setFont(context.fonts->get(Fonts::Main));
 	mPlayerInvitationText.setCharacterSize(20);
@@ -129,14 +133,18 @@ bool MultiplayerGameState::update(sf::Time dt)
 	if (mConnected)
 	{
 		mWorld.update(dt);
-		mWorld.centerWorldToPlayer(playerTank);
-		mWorld.adaptPlayerTankPosition(playerTank);
+
+		if (playerTank != nullptr)
+		{
+			mWorld.centerWorldToPlayer(playerTank);
+			mWorld.adaptPlayerTankPosition(playerTank);
+		}
 
 		//Check for win
 		if (!mWorld.hasAlivePlayer())
 		{
 			//mPlayer.setMissionStatus(Player::MissionFailure);
-			requestStackPush(States::GameOver);
+			//requestStackPush(States::GameOver);
 		}
 		else if (mWorld.hasLiberationBaseBeenDestroyed())
 		{
@@ -172,8 +180,8 @@ bool MultiplayerGameState::update(sf::Time dt)
 				itr = mPlayers.erase(itr);
 
 				// No more players left: Mission failed
-				if (mPlayers.empty())
-					requestStackPush(States::GameOver);
+				if (mPlayers.empty()){}
+					//requestStackPush(States::GameOver);
 			}
 			else
 			{
@@ -381,6 +389,17 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 
 		packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation;
 
+		Tank::Type type;
+		if (isLiberator)
+		{
+			type = Tank::Hotchkiss;
+		}
+		else
+		{
+			type = Tank::Panzer;
+		}
+
+		playerTank = mWorld.addTank(tankIdentifier, type);
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys1));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 
@@ -466,7 +485,6 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			tank->setMissileAmmo(missileAmmo);
 			tank->setRotation(tankRotation);
 			tank->setTurretRotation(turretRotation);
-			playerTank = tank;
 
 			mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, nullptr));
 		}

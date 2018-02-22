@@ -109,21 +109,21 @@ std::vector<TankTurretData> initializeTankTurretData()
 	data[Tank::HotchkissTurret].texture = Textures::TankTurretEntities;
 	data[Tank::HotchkissTurret].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Tank::T34Turret].rotationSpeed = 0.95f;
+	data[Tank::T34Turret].rotationSpeed = 1.1f;
 	data[Tank::T34Turret].maxRotationSpeed = 110.0f ;
 	data[Tank::T34Turret].fireInterval = sf::seconds(1);
 	data[Tank::T34Turret].rotateInterval = sf::seconds(1);
 	data[Tank::T34Turret].texture = Textures::TankTurretEntities;
 	data[Tank::T34Turret].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Tank::PantherTurret].rotationSpeed = 5.0f;
+	data[Tank::PantherTurret].rotationSpeed = 1.1f;
 	data[Tank::PantherTurret].maxRotationSpeed = 110.0f;
 	data[Tank::PantherTurret].fireInterval = sf::seconds(1);
 	data[Tank::PantherTurret].rotateInterval = sf::seconds(1);
 	data[Tank::PantherTurret].texture = Textures::TankTurretEntities;
 	data[Tank::PantherTurret].textureRect = sf::IntRect(2 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Tank::PanzerTurret].rotationSpeed = 9.0f;
+	data[Tank::PanzerTurret].rotationSpeed = 1.1f;
 	data[Tank::PanzerTurret].maxRotationSpeed = 110.0f;
 	data[Tank::PanzerTurret].fireInterval = sf::seconds(1);
 	data[Tank::PanzerTurret].rotateInterval = sf::seconds(1);
@@ -143,7 +143,7 @@ std::vector<ProjectileData> initializeProjectileData()
 	data[Projectile::AlliedBullet].texture = Textures::Entities;
 	data[Projectile::AlliedBullet].textureRect = sf::IntRect(175, 64, 3, 14);
 
-	data[Projectile::EnemyBullet].damage = 10;
+	data[Projectile::EnemyBullet].damage = 100;
 	data[Projectile::EnemyBullet].speed = 300.f;
 	data[Projectile::EnemyBullet].texture = Textures::Entities;
 	data[Projectile::EnemyBullet].textureRect = sf::IntRect(178, 64, 3, 14);
