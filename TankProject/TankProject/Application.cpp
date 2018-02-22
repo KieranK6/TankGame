@@ -128,4 +128,6 @@ void Application::registerStates()
 	mStateStack.registerState<SettingsState>(States::Settings);
 	mStateStack.registerState<GameOverState>(States::GameOver, "Failure!");
 	mStateStack.registerState<GameOverState>(States::MissionSuccess, "Freedom delivered!");
+	mStateStack.registerState<GameOverState>(States::LiberationSuccess, "Liberation delivered!");
+	mStateStack.registerState<GameOverState>(States::ResistanceSuccess, "Resistance have won!");
 }

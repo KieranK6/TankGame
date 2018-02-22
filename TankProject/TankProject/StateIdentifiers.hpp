@@ -14,6 +14,8 @@ namespace States
 		Settings,
 		GameOver,
 		MissionSuccess,
+		ResistanceSuccess,
+		LiberationSuccess,
 		HostGame,
 		JoinGame
 	};
