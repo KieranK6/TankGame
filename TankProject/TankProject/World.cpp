@@ -71,6 +71,7 @@ void World::update(sf::Time dt)
 	if (!mNetworkedWorld)
 	{
 		enemyTurretTargeting();
+		adaptTankPositions();
 	}
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
@@ -92,7 +93,7 @@ void World::update(sf::Time dt)
 
 	// Regular update step, adapt position (correct if outside view)
 	mSceneGraph.update(dt, mCommandQueue);
-	adaptPlayerPosition();
+	
 
 	updateSounds();
 
@@ -213,7 +214,7 @@ void World::loadTextures()
 	mTextures.load(Textures::baseResistance, "Media/Textures/baseResistance.png");
 }
 
-void World::adaptPlayerPosition()
+void World::adaptTankPositions()
 {
 	// Keep player's position inside the screen bounds, at least borderDistance units from the border
 	sf::FloatRect viewBounds = getViewBounds();
@@ -228,6 +229,20 @@ void World::adaptPlayerPosition()
 		position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
 		tank->setPosition(position);
 	}
+}
+
+void World::adaptPlayerTankPosition(Tank* tank)
+{
+	// Keep player's position inside the screen bounds, at least borderDistance units from the border
+	sf::FloatRect viewBounds = getViewBounds();
+	const float borderDistance = 40.f;
+
+	sf::Vector2f position = tank->getPosition();
+	position.x = std::max(position.x, viewBounds.left + borderDistance);
+	position.x = std::min(position.x, viewBounds.left + viewBounds.width - borderDistance);
+	position.y = std::max(position.y, viewBounds.top + borderDistance);
+	position.y = std::min(position.y, viewBounds.top + viewBounds.height - borderDistance);
+	tank->setPosition(position);
 }
 
 void World::adaptPlayerVelocity()
@@ -541,7 +556,7 @@ void World::buildScene()
 
 	// Add particle node to the scene
 	std::unique_ptr<ParticleNode> smokeNode(new ParticleNode(Particle::Smoke, mTextures));
-	mSceneLayers[LowerAir]->attachChild(std::move(smokeNode));
+	mSceneLayers[UpperAir]->attachChild(std::move(smokeNode));
 
 	// Add propellant particle node to the scene
 	std::unique_ptr<ParticleNode> propellantNode(new ParticleNode(Particle::Propellant, mTextures));
@@ -558,12 +573,11 @@ void World::buildScene()
 		mNetworkNode = networkNode.get();
 		mSceneGraph.attachChild(std::move(networkNode));
 	}
-
-	// Add renderline ring around player
-
-
-	// Add enemy tank
-	//addEnemies(10);
+	else
+	{
+		// Add enemy tank
+		addEnemies(10);
+	}
 }
 
 void World::addEnemies(int enemyCount)

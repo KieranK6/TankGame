@@ -396,9 +396,11 @@ void GameServer::handleIncomingConnections()
 		mTankInfo[mTankIdentifierCounter].tankRotation = 0;
 		mTankInfo[mTankIdentifierCounter].turretRotation = 0;
 
+		//If on the resistace team
 		if (mTankIdentifierCounter % 2 > 0)
 		{
 			isLiberator = false;
+			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.top + mBattleFieldRect.height / 2);
 		}
 
 		sf::Packet packet;
