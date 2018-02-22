@@ -393,7 +393,8 @@ void GameServer::handleIncomingConnections()
 	{
 		
 		// order the new client to spawn its own tank ( player 1 )
-		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
+		//mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
+		mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(1);
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
 		mTankInfo[mTankIdentifierCounter].missileAmmo = 20;
 		bool isLiberator = true;
@@ -404,7 +405,8 @@ void GameServer::handleIncomingConnections()
 		if (mTankIdentifierCounter % 2 > 0)
 		{
 			isLiberator = false;
-			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.height / 2);
+			//mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.height / 2);
+			mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(2);
 		}
 
 		sf::Packet packet;
@@ -432,6 +434,18 @@ void GameServer::handleIncomingConnections()
 			setListening(false);
 		else // Add a new waiting peer
 			mPeers.push_back(PeerPtr(new RemotePeer()));
+	}
+}
+
+sf::Vector2f GameServer::getSpawnLocation(int teamIndicator)
+{
+	if (teamIndicator = 1) //Liberation
+	{
+		return sf::Vector2f(100, 400);
+	}
+	else if (teamIndicator = 2) //Resistance
+	{
+		return sf::Vector2f(2000, 400);
 	}
 }
 

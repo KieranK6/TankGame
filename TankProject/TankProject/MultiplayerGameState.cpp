@@ -362,7 +362,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		packet >> message;
 		mBroadcasts.push_back(message);
 
-		// Just added first message, display immediately
+		// Just added first message, display immediatelyk
 		if (mBroadcasts.size() == 1)
 		{
 			mBroadcastText.setString(mBroadcasts.front());
@@ -408,6 +408,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		}
 
 		Tank* tank = mWorld.addTank(tankIdentifier, type);
+		tankPosition.x = 2000.f;
 		tank->setPosition(tankPosition);
 		tank->setRotation(tankRotation);
 		tank->setTurretRotation(turretRotation);
@@ -451,7 +452,13 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			if (isLiberator)
 			{
 				type = Tank::Hotchkiss;
+				//tankPosition.x = 100.f; //Liberation
+			//	tankPosition.y = 100.f;
 			}
+			
+
+			//tankPosition.x = 2000.f; //Worked on spawning
+			//tankPosition.y = 100.f;
 
 			Tank* tank = mWorld.addTank(tankIdentifier, type);
 			tank->setPosition(tankPosition);

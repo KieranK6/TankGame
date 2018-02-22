@@ -88,3 +88,4 @@ std::vector<BaseData> initializeBaseData();
 std::vector<ProjectileData> initializeProjectileData();
 std::vector<PickupData> initializePickupData();
 std::vector<ParticleData> initializeParticleData();
+std::vector<ParticleData> initializeSpawnData();
