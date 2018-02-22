@@ -1,4 +1,4 @@
-﻿################################################################################
+################################################################################
 # This .gitignore file was automatically created by Microsoft(R) Visual Studio.
 ################################################################################
 
@@ -10,3 +10,10 @@ TankProject/\.vs/
 TankProject/TankProject\.VC\.db
 
 TankProject/TankProject/Debug/
+TankProject/TankProject/x64/Debug/vc140.idb
+TankProject/TankProject/x64/Debug/TankProject.tlog/unsuccessfulbuild
+TankProject/TankProject/x64/Debug/TankProject.tlog/TankProject.lastbuildstate
+TankProject/TankProject/x64/Debug/TankProject.tlog/CL.write.1.tlog
+TankProject/TankProject/x64/Debug/TankProject.tlog/CL.read.1.tlog
+TankProject/TankProject/x64/Debug/TankProject.tlog/CL.command.1.tlog
+TankProject/TankProject/Media.zip
