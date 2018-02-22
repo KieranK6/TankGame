@@ -48,7 +48,9 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	//bool collisionSoundPlaying = false;
 	
-	SpawnEnemyBase();
+	//SpawnEnemyBase();
+	SpawnBase();
+
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
@@ -194,6 +196,8 @@ void World::loadTextures()
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
 	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png"); 
 	mTextures.load(Textures::EnemyBase, "Media/Textures/base.png");
+	mTextures.load(Textures::baseLiberator, "Media/Textures/baseLiberator.png");
+	mTextures.load(Textures::baseResistance, "Media/Textures/baseResistance.png");
 }
 
 void World::adaptPlayerPosition()
@@ -555,6 +559,20 @@ void World::SpawnEnemyBase()
 	std::unique_ptr<Base> base1(new Base(Base::EnemyBase, mTextures, mFonts));
 	base1->setPosition(mWorldBounds.width / 2 - base1->getBoundingRect().width/2, 0.f);
 	mSceneLayers[Background]->attachChild(std::move(base1));
+}
+
+void World::SpawnBase()
+{
+	sf::Vector2f resistanceSpawn(0.f, 100.f);
+	sf::Vector2f liberatorSpawn(2500.f, 100.f);
+
+	std::unique_ptr<Base> resistanceBase(new Base(Base::Resistance, mTextures, mFonts));
+	resistanceBase->setPosition(resistanceSpawn.x, resistanceSpawn.y);
+	mSceneLayers[Background]->attachChild(std::move(resistanceBase));
+
+	std::unique_ptr<Base> liberatorBase(new Base(Base::Liberator, mTextures, mFonts));
+	liberatorBase->setPosition(liberatorSpawn.x, liberatorSpawn.y);
+	mSceneLayers[Background]->attachChild(std::move(liberatorBase));
 }
 
 

@@ -16,14 +16,16 @@
 class Base : public Entity
 {
 public:
-	enum bType
+	enum baseTeam
 	{
 		EnemyBase,
+		Liberator,
+		Resistance,
 		TypeCount,
 	};
 
 public:
-	Base(bType type, const TextureHolder& textures, const FontHolder& fonts);
+	Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts);
 
 	unsigned int Base::getCategory() const;
 	sf::FloatRect	getBoundingRect() const;
@@ -37,9 +39,10 @@ private:
 	void					updateTexts();
 
 private:
-	bType					mType;
+	baseTeam				mType;
 	sf::Sprite				mSprite;
 	TextNode*				mHealthDisplay;
+	//sf::Vector2f			position;
 
 	Animation				mExplosion;
 	bool 					mShowExplosion;

@@ -20,7 +20,7 @@ namespace
 }
 
 
-Base::Base(bType type, const TextureHolder& textures, const FontHolder& fonts) : Entity(Table[type].hitpoints)
+Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts) : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
 , mShowExplosion(true)

@@ -23,6 +23,8 @@ namespace Textures
 		FinishLine,
 		Obstacles,
 		EnemyBase,
+		baseLiberator,
+		baseResistance,
 	};
 }
 

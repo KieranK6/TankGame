@@ -75,15 +75,21 @@ std::vector<ObstacleData> initializeObstacleData()
 std::vector<BaseData> initializeBaseData()
 {
 	int pixelWidth = 512;
-	int pixelHeight = 410;
+	int pixelHeight = 412;
 
-	std::vector<BaseData> data(Obstacle::TypeCount);
+	std::vector<BaseData> data(Base::TypeCount);
 
 	data[Base::EnemyBase].hitpoints = 300;
 	data[Base::EnemyBase].texture = Textures::EnemyBase;
 	data[Base::EnemyBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	
+	data[Base::Liberator].hitpoints = 300;
+	data[Base::Liberator].texture = Textures::baseLiberator;
+	data[Base::Liberator].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+	data[Base::Resistance].hitpoints = 300;
+	data[Base::Resistance].texture = Textures::baseResistance;
+	data[Base::Resistance].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	return data;
 }
