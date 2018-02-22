@@ -32,6 +32,7 @@ public:
 	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
 	virtual void			remove();
 	virtual bool 			isMarkedForRemoval() const;
+	float					GetBaseRadius();
 
 private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -48,6 +49,7 @@ private:
 	bool 					mShowExplosion;
 	bool					mExplosionBegan;
 	bool					mPlayedExplosionSound;
+	float					mBaseRadius = 200.f;
 
 
 };

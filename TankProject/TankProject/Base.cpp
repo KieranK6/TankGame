@@ -27,18 +27,20 @@ Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts
 , mExplosionBegan(false)
 {
 	mExplosion.setFrameSize(sf::Vector2i(256, 256));
-//	mExplosion.setNumFrames(16);   //This line causing error
+	//	mExplosion.setNumFrames(16);   //This line causing error
 	mExplosion.setDuration(sf::seconds(1));
 
 	//centerOrigin(mExplosion);
 
+	
+
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();
-	mHealthDisplay->setOrigin(-240, -430);
+	mHealthDisplay->setOrigin(0, -180);
 	attachChild(std::move(healthDisplay));
 
 	updateTexts();
-
+	centerOrigin(mSprite);
 }
 
 
@@ -55,8 +57,13 @@ void Base::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	else
 	{
 		target.draw(mSprite, states);
-
+		drawBoundingCirc(target, states, mBaseRadius);
 	}
+}
+
+float Base::GetBaseRadius()
+{
+	return (getBoundingRect().width/2);
 }
 
 void Base::updateCurrent(sf::Time dt, CommandQueue& commands)

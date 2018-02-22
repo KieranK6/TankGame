@@ -278,6 +278,40 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
+		else if (matchesCategories(pair, Category::PlayerTank, Category::Base))
+		{
+			auto& tank = static_cast<Tank&>(*pair.first);
+			auto& base = static_cast<Base&>(*pair.second);
+
+			float radiusTank = tank.getTankRadius();
+			float radiusBase = base.GetBaseRadius();
+
+			float tankX = tank.getPosition().x;
+			float tankY = tank.getPosition().y;
+			float baseX = base.getPosition().x;
+			float baseY = base.getPosition().y;
+
+
+			float dx = (tankX + radiusTank) - (baseX + radiusBase);
+			float dy = (tankY + radiusTank) - (baseY + radiusBase);
+
+			float distance = std::sqrt((dx * dx) + (dy * dy));
+
+			sf::Vector2f moveAmount = tank.getVelocity();
+
+			if (distance < (radiusBase + radiusTank))
+			{ ///bottom and right
+			  //Collision
+
+				tank.move(-(moveAmount / 8.f));
+			}
+			else if (distance >(radiusBase + radiusTank))
+			{ ///top and left
+				tank.move((moveAmount / 8.f));
+			}
+
+		}
+
 		else if (matchesCategories(pair, Category::PlayerTank, Category::Obstacle))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
@@ -305,7 +339,7 @@ void World::handleCollisions()
 				
 				tank.move(-(moveAmount/8.f));
 			}
-			else if (distance > (radiusObstacle + radiusTank))
+			else if (distance > (radiusObstacle - radiusTank))
 			{ ///top and left
 				tank.move((moveAmount / 8.f));
 			}
@@ -563,8 +597,8 @@ void World::SpawnEnemyBase()
 
 void World::SpawnBase()
 {
-	sf::Vector2f resistanceSpawn(0.f, 100.f);
-	sf::Vector2f liberatorSpawn(2500.f, 100.f);
+	sf::Vector2f resistanceSpawn(300.f, 200.f);
+	sf::Vector2f liberatorSpawn(2500.f, 200.f);
 
 	std::unique_ptr<Base> resistanceBase(new Base(Base::Resistance, mTextures, mFonts));
 	resistanceBase->setPosition(resistanceSpawn.x, resistanceSpawn.y);
