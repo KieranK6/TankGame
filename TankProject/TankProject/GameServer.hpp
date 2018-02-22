@@ -38,6 +38,7 @@ private:
 	// Structure to store information about current tank state
 	struct TankInfo
 	{
+		bool						isLiberator;
 		sf::Vector2f				position;
 		float						tankRotation;
 		float						turretRotation;
@@ -78,7 +79,6 @@ private:
 	std::size_t							mMaxConnectedPlayers;
 	std::size_t							mConnectedPlayers;
 
-	float								mWorldHeight;
 	sf::FloatRect						mBattleFieldRect;
 	float								mBattleFieldScrollSpeed;
 

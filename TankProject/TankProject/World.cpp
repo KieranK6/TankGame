@@ -31,7 +31,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mWorldBounds(0.f, 0.f, 3000.f, 1500.f)
 	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height / 2.f)
 	, mScrollSpeed(-50.f)
-	, mScrollSpeedCompensation(1.f)
+	, mScrollSpeedCompensation(0.f)
 	, mPlayerTanks()
 	, mEnemySpawnPoints()
 	, mActiveEnemies()
@@ -66,7 +66,10 @@ void World::update(sf::Time dt)
 
 	// Setup commands to destroy entities, and guide turrets
 	destroyEntitiesOutsideView();
-	enemyTurretTargeting();
+	if (!mNetworkedWorld)
+	{
+		enemyTurretTargeting();
+	}
 
 	// Forward commands to scene graph, adapt velocity (scrolling, diagonal correction)
 	while (!mCommandQueue.isEmpty())
@@ -253,17 +256,17 @@ void World::handleCollisions()
 
 	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		if (matchesCategories(pair, Category::PlayerTank, Category::EnemyTank))
-		{
-			auto& player = static_cast<Tank&>(*pair.first);
-			auto& enemy = static_cast<Tank&>(*pair.second);
+		//if (matchesCategories(pair, Category::PlayerTank, Category::EnemyTank))
+		//{
+		//	auto& player = static_cast<Tank&>(*pair.first);
+		//	auto& enemy = static_cast<Tank&>(*pair.second);
 
-			// Collision: Player damage = enemy's remaining HP
-			player.damage(enemy.getHitpoints());
-			enemy.destroy();
-		}
+		//	// Collision: Player damage = enemy's remaining HP
+		//	player.damage(enemy.getHitpoints());
+		//	enemy.destroy();
+		//}
 
-		else if (matchesCategories(pair, Category::PlayerTank, Category::Pickup))
+		 if (matchesCategories(pair, Category::PlayerTank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -708,17 +711,17 @@ void World::enemyTurretTargeting()
 	mActiveEnemies.clear();
 }
 
-void World::guideMissiles()
-{
-	// Setup command that stores all enemies in mActiveEnemies
-	Command enemyCollector;
-	enemyCollector.category = Category::EnemyTank;
-	enemyCollector.action = derivedAction<Tank>([this](Tank& enemy, sf::Time)
-	{
-		if (!enemy.isDestroyed())
-			mActiveEnemies.push_back(&enemy);
-	});
-}
+//void World::guideMissiles()
+//{
+//	// Setup command that stores all enemies in mActiveEnemies
+//	Command enemyCollector;
+//	enemyCollector.category = Category::EnemyTank;
+//	enemyCollector.action = derivedAction<Tank>([this](Tank& enemy, sf::Time)
+//	{
+//		if (!enemy.isDestroyed())
+//			mActiveEnemies.push_back(&enemy);
+//	});
+//}
 
 sf::FloatRect World::getViewBounds() const
 {

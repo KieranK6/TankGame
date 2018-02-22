@@ -391,13 +391,13 @@ void Tank::checkPickupDrop(CommandQueue& commands)
 void Tank::checkProjectileLaunch(sf::Time dt, CommandQueue& commands)
 {
 	// Enemies rotate towards you 
-	if (!isAllied())
+	/*if (!isAllied())
 	{
 		if (mTargetDirection != sf::Vector2f(0,0))
 		{
 			updateEnemyTurretRotation(dt);
 		}
-	}
+	}*/
 
 	// Check for automatic gunfire, allow only in intervals
 	if (mIsFiring && mFireCountdown <= sf::Time::Zero && ammoCount > 0)
@@ -543,7 +543,7 @@ float Tank::getTotalTurretRotation() const
 
 void Tank::guideTurretTowards(sf::Vector2f position)
 {
-	mTargetDirection = unitVector(position - getWorldPosition());
+	//mTargetDirection = unitVector(position - getWorldPosition());
 }
 
 

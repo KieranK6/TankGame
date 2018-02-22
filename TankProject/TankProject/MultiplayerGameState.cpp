@@ -157,7 +157,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 
 		if (!foundLocalPlane && mGameStarted)
 		{
-			requestStackPush(States::GameOver);
+			//requestStackPush(States::GameOver);
 		}
 
 		// Only handle the realtime input if the window has focus and the game is unpaused
@@ -226,7 +226,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
 			{
 				if (Tank* tank = mWorld.getTank(identifier))
-					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
+					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << tank->getRotation() << tank->getTurretRotation() << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
 			}
 
 			mSocket.send(positionUpdatePacket);
@@ -393,8 +393,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::InitialState:
 	{
 		sf::Int32 tankCount;
-		float worldHeight, currentScroll;
-		packet >> worldHeight >> currentScroll;
+		//float worldHeight, currentScroll;
+		//packet >> worldHeight >> currentScroll;
 
 		//mWorld.setWorldHeight(worldHeight);
 		//mWorld.setCurrentBattleFieldPosition(currentScroll);
@@ -407,7 +407,9 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			sf::Int32 hitpoints;
 			sf::Int32 missileAmmo;
 			sf::Vector2f tankPosition;
-			packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> hitpoints >> missileAmmo;
+			float tankRotation, turretRotation;
+
+			packet >> tankIdentifier >> isLiberator >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation >> hitpoints >> missileAmmo;
 
 			Tank::Type type = Tank::Panzer;
 			if (isLiberator)
@@ -419,6 +421,9 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			tank->setPosition(tankPosition);
 			tank->setHitpoints(hitpoints);
 			tank->setMissileAmmo(missileAmmo);
+			tank->setRotation(tankRotation);
+			tank->setTurretRotation(turretRotation);
+			playerTank = tank;
 
 			mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, nullptr));
 		}
@@ -468,8 +473,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		float relativeX;
 		packet >> type >> height >> relativeX;
 
-		mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
-		mWorld.sortEnemies();
+		//mWorld.addEnemy(static_cast<Tank::Type>(type), relativeX, height);
+		//mWorld.sortEnemies();
 	} break;
 
 	// Mission successfully completed
@@ -504,7 +509,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		{
 			sf::Vector2f tankPosition;
 			sf::Int32 tankIdentifier;
-			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y;
+			float tankRotation, turretRotation;
+			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation;
 
 			Tank* tank = mWorld.getTank(tankIdentifier);
 			bool isLocalPlane = std::find(mLocalPlayerIdentifiers.begin(), mLocalPlayerIdentifiers.end(), tankIdentifier) != mLocalPlayerIdentifiers.end();
@@ -512,6 +518,10 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			{
 				sf::Vector2f interpolatedPosition = tank->getPosition() + (tankPosition - tank->getPosition()) * 0.1f;
 				tank->setPosition(interpolatedPosition);
+				float interpolatedRotation = tank->getRotation() + (tankRotation - tank->getRotation()) * 0.1f;
+				tank->setRotation(interpolatedRotation);
+				float interpolatedTurretRotation = tank->getTurretRotation() + (turretRotation - tank->getTurretRotation()) * 0.1f;
+				tank->setTurretRotation(interpolatedTurretRotation);
 			}
 		}
 	} break;

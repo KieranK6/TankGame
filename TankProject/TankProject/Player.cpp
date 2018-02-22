@@ -73,6 +73,7 @@ struct TurretRotater
 				tank.accelerateTurretRotation(-1 * tank.getTurretRotationSpeed());
 			else
 				tank.accelerateTurretRotation(1 * tank.getTurretRotationSpeed());
+
 		}
 
 	}
