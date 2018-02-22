@@ -82,13 +82,10 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	mHealthDisplay->setOrigin(0, -50);
 	attachChild(std::move(healthDisplay));
 
-	if (getCategory() == Category::PlayerTank)
-	{
-		std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
-		missileDisplay->setOrigin(0, -70);
-		ammoDisplay = missileDisplay.get();
-		attachChild(std::move(missileDisplay));
-	}
+	std::unique_ptr<TextNode> missileDisplay(new TextNode(fonts, ""));
+	missileDisplay->setOrigin(0, -70);
+	ammoDisplay = missileDisplay.get();
+	attachChild(std::move(missileDisplay));
 
 	ammoCount = Table[type].ammoCount;
 
@@ -215,7 +212,7 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	
 
 	// Update enemy movement pattern; apply velocity
-	updateMovementPattern(dt);
+	//updateMovementPattern(dt);
 	Entity::updateCurrent(dt, commands);
 }
 
