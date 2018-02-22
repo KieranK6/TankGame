@@ -42,11 +42,6 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	mBroadcastText.setFont(context.fonts->get(Fonts::Main));
 	mBroadcastText.setPosition(1024.f / 2, 100.f);
 
-	if (mWorld.getTank(1) == nullptr && isHost)
-	{
-		playerTank = mWorld.addTank(1, Tank::Hotchkiss);
-	}
-
 	mPlayerInvitationText.setFont(context.fonts->get(Fonts::Main));
 	mPlayerInvitationText.setCharacterSize(20);
 	mPlayerInvitationText.setFillColor(sf::Color::White);
@@ -448,11 +443,6 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::InitialState:
 	{
 		sf::Int32 tankCount;
-		//float worldHeight, currentScroll;
-		//packet >> worldHeight >> currentScroll;
-
-		//mWorld.setWorldHeight(worldHeight);
-		//mWorld.setCurrentBattleFieldPosition(currentScroll);
 
 		packet >> tankCount;
 		for (sf::Int32 i = 0; i < tankCount; ++i)

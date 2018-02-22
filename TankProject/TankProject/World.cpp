@@ -295,7 +295,7 @@ void World::handleCollisions()
 		//	enemy.destroy();
 		//}
 
-		 if (matchesCategories(pair, Category::PlayerTank, Category::Pickup))
+		 if (matchesCategories(pair, Category::Tank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
 			auto& pickup = static_cast<Pickup&>(*pair.second);
@@ -306,7 +306,7 @@ void World::handleCollisions()
 			player.playLocalSound(mCommandQueue, SoundEffect::CollectPickup);
 		}
 
-		else if (matchesCategories(pair, Category::PlayerTank, Category::Base))
+		else if (matchesCategories(pair, Category::Tank, Category::Base))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& base = static_cast<Base&>(*pair.second);
