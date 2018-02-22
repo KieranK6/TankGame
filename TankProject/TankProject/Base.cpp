@@ -50,6 +50,8 @@ sf::FloatRect Base::getBoundingRect() const
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
 
+
+
 void Base::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (isDestroyed() && mShowExplosion)
@@ -111,6 +113,8 @@ unsigned int Base::getCategory() const
 {
 	return Category::Base;
 }
+
+
 
 bool Base::isMarkedForRemoval() const
 {

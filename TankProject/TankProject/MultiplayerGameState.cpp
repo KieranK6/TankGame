@@ -132,6 +132,31 @@ bool MultiplayerGameState::update(sf::Time dt)
 		mWorld.centerWorldToPlayer(playerTank);
 		mWorld.adaptPlayerTankPosition(playerTank);
 
+		//Check for win
+		if (!mWorld.hasAlivePlayer())
+		{
+			//mPlayer.setMissionStatus(Player::MissionFailure);
+			requestStackPush(States::GameOver);
+		}
+		else if (mWorld.hasLiberationBaseBeenDestroyed())
+		{
+			//mPlayer.setMissionStatus(Player::ResistanceSuccess);
+			//getContext().sounds->play(SoundEffect::);     //Victory message for Resistance
+			requestStackPush(States::ResistanceSuccess);
+		}
+		else if (mWorld.hasResistanceBaseBeenDestroyed())
+		{
+			//mPlayer.setMissionStatus(Player::LiberatorSuccess);
+			//getContext().sounds->play(SoundEffect::);    //Victory Messagew for Liberators
+			requestStackPush(States::LiberationSuccess);
+		}
+		else if (mWorld.hasBaseBeenDestroyed())
+		{
+			//mPlayer.setMissionStatus(Player::MissionSuccess);
+			getContext().sounds->play(SoundEffect::Freedum);
+			requestStackPush(States::MissionSuccess);
+		}
+
 		// Remove players whose aircrafts were destroyed
 		bool foundLocalPlane = false;
 		for (auto itr = mPlayers.begin(); itr != mPlayers.end(); )

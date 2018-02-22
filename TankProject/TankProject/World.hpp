@@ -49,6 +49,9 @@ public:
 
 	bool hasAlivePlayer() const;
 	bool hasBaseBeenDestroyed() const;
+	bool hasResistanceBaseBeenDestroyed() const;
+	bool hasLiberationBaseBeenDestroyed() const;
+
 
 	void setWorldScrollCompensation(float compensation);
 	void adaptPlayerTankPosition(Tank* player);
@@ -141,6 +144,9 @@ private:
 	bool								mNetworkedWorld;
 	NetworkNode*						mNetworkNode;
 	SpriteNode*							mFinishSprite;
+
 	bool								isBaseDestroyed;
+	bool								isResistanceBaseDestroyed;
+	bool								isLiberationBaseDestroyed;
 };
 

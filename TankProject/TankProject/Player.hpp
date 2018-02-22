@@ -21,7 +21,9 @@ public:
 	{
 		MissionRunning,
 		MissionSuccess,
-		MissionFailure
+		MissionFailure,
+		LiberatorSuccess,
+		ResistanceSuccess,
 	};
 
 

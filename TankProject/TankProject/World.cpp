@@ -189,6 +189,16 @@ bool World::hasBaseBeenDestroyed() const
 	return isBaseDestroyed;
 }
 
+bool World::hasResistanceBaseBeenDestroyed() const
+{
+	return isResistanceBaseDestroyed;
+}
+
+bool World::hasLiberationBaseBeenDestroyed() const
+{
+	return isLiberationBaseDestroyed;
+}
+
 void World::loadTextures()
 {
 	mTextures.load(Textures::Entities, "Media/Textures/Entities.png");
@@ -411,9 +421,19 @@ void World::handleCollisions()
 			base.damage(projectile.getDamage());
 
 			if (base.isDestroyed())
-				isBaseDestroyed = true;
+				if (base.mType == 1)
+				{
+					isLiberationBaseDestroyed = true;
+				}
+				else if (base.mType == 2)
+				{
+					isResistanceBaseDestroyed = true;
+				}
+				else
+					isBaseDestroyed = true;
 
 			projectile.destroy();
+			
 			base.playLocalSound(mCommandQueue, SoundEffect::Oohrah);
 			
 		}

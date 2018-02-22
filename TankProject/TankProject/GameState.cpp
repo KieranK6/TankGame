@@ -30,6 +30,18 @@ bool GameState::update(sf::Time dt)
 		mPlayer.setMissionStatus(Player::MissionFailure);
 		requestStackPush(States::GameOver);
 	}
+	else if (mWorld.hasLiberationBaseBeenDestroyed())
+	{
+		mPlayer.setMissionStatus(Player::ResistanceSuccess);
+		//getContext().sounds->play(SoundEffect::);     //Victory message for Resistance
+		requestStackPush(States::ResistanceSuccess);
+	}
+	else if (mWorld.hasResistanceBaseBeenDestroyed())
+	{
+		mPlayer.setMissionStatus(Player::LiberatorSuccess);
+		//getContext().sounds->play(SoundEffect::);    //Victory Messagew for Liberators
+		requestStackPush(States::LiberationSuccess);
+	}
 	else if (mWorld.hasBaseBeenDestroyed())
 	{
 		mPlayer.setMissionStatus(Player::MissionSuccess);
