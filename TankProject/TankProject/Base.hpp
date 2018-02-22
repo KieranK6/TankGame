@@ -19,8 +19,8 @@ public:
 	enum baseTeam
 	{
 		EnemyBase,
-		Liberator,
-		Resistance,
+		LiberatorsBase,
+		ResistanceBase,
 		TypeCount,
 	};
 

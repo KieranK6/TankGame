@@ -19,12 +19,15 @@ namespace Category
 		SoundEffect			= 1 << 8,
 		Network				= 1 << 9,
 		EnemyRotation		= 1 << 10,
-		Obstacle			= 1 << 10,
-		Base				= 1 << 11,
+		Obstacle			= 1 << 11,
+		//Base				= 1 << 11,
+		LiberatorsBase		= 1 << 12,
+		ResistanceBase		= 1 << 13,
 
 
 		Tank = PlayerTank | AlliedTank | EnemyTank,
 		Projectile = AlliedProjectile | EnemyProjectile,
+		Base = LiberatorsBase | ResistanceBase,
 	};
 }
 
