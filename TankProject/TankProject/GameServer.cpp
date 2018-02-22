@@ -285,16 +285,20 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::RequestCoopPartner:
 	{
+		bool isLiberator;
+		packet >> isLiberator;
 		receivingPeer.tankIdentifiers.push_back(mTankIdentifierCounter);
 		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
 		mTankInfo[mTankIdentifierCounter].missileAmmo = 20;
 		mTankInfo[mTankIdentifierCounter].tankRotation = 0;
 		mTankInfo[mTankIdentifierCounter].turretRotation = 0;
+		mTankInfo[mTankIdentifierCounter].isLiberator = isLiberator;
 
 		sf::Packet requestPacket;
 		requestPacket << static_cast<sf::Int32>(Server::AcceptCoopPartner);
 		requestPacket << mTankIdentifierCounter;
+		requestPacket << isLiberator;
 		requestPacket << mTankInfo[mTankIdentifierCounter].position.x;
 		requestPacket << mTankInfo[mTankIdentifierCounter].position.y;
 
@@ -389,7 +393,7 @@ void GameServer::handleIncomingConnections()
 	{
 		
 		// order the new client to spawn its own tank ( player 1 )
-		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.top + mBattleFieldRect.height / 2);
+		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
 		mTankInfo[mTankIdentifierCounter].missileAmmo = 20;
 		bool isLiberator = true;
@@ -400,7 +404,7 @@ void GameServer::handleIncomingConnections()
 		if (mTankIdentifierCounter % 2 > 0)
 		{
 			isLiberator = false;
-			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.top + mBattleFieldRect.height / 2);
+			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.height / 2);
 		}
 
 		sf::Packet packet;

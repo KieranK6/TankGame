@@ -112,7 +112,7 @@ Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* bi
 
 	// Assign all categories to player's tank
 	FOREACH(auto& pair, mActionBinding)
-		pair.second.category = Category::PlayerTank;
+		pair.second.category = Category::PlayerTank | Category::EnemyTank;
 }
 
 void Player::handleEvent(const sf::Event& event, CommandQueue& commands)

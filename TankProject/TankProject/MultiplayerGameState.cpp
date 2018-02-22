@@ -296,6 +296,16 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 		{
 			sf::Packet packet;
 			packet << static_cast<sf::Int32>(Client::RequestCoopPartner);
+			
+			bool isLiberator;
+			if (playerTank->getType() == Tank::Hotchkiss)
+			{
+				isLiberator = true;
+			}
+			else
+			{
+				isLiberator = false;
+			}
 
 			mSocket.send(packet);
 		}
@@ -459,9 +469,22 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::AcceptCoopPartner:
 	{
 		sf::Int32 tankIdentifier;
-		packet >> tankIdentifier;
+		bool isLiberator;
+		Tank::Type type;
 
-		mWorld.addTank(tankIdentifier, playerTank->getAllyType());
+		packet >> tankIdentifier;
+		packet >> isLiberator;
+
+		if (isLiberator)
+		{
+			type = Tank::T34;
+		}
+		else
+		{
+			type = Tank::Panther;
+		}
+
+		mWorld.addTank(tankIdentifier, type);
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys2));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 	} break;
