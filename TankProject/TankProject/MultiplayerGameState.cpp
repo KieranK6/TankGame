@@ -130,6 +130,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 	{
 		mWorld.update(dt);
 		mWorld.centerWorldToPlayer(playerTank);
+		mWorld.adaptPlayerTankPosition(playerTank);
 
 		// Remove players whose aircrafts were destroyed
 		bool foundLocalPlane = false;

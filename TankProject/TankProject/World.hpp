@@ -51,6 +51,8 @@ public:
 	bool hasBaseBeenDestroyed() const;
 
 	void setWorldScrollCompensation(float compensation);
+	void adaptPlayerTankPosition(Tank* player);
+
 
 	Tank* getTank(int identifier) const;
 	sf::FloatRect getBattlefieldBounds() const;
@@ -60,7 +62,7 @@ public:
 
 private:
 	void loadTextures();
-	void adaptPlayerPosition();
+	void adaptTankPositions();
 	void adaptPlayerVelocity();
 	void handleCollisions();
 	void handleCircleCollions(Tank&, Obstacle&);
