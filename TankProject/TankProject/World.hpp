@@ -77,6 +77,7 @@ private:
 
 	void enemyTurretTargeting();
 	void updateBase();
+	void SpawnBase();
 
 	sf::Vector2f normaliseVector(sf::Vector2f passedVector, float magnitude);
 	float getMagnitude(sf::Vector2f passedVelocity);

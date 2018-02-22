@@ -62,6 +62,8 @@ public:
 	void 					fire();
 	//void					launchMissile();
 	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
+	void					playLocalSound(SoundEffect::ID effect, bool looped);
+	///void					playLocalSound(SoundEffect::ID effect);
 	int						getIdentifier();
 	void					setIdentifier(int identifier);
 	int						getMissileAmmo() const;
@@ -70,6 +72,7 @@ public:
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
 	void					guideTurretTowards(sf::Vector2f position);
+	void					playRotateSound();
 
 
 private:
@@ -88,6 +91,7 @@ private:
 	void					updateTurret(sf::Time dt);
 	float					getTotalTurretRotation() const;
 	void					updateEnemyTurretRotation(sf::Time dt);
+	
 
 
 private:
@@ -96,7 +100,11 @@ private:
 	Animation				mExplosion;
 	Command 				mFireCommand;
 	Command					mMissileCommand;
+	Command					mRotateCommand;
+	Command					mIdleCommand;
+	Command					mMovementCommand;
 	sf::Time				mFireCountdown;
+	sf::Time				mRotateCountdown;
 	bool 					mIsFiring;
 	bool					mIsLaunchingMissile;
 	bool 					mShowExplosion;
@@ -105,9 +113,12 @@ private:
 	bool					mSpawnedPickup;
 	bool					mPickupsEnabled;
 
+	bool					isTankRotating;
+
 	float					mRadius = 26.f;
 
 	int						mFireRateLevel;
+	int						mRotateRateLevel;
 	int						mSpreadLevel;
 	int						mMissileAmmo;
 	bool					hasSpeedBoost;

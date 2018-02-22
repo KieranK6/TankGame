@@ -23,6 +23,8 @@ namespace Textures
 		FinishLine,
 		Obstacles,
 		EnemyBase,
+		baseLiberator,
+		baseResistance,
 	};
 }
 
@@ -68,6 +70,11 @@ namespace SoundEffect
 		Collision,
 		Oohrah,
 		Freedum,
+		TankIdle,
+		TankMove,
+		TankTurretRotate,
+		TankFire,
+		TankReload,
 	};
 }
 

@@ -28,7 +28,10 @@ struct TankMover
 	void operator() (Tank& tank, sf::Time) const
 	{
 		if (tank.getIdentifier() == tankID)
+		{
 			tank.accelerate(velocity * tank.getSpeedBoost() * tank.getMaxSpeed());
+
+		}
 	}
 
 	sf::Vector2f velocity;
@@ -50,6 +53,7 @@ struct TankRotater
 				tank.rotate(-1 * tank.getMaxSpeed()/100);
 			else
 				tank.rotate(1 * tank.getMaxSpeed()/100);
+
 		}
 
 	}
@@ -73,7 +77,6 @@ struct TurretRotater
 				tank.accelerateTurretRotation(-1 * tank.getTurretRotationSpeed());
 			else
 				tank.accelerateTurretRotation(1 * tank.getTurretRotationSpeed());
-
 		}
 
 	}
