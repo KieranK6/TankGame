@@ -393,13 +393,13 @@ void GameServer::handleIncomingConnections()
 	{
 		
 		// order the new client to spawn its own tank ( player 1 )
-<<<<<<< HEAD
+
 		//mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
 		mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(1);
-=======
+
 		bool isLiberator = true;
 		mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(150.f, 50.f);// sf::Vector2f(mBattleFieldRect.width / 2, mBattleFieldRect.height / 2);
->>>>>>> 66844a30426cb6e91651bb4fb734ed250690b916
+
 		mTankInfo[mTankIdentifierCounter].hitpoints = 100;
 		mTankInfo[mTankIdentifierCounter].missileAmmo = 20;
 		mTankInfo[mTankIdentifierCounter].tankRotation = 0;
@@ -409,12 +409,11 @@ void GameServer::handleIncomingConnections()
 		if (mTankIdentifierCounter % 2 == 0)
 		{
 			isLiberator = false;
-<<<<<<< HEAD
+
 			//mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(mBattleFieldRect.width, mBattleFieldRect.height / 2);
-			mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(2);
-=======
+
 			mTankInfo[mTankIdentifierCounter].position = sf::Vector2f(150.f, mBattleFieldRect.height / 2);
->>>>>>> 66844a30426cb6e91651bb4fb734ed250690b916
+
 		}
 
 		mTankInfo[mTankIdentifierCounter].isLiberator = isLiberator;

@@ -420,6 +420,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		if (isLiberator)
 		{
 			type = Tank::Hotchkiss;
+			tankPosition.x = 2000.f; //Liberation
 		}
 		else
 		{
@@ -471,8 +472,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			if (isLiberator)
 			{
 				type = Tank::Hotchkiss;
-				//tankPosition.x = 100.f; //Liberation
-			//	tankPosition.y = 100.f;
+				tankPosition.x = 2000.f; //Liberation
 			}
 			
 

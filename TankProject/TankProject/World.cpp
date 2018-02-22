@@ -637,11 +637,11 @@ void World::SpawnBase()
 	sf::Vector2f resistanceSpawn(300.f, 200.f);
 	sf::Vector2f liberatorSpawn(2500.f, 200.f);
 
-	std::unique_ptr<Base> resistanceBase(new Base(Base::Resistance, mTextures, mFonts));
+	std::unique_ptr<Base> resistanceBase(new Base(Base::ResistanceBase, mTextures, mFonts));
 	resistanceBase->setPosition(resistanceSpawn.x, resistanceSpawn.y);
 	mSceneLayers[Background]->attachChild(std::move(resistanceBase));
 
-	std::unique_ptr<Base> liberatorBase(new Base(Base::Liberator, mTextures, mFonts));
+	std::unique_ptr<Base> liberatorBase(new Base(Base::LiberatorsBase, mTextures, mFonts));
 	liberatorBase->setPosition(liberatorSpawn.x, liberatorSpawn.y);
 	mSceneLayers[Background]->attachChild(std::move(liberatorBase));
 }
