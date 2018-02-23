@@ -310,6 +310,7 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 				isLiberator = false;
 			}
 
+			packet << isLiberator;
 			mSocket.send(packet);
 		}
 
@@ -502,7 +503,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			type = Tank::Panther;
 		}
 
-		mWorld.addTank(tankIdentifier, type);
+		secondPlayerTank = mWorld.addTank(tankIdentifier, type);
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys2));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 	} break;
@@ -589,6 +590,13 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 				tank->setRotation(interpolatedRotation);
 				float interpolatedTurretRotation = tank->getTurretRotation() + (turretRotation - tank->getTurretRotation()) * 0.1f;
 				tank->setTurretRotation(interpolatedTurretRotation);
+			}
+			else if (tank && isLocalPlane)
+			{
+				if (tank->getHitpoints() <= 0 && secondPlayerTank != nullptr)
+				{
+					playerTank = secondPlayerTank;
+				}
 			}
 		}
 	} break;
