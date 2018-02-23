@@ -27,8 +27,8 @@ public:
 public:
 	Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts);
 
-	unsigned int Base::getCategory() const;
-	sf::FloatRect	getBoundingRect() const;
+	unsigned int			getCategory() const;
+	sf::FloatRect			getBoundingRect() const;
 	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
 	virtual void			remove();
 	virtual bool 			isMarkedForRemoval() const;

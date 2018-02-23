@@ -132,7 +132,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (playerTank != nullptr)
 		{
 			mWorld.centerWorldToPlayer(playerTank);
-			mWorld.adaptLiberatorTankPosition(playerTank);
+			mWorld.adaptPlayerTankPosition(playerTank);
 		}
 
 		//Check for win

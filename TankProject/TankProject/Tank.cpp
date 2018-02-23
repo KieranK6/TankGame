@@ -8,6 +8,7 @@
 #include "SoundNode.hpp"
 #include "NetworkNode.hpp"
 #include "ResourceHolder.hpp"
+#include "ParticleNode.hpp"
 
 #include <SFML/Graphics/RenderTarget.hpp>
 #include <SFML/Graphics/RenderStates.hpp>

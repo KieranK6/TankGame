@@ -154,20 +154,6 @@ Tank* World::addTank(int identifier, Tank::Type type)
 	return mPlayerTanks.back();
 }
 
-Tank* World::addTank(int identifier, Tank tank)
-{
-	std::unique_ptr<Tank> player(new Tank(tank.getType(), mTextures, mFonts));
-	player->setIdentifier(identifier);
-	player->setPosition(tank.getPosition());
-	player->setRotation(tank.getRotation());
-	player->setTurretRotation(tank.getTurretRotation());
-
-	mPlayerTanks.push_back(player.get());
-	mSceneLayers[UpperAir]->attachChild(std::move(player));
-	return mPlayerTanks.back();
-}
-
-
 void World::createPickup(sf::Vector2f position, Pickup::Type type)
 {
 	std::unique_ptr<Pickup> pickup(new Pickup(type, mTextures));
@@ -244,7 +230,7 @@ void World::adaptTankPositions()
 	}
 }
 
-void World::adaptLiberatorTankPosition(Tank* tank)
+void World::adaptPlayerTankPosition(Tank* tank)
 {
 	// Keep player's position inside the screen bounds, at least borderDistance units from the border
 	sf::FloatRect viewBounds = getViewBounds();
@@ -342,7 +328,7 @@ void World::handleCollisions()
 			}
 		}
 
-		else if (matchesCategories(pair, Category::LiberatorTank, Category::Obstacle))
+		else if (matchesCategories(pair, Category::Tank, Category::Obstacle))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
@@ -642,15 +628,15 @@ void World::SpawnEnemyBase()
 
 void World::SpawnBase()
 {
-	sf::Vector2f resistanceSpawn(300.f, 200.f);
-	sf::Vector2f liberatorSpawn(2500.f, 200.f);
+	//sf::Vector2f resistanceSpawn(300.f,mWorldBounds.height/2);
+	//sf::Vector2f liberatorSpawn(2500.f, mWorldBounds.height/2);
 
 	std::unique_ptr<Base> resistanceBase(new Base(Base::LiberatorsBase, mTextures, mFonts));
-	resistanceBase->setPosition(resistanceSpawn.x, resistanceSpawn.y);
+	resistanceBase->setPosition(resistanceBase->getBoundingRect().width / 2 ,mWorldBounds.height / 2 - resistanceBase->getBoundingRect().height / 2);
 	mSceneLayers[Background]->attachChild(std::move(resistanceBase));
 
 	std::unique_ptr<Base> liberatorBase(new Base(Base::ResistanceBase, mTextures, mFonts));
-	liberatorBase->setPosition(liberatorSpawn.x, liberatorSpawn.y);
+	liberatorBase->setPosition(mWorldBounds.width - liberatorBase->getBoundingRect().width/2, mWorldBounds.height / 2 - liberatorBase->getBoundingRect().height / 2);
 	mSceneLayers[Background]->attachChild(std::move(liberatorBase));
 }
 

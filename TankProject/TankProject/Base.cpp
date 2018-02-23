@@ -116,8 +116,6 @@ unsigned int Base::getCategory() const
 	
 }
 
-
-
 bool Base::isMarkedForRemoval() const
 {
 	return isDestroyed() && (mExplosion.isFinished() || !mShowExplosion);
@@ -140,5 +138,4 @@ void Base::updateTexts()
 	{
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
 	}
-
 }

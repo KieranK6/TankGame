@@ -326,10 +326,10 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::PositionUpdate:
 	{
-		sf::Int32 numAircrafts;
-		packet >> numAircrafts;
+		sf::Int32 numTanks;
+		packet >> numTanks;
 
-		for (sf::Int32 i = 0; i < numAircrafts; ++i)
+		for (sf::Int32 i = 0; i < numTanks; ++i)
 		{
 			sf::Int32 tankIdentifier;
 			sf::Int32 tankHitpoints;
@@ -446,10 +446,10 @@ sf::Vector2f GameServer::getSpawnLocation(bool isLiberator, int tankIdentifier)
 	}
 	else
 	{
-		spawnPosition.x = 2000;
+		spawnPosition.x = 2300;
 	}
 
-	spawnPosition.y = 250.f + (125.f * tankIdentifier);
+	spawnPosition.y = 100.f + (100.f * tankIdentifier);
 
 	return spawnPosition;
 }
