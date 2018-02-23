@@ -219,9 +219,9 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 unsigned int Tank::getCategory() const
 {
 	if (isAllied())
-		return Category::PlayerTank;
+		return Category::LiberatorTank;
 	else
-		return Category::EnemyTank;
+		return Category::ResistanceTank;
 }
 
 sf::FloatRect Tank::getBoundingRect() const

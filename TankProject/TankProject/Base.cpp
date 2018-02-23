@@ -29,28 +29,22 @@ Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts
 	mExplosion.setFrameSize(sf::Vector2i(256, 256));
 	//	mExplosion.setNumFrames(16);   //This line causing error
 	mExplosion.setDuration(sf::seconds(1));
-
 	//centerOrigin(mExplosion);
-
-	
 
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();
 	mHealthDisplay->setOrigin(0, -180);
 	attachChild(std::move(healthDisplay));
+	mHealthDisplay->setRotation(-getRotation());
 
 	updateTexts();
 	centerOrigin(mSprite);
 }
 
-
-
 sf::FloatRect Base::getBoundingRect() const
 {
 	return getWorldTransform().transformRect(mSprite.getGlobalBounds());
 }
-
-
 
 void Base::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
@@ -111,7 +105,15 @@ void Base::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 
 unsigned int Base::getCategory() const
 {
-	return Category::Base;
+	if (mType == baseTeam::LiberatorsBase)
+	{
+		return Category::LiberatorsBase;
+	}
+	else
+	{
+		return Category::ResistanceBase;
+	}
+	
 }
 
 
@@ -138,8 +140,5 @@ void Base::updateTexts()
 	{
 		mHealthDisplay->setString(toString(getHitpoints()) + " HP");
 	}
-
-
-	mHealthDisplay->setRotation(-getRotation());
 
 }

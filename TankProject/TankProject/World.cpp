@@ -32,7 +32,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height / 2.f)
 	, mScrollSpeed(-50.f)
 	, mScrollSpeedCompensation(0.f)
-	, mPlayerTanks()
+	, mLiberatorTanks()
 	, mEnemySpawnPoints()
 	, mActiveEnemies()
 	, mNetworkedWorld(networked)
@@ -63,7 +63,7 @@ void World::setWorldScrollCompensation(float compensation)
 
 void World::update(sf::Time dt)
 {
-	FOREACH(Tank* a, mPlayerTanks)
+	FOREACH(Tank* a, mLiberatorTanks)
 		a->setVelocity(0.f, 0.f);
 
 	// Setup commands to destroy entities, and guide turrets
@@ -82,9 +82,9 @@ void World::update(sf::Time dt)
 	// Collision detection and response (may destroy entities)
 	handleCollisions();
 
-	// Remove tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mPlayerTanks)
-	auto firstToRemove = std::remove_if(mPlayerTanks.begin(), mPlayerTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
-	mPlayerTanks.erase(firstToRemove, mPlayerTanks.end());
+	// Remove tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mLiberatorTanks)
+	auto firstToRemove = std::remove_if(mLiberatorTanks.begin(), mLiberatorTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
+	mLiberatorTanks.erase(firstToRemove, mLiberatorTanks.end());
 
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
@@ -124,7 +124,7 @@ CommandQueue& World::getCommandQueue()
 
 Tank* World::getTank(int identifier) const
 {
-	FOREACH(Tank* a, mPlayerTanks)
+	FOREACH(Tank* a, mLiberatorTanks)
 	{
 		if (a->getIdentifier() == identifier)
 			return a;
@@ -139,7 +139,7 @@ void World::removeTank(int identifier)
 	if (tank)
 	{
 		tank->destroy();
-		mPlayerTanks.erase(std::find(mPlayerTanks.begin(), mPlayerTanks.end(), tank));
+		mLiberatorTanks.erase(std::find(mLiberatorTanks.begin(), mLiberatorTanks.end(), tank));
 	}
 }
 
@@ -149,9 +149,9 @@ Tank* World::addTank(int identifier, Tank::Type type)
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 
-	mPlayerTanks.push_back(player.get());
+	mLiberatorTanks.push_back(player.get());
 	mSceneLayers[UpperAir]->attachChild(std::move(player));
-	return mPlayerTanks.back();
+	return mLiberatorTanks.back();
 }
 
 
@@ -181,7 +181,7 @@ void World::setWorldHeight(float height)
 
 bool World::hasAlivePlayer() const
 {
-	return mPlayerTanks.size() > 0;
+	return mLiberatorTanks.size() > 0;
 }
 
 bool World::hasBaseBeenDestroyed() const
@@ -220,7 +220,7 @@ void World::adaptTankPositions()
 	sf::FloatRect viewBounds = getViewBounds();
 	const float borderDistance = 40.f;
 
-	FOREACH(Tank* tank, mPlayerTanks)
+	FOREACH(Tank* tank, mLiberatorTanks)
 	{
 		sf::Vector2f position = tank->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -231,7 +231,7 @@ void World::adaptTankPositions()
 	}
 }
 
-void World::adaptPlayerTankPosition(Tank* tank)
+void World::adaptLiberatorTankPosition(Tank* tank)
 {
 	// Keep player's position inside the screen bounds, at least borderDistance units from the border
 	sf::FloatRect viewBounds = getViewBounds();
@@ -247,7 +247,7 @@ void World::adaptPlayerTankPosition(Tank* tank)
 
 void World::adaptPlayerVelocity()
 {
-	FOREACH(Tank* tank, mPlayerTanks)
+	FOREACH(Tank* tank, mLiberatorTanks)
 	{
 		sf::Vector2f velocity = tank->getVelocity();
 
@@ -285,16 +285,6 @@ void World::handleCollisions()
 
 	FOREACH(SceneNode::Pair pair, collisionPairs)
 	{
-		//if (matchesCategories(pair, Category::PlayerTank, Category::EnemyTank))
-		//{
-		//	auto& player = static_cast<Tank&>(*pair.first);
-		//	auto& enemy = static_cast<Tank&>(*pair.second);
-
-		//	// Collision: Player damage = enemy's remaining HP
-		//	player.damage(enemy.getHitpoints());
-		//	enemy.destroy();
-		//}
-
 		 if (matchesCategories(pair, Category::Tank, Category::Pickup))
 		{
 			auto& player = static_cast<Tank&>(*pair.first);
@@ -328,19 +318,18 @@ void World::handleCollisions()
 			sf::Vector2f moveAmount = tank.getVelocity();
 
 			if (distance < (radiusBase + radiusTank))
-			{ ///bottom and right
-			  //Collision
-
+			{ 
+				///bottom and right
 				tank.move(-(moveAmount / 8.f));
 			}
 			else if (distance >(radiusBase + radiusTank))
-			{ ///top and left
+			{ 
+				///top and left
 				tank.move((moveAmount / 8.f));
 			}
-
 		}
 
-		else if (matchesCategories(pair, Category::PlayerTank, Category::Obstacle))
+		else if (matchesCategories(pair, Category::LiberatorTank, Category::Obstacle))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
@@ -362,13 +351,14 @@ void World::handleCollisions()
 			sf::Vector2f moveAmount = tank.getVelocity();
 			
 			if (distance < (radiusObstacle + radiusTank))
-			{ ///bottom and right
+			{ 
+				///bottom and right
 				//Collision
-				
 				tank.move(-(moveAmount/8.f));
 			}
 			else if (distance > (radiusObstacle - radiusTank))
-			{ ///top and left
+			{ 
+				///top and left
 				tank.move((moveAmount / 8.f));
 			}
 				
@@ -403,8 +393,8 @@ void World::handleCollisions()
 			//player.playLocalSound(mCommandQueue, SoundEffect::Collision);
 		}
 
-		else if (matchesCategories(pair, Category::Obstacle, Category::AlliedProjectile)
-			|| matchesCategories(pair, Category::Obstacle, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::Obstacle, Category::LiberatorProjectile)
+			|| matchesCategories(pair, Category::Obstacle, Category::ResistanceProjectile))
 		{
 			auto& obstacle = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -413,7 +403,8 @@ void World::handleCollisions()
 			projectile.destroy();
 		}
 
-		else if (matchesCategories(pair, Category::Base, Category::AlliedProjectile))
+		else if (matchesCategories(pair, Category::ResistanceBase, Category::LiberatorProjectile)
+			|| matchesCategories(pair, Category::LiberatorsBase, Category::ResistanceProjectile))
 		{
 			auto& base = static_cast<Base&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -421,6 +412,7 @@ void World::handleCollisions()
 			base.damage(projectile.getDamage());
 
 			if (base.isDestroyed())
+			{
 				if (base.mType == 1)
 				{
 					isLiberationBaseDestroyed = true;
@@ -430,7 +422,10 @@ void World::handleCollisions()
 					isResistanceBaseDestroyed = true;
 				}
 				else
+				{
 					isBaseDestroyed = true;
+				}
+			}
 
 			projectile.destroy();
 			
@@ -438,8 +433,8 @@ void World::handleCollisions()
 			
 		}
 
-		else if (matchesCategories(pair, Category::EnemyTank, Category::AlliedProjectile)
-			|| matchesCategories(pair, Category::PlayerTank, Category::EnemyProjectile))
+		else if (matchesCategories(pair, Category::ResistanceTank, Category::LiberatorProjectile)
+			|| matchesCategories(pair, Category::LiberatorTank, Category::ResistanceProjectile))
 		{
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& projectile = static_cast<Projectile&>(*pair.second);
@@ -500,7 +495,7 @@ void World::updateSounds()
 	sf::Vector2f listenerPosition;
 
 	// 0 players (multiplayer mode, until server is connected) -> view center
-	if (mPlayerTanks.empty())
+	if (mLiberatorTanks.empty())
 	{
 		listenerPosition = mWorldView.getCenter();
 	}
@@ -508,10 +503,10 @@ void World::updateSounds()
 	// 1 or more players -> mean position between all aircrafts
 	else
 	{
-		FOREACH(Tank* tank, mPlayerTanks)
+		FOREACH(Tank* tank, mLiberatorTanks)
 			listenerPosition += tank->getWorldPosition();
 
-		listenerPosition /= static_cast<float>(mPlayerTanks.size());
+		listenerPosition /= static_cast<float>(mLiberatorTanks.size());
 	}
 
 	// Set listener's position
@@ -637,11 +632,11 @@ void World::SpawnBase()
 	sf::Vector2f resistanceSpawn(300.f, 200.f);
 	sf::Vector2f liberatorSpawn(2500.f, 200.f);
 
-	std::unique_ptr<Base> resistanceBase(new Base(Base::ResistanceBase, mTextures, mFonts));
+	std::unique_ptr<Base> resistanceBase(new Base(Base::LiberatorsBase, mTextures, mFonts));
 	resistanceBase->setPosition(resistanceSpawn.x, resistanceSpawn.y);
 	mSceneLayers[Background]->attachChild(std::move(resistanceBase));
 
-	std::unique_ptr<Base> liberatorBase(new Base(Base::LiberatorsBase, mTextures, mFonts));
+	std::unique_ptr<Base> liberatorBase(new Base(Base::ResistanceBase, mTextures, mFonts));
 	liberatorBase->setPosition(liberatorSpawn.x, liberatorSpawn.y);
 	mSceneLayers[Background]->attachChild(std::move(liberatorBase));
 }
@@ -710,7 +705,7 @@ void World::spawnEnemies()
 /*
 void World::drawRingAroundPlayer()
 {
-	playerPositionUpdate = mPlayerTanks.at(0)->getPosition();
+	playerPositionUpdate = mLiberatorTanks.at(0)->getPosition();
 
 	float x;
 	float y;
@@ -759,7 +754,7 @@ void World::centerWorldToPlayer(Tank* centredTo)
 void World::destroyEntitiesOutsideView()
 {
 	Command command;
-	command.category = Category::Projectile; // | Category::EnemyTank;
+	command.category = Category::Projectile; // | Category::ResistanceTank;
 	command.action = derivedAction<Entity>([this](Entity& e, sf::Time)
 	{
 		if (!mWorldBounds.intersects(e.getBoundingRect()))
@@ -774,7 +769,7 @@ void World::enemyTurretTargeting()
 {
 	// Setup command that stores all enemys in active enemies
 	Command enemyCollector;
-	enemyCollector.category = Category::EnemyTank;
+	enemyCollector.category = Category::ResistanceTank;
 	enemyCollector.action = derivedAction<Tank>([this](Tank& enemy, sf::Time)
 	{
 		if (!enemy.isDestroyed())
@@ -783,10 +778,10 @@ void World::enemyTurretTargeting()
 
 	// Setup command that targets turrets toward player
 	Command turretGuider;
-	turretGuider.category = Category::EnemyTank;
+	turretGuider.category = Category::ResistanceTank;
 	turretGuider.action = derivedAction<Tank>([this](Tank& tank, sf::Time)
 	{
-		Tank* player = mPlayerTanks.at(0);
+		Tank* player = mLiberatorTanks.at(0);
 
 		tank.guideTurretTowards(player->getWorldPosition());
 	});
@@ -801,7 +796,7 @@ void World::enemyTurretTargeting()
 //{
 //	// Setup command that stores all enemies in mActiveEnemies
 //	Command enemyCollector;
-//	enemyCollector.category = Category::EnemyTank;
+//	enemyCollector.category = Category::ResistanceTank;
 //	enemyCollector.action = derivedAction<Tank>([this](Tank& enemy, sf::Time)
 //	{
 //		if (!enemy.isDestroyed())

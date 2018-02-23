@@ -22,5 +22,5 @@ public:
 private:
 	World				mWorld;
 	Player				mPlayer;
-	Tank* playerTank;
+	Tank* LiberatorTank;
 };

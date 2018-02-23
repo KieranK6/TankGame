@@ -80,9 +80,9 @@ void Projectile::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) 
 unsigned int Projectile::getCategory() const
 {
 	if (mType == EnemyBullet)
-		return Category::EnemyProjectile;
+		return Category::ResistanceProjectile;
 	else
-		return Category::AlliedProjectile;
+		return Category::LiberatorProjectile;
 }
 
 sf::FloatRect Projectile::getBoundingRect() const

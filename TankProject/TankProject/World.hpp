@@ -54,7 +54,7 @@ public:
 
 
 	void setWorldScrollCompensation(float compensation);
-	void adaptPlayerTankPosition(Tank* player);
+	void adaptLiberatorTankPosition(Tank* player);
 
 
 	Tank* getTank(int identifier) const;
@@ -128,7 +128,7 @@ private:
 	sf::Vector2f						mSpawnPosition;
 	float								mScrollSpeed;
 	float								mScrollSpeedCompensation;
-	std::vector<Tank*>					mPlayerTanks;
+	std::vector<Tank*>					mLiberatorTanks;
 
 	sf::Vector2f						playerPositionUpdate;
 	sf::Vector2f						worldPositionUpdate;

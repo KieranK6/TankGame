@@ -84,11 +84,11 @@ std::vector<BaseData> initializeBaseData()
 	data[Base::EnemyBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	data[Base::LiberatorsBase].hitpoints = 300;
-	data[Base::LiberatorsBase].texture = Textures::baseLiberator;
+	data[Base::LiberatorsBase].texture = Textures::baseResistance;
 	data[Base::LiberatorsBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	data[Base::ResistanceBase].hitpoints = 300;
-	data[Base::ResistanceBase].texture = Textures::baseResistance;
+	data[Base::ResistanceBase].texture = Textures::baseLiberator;
 	data[Base::ResistanceBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	return data;
