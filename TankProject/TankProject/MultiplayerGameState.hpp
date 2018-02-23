@@ -41,7 +41,7 @@ private:
 	sf::RenderWindow&			mWindow;
 	TextureHolder&				mTextureHolder;
 
-	Tank* LiberatorTank;
+	Tank*						playerTank;
 	std::map<int, PlayerPtr>	mPlayers;
 	std::vector<sf::Int32>		mLocalPlayerIdentifiers;
 	sf::TcpSocket				mSocket;

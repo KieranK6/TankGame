@@ -40,6 +40,7 @@ public:
 	sf::FloatRect getViewBounds() const;
 	CommandQueue& getCommandQueue();
 	Tank* addTank(int identifier, Tank::Type type);
+	Tank* addTank(int identifier, Tank tank);
 	void removeTank(int identifier);
 	void setCurrentBattleFieldPosition(float lineY);
 	void setWorldHeight(float height);
@@ -128,7 +129,7 @@ private:
 	sf::Vector2f						mSpawnPosition;
 	float								mScrollSpeed;
 	float								mScrollSpeedCompensation;
-	std::vector<Tank*>					mLiberatorTanks;
+	std::vector<Tank*>					mPlayerTanks;
 
 	sf::Vector2f						playerPositionUpdate;
 	sf::Vector2f						worldPositionUpdate;

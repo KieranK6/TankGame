@@ -67,7 +67,7 @@ private:
 	void								broadcastMessage(const std::string& message);
 	void								sendToAll(sf::Packet& packet);
 	void								updateClientState();
-	sf::Vector2f						getSpawnLocation(int teamIndicator);
+	sf::Vector2f						getSpawnLocation(bool isLiberator, int tankIdentifier);
 
 
 private:

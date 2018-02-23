@@ -129,10 +129,10 @@ bool MultiplayerGameState::update(sf::Time dt)
 	{
 		mWorld.update(dt);
 
-		if (LiberatorTank != nullptr)
+		if (playerTank != nullptr)
 		{
-			mWorld.centerWorldToPlayer(LiberatorTank);
-			mWorld.adaptLiberatorTankPosition(LiberatorTank);
+			mWorld.centerWorldToPlayer(playerTank);
+			mWorld.adaptLiberatorTankPosition(playerTank);
 		}
 
 		//Check for win
@@ -301,7 +301,7 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 			packet << static_cast<sf::Int32>(Client::RequestCoopPartner);
 			
 			bool isLiberator;
-			if (LiberatorTank->getType() == Tank::Hotchkiss)
+			if (playerTank->getType() == Tank::Hotchkiss)
 			{
 				isLiberator = true;
 			}
@@ -394,7 +394,12 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			type = Tank::Panzer;
 		}
 
-		LiberatorTank = mWorld.addTank(tankIdentifier, type);
+		playerTank = mWorld.addTank(tankIdentifier, type);
+		playerTank->setType(type);
+		playerTank->setPosition(tankPosition);
+		playerTank->setRotation(tankRotation);
+		playerTank->setTurretRotation(turretRotation);
+
 		mPlayers[tankIdentifier].reset(new Player(&mSocket, tankIdentifier, getContext().keys1));
 		mLocalPlayerIdentifiers.push_back(tankIdentifier);
 
@@ -415,7 +420,6 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		if (isLiberator)
 		{
 			type = Tank::Hotchkiss;
-			tankPosition.x = 2000.f; //Liberation
 		}
 		else
 		{
@@ -423,7 +427,6 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		}
 
 		Tank* tank = mWorld.addTank(tankIdentifier, type);
-		tankPosition.x = 2000.f;
 		tank->setPosition(tankPosition);
 		tank->setRotation(tankRotation);
 		tank->setTurretRotation(turretRotation);

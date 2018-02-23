@@ -301,6 +301,11 @@ Tank::Type Tank::getType()
 	return mType;
 }
 
+void Tank::setType(Tank::Type type)
+{
+	mType = type;
+}
+
 Tank::Type Tank::getAllyType()
 {
 	if (mType == Tank::Hotchkiss)

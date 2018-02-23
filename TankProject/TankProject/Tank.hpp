@@ -33,42 +33,39 @@ public:
 public:
 	Tank(Type type, const TextureHolder& textures, const FontHolder& fonts);
 
+	virtual void			remove();
+	void					disablePickups();
+
+	// -- start getters and setters --
 	virtual unsigned int	getCategory() const;
 	virtual sf::FloatRect	getBoundingRect() const;
-	virtual void			remove();
 	virtual bool 			isMarkedForRemoval() const;
 	bool					isAllied() const;
 	float					getMaxSpeed() const;
 	float					getMaxTurretRotationSpeed() const;
 	float					getTurretRotationSpeed() const;
 	float					getSpeedBoost() const;
-	void					disablePickups();
 	float					getTurretRotation();
 	void					setTurretRotation(float rotation);
 	Tank::Type				getType();
+	void					setType(Tank::Type type);
 	Tank::Type				getAllyType();
-
 	float					getTankRadius();
-	
-
-	sf::CircleShape Tank::getBoundingCircle() const;
-
-	void					increaseFireRate();
-	//void					increaseSpread();
-	void					collectAmmo(unsigned int count);
-	void					increaseHealth(int amount);
-	void					increaseTankSpeed(float lengthInSeconds);
-
-	void 					fire();
-	//void					launchMissile();
-	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
-	void					playLocalSound(SoundEffect::ID effect, bool looped);
-	///void					playLocalSound(SoundEffect::ID effect);
 	int						getIdentifier();
 	void					setIdentifier(int identifier);
 	int						getMissileAmmo() const;
 	void					setMissileAmmo(int ammo);
 	int						getAmmoCount() const;
+	// -- end getters and setters --
+
+	void					increaseFireRate();
+	void					collectAmmo(unsigned int count);
+	void					increaseHealth(int amount);
+	void					increaseTankSpeed(float lengthInSeconds);
+
+	void 					fire();
+	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
+	void					playLocalSound(SoundEffect::ID effect, bool looped);
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
 	void					guideTurretTowards(sf::Vector2f position);

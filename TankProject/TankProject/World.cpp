@@ -32,7 +32,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	, mSpawnPosition(mWorldView.getSize().x / 2.f, mWorldBounds.height / 2.f)
 	, mScrollSpeed(-50.f)
 	, mScrollSpeedCompensation(0.f)
-	, mLiberatorTanks()
+	, mPlayerTanks()
 	, mEnemySpawnPoints()
 	, mActiveEnemies()
 	, mNetworkedWorld(networked)
@@ -63,7 +63,7 @@ void World::setWorldScrollCompensation(float compensation)
 
 void World::update(sf::Time dt)
 {
-	FOREACH(Tank* a, mLiberatorTanks)
+	FOREACH(Tank* a, mPlayerTanks)
 		a->setVelocity(0.f, 0.f);
 
 	// Setup commands to destroy entities, and guide turrets
@@ -82,9 +82,9 @@ void World::update(sf::Time dt)
 	// Collision detection and response (may destroy entities)
 	handleCollisions();
 
-	// Remove tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mLiberatorTanks)
-	auto firstToRemove = std::remove_if(mLiberatorTanks.begin(), mLiberatorTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
-	mLiberatorTanks.erase(firstToRemove, mLiberatorTanks.end());
+	// Remove tanks that were destroyed (World::removeWrecks() only destroys the entities, not the pointers in mPlayerTanks)
+	auto firstToRemove = std::remove_if(mPlayerTanks.begin(), mPlayerTanks.end(), std::mem_fn(&Tank::isMarkedForRemoval));
+	mPlayerTanks.erase(firstToRemove, mPlayerTanks.end());
 
 	// Remove all destroyed entities, create new ones
 	mSceneGraph.removeWrecks();
@@ -124,7 +124,7 @@ CommandQueue& World::getCommandQueue()
 
 Tank* World::getTank(int identifier) const
 {
-	FOREACH(Tank* a, mLiberatorTanks)
+	FOREACH(Tank* a, mPlayerTanks)
 	{
 		if (a->getIdentifier() == identifier)
 			return a;
@@ -139,7 +139,7 @@ void World::removeTank(int identifier)
 	if (tank)
 	{
 		tank->destroy();
-		mLiberatorTanks.erase(std::find(mLiberatorTanks.begin(), mLiberatorTanks.end(), tank));
+		mPlayerTanks.erase(std::find(mPlayerTanks.begin(), mPlayerTanks.end(), tank));
 	}
 }
 
@@ -149,9 +149,22 @@ Tank* World::addTank(int identifier, Tank::Type type)
 	player->setPosition(mWorldView.getCenter());
 	player->setIdentifier(identifier);
 
-	mLiberatorTanks.push_back(player.get());
+	mPlayerTanks.push_back(player.get());
 	mSceneLayers[UpperAir]->attachChild(std::move(player));
-	return mLiberatorTanks.back();
+	return mPlayerTanks.back();
+}
+
+Tank* World::addTank(int identifier, Tank tank)
+{
+	std::unique_ptr<Tank> player(new Tank(tank.getType(), mTextures, mFonts));
+	player->setIdentifier(identifier);
+	player->setPosition(tank.getPosition());
+	player->setRotation(tank.getRotation());
+	player->setTurretRotation(tank.getTurretRotation());
+
+	mPlayerTanks.push_back(player.get());
+	mSceneLayers[UpperAir]->attachChild(std::move(player));
+	return mPlayerTanks.back();
 }
 
 
@@ -181,7 +194,7 @@ void World::setWorldHeight(float height)
 
 bool World::hasAlivePlayer() const
 {
-	return mLiberatorTanks.size() > 0;
+	return mPlayerTanks.size() > 0;
 }
 
 bool World::hasBaseBeenDestroyed() const
@@ -220,7 +233,7 @@ void World::adaptTankPositions()
 	sf::FloatRect viewBounds = getViewBounds();
 	const float borderDistance = 40.f;
 
-	FOREACH(Tank* tank, mLiberatorTanks)
+	FOREACH(Tank* tank, mPlayerTanks)
 	{
 		sf::Vector2f position = tank->getPosition();
 		position.x = std::max(position.x, viewBounds.left + borderDistance);
@@ -247,7 +260,7 @@ void World::adaptLiberatorTankPosition(Tank* tank)
 
 void World::adaptPlayerVelocity()
 {
-	FOREACH(Tank* tank, mLiberatorTanks)
+	FOREACH(Tank* tank, mPlayerTanks)
 	{
 		sf::Vector2f velocity = tank->getVelocity();
 
@@ -495,7 +508,7 @@ void World::updateSounds()
 	sf::Vector2f listenerPosition;
 
 	// 0 players (multiplayer mode, until server is connected) -> view center
-	if (mLiberatorTanks.empty())
+	if (mPlayerTanks.empty())
 	{
 		listenerPosition = mWorldView.getCenter();
 	}
@@ -503,10 +516,10 @@ void World::updateSounds()
 	// 1 or more players -> mean position between all aircrafts
 	else
 	{
-		FOREACH(Tank* tank, mLiberatorTanks)
+		FOREACH(Tank* tank, mPlayerTanks)
 			listenerPosition += tank->getWorldPosition();
 
-		listenerPosition /= static_cast<float>(mLiberatorTanks.size());
+		listenerPosition /= static_cast<float>(mPlayerTanks.size());
 	}
 
 	// Set listener's position
@@ -705,7 +718,7 @@ void World::spawnEnemies()
 /*
 void World::drawRingAroundPlayer()
 {
-	playerPositionUpdate = mLiberatorTanks.at(0)->getPosition();
+	playerPositionUpdate = mPlayerTanks.at(0)->getPosition();
 
 	float x;
 	float y;
@@ -781,7 +794,7 @@ void World::enemyTurretTargeting()
 	turretGuider.category = Category::ResistanceTank;
 	turretGuider.action = derivedAction<Tank>([this](Tank& tank, sf::Time)
 	{
-		Tank* player = mLiberatorTanks.at(0);
+		Tank* player = mPlayerTanks.at(0);
 
 		tank.guideTurretTowards(player->getWorldPosition());
 	});
