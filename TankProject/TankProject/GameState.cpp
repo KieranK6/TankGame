@@ -1,5 +1,8 @@
 #include "GameState.hpp"
 #include "MusicPlayer.hpp"
+#include <iostream>
+#include <fstream>
+
 
 #include <SFML/Graphics/RenderWindow.hpp>
 
@@ -10,6 +13,8 @@ GameState::GameState(StateStack& stack, Context context)
 	, LiberatorTank(mWorld.addTank(1, Tank::Hotchkiss))
 {
 	mPlayer.setMissionStatus(Player::MissionRunning);
+
+	
 
 	// Play game theme
 	context.music->play(Music::MissionTheme);
@@ -41,6 +46,7 @@ bool GameState::update(sf::Time dt)
 		mPlayer.setMissionStatus(Player::LiberatorSuccess);
 		//getContext().sounds->play(SoundEffect::);    //Victory Messagew for Liberators
 		requestStackPush(States::LiberationSuccess);
+		
 	}
 	else if (mWorld.hasBaseBeenDestroyed())
 	{

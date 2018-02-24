@@ -7,6 +7,11 @@
 #include <SFML/Network/IpAddress.hpp>
 
 #include <fstream>
+#include <iostream>
+
+
+
+
 
 
 sf::IpAddress getAddressFromFile()
@@ -146,12 +151,20 @@ bool MultiplayerGameState::update(sf::Time dt)
 			//mPlayer.setMissionStatus(Player::ResistanceSuccess);
 			//getContext().sounds->play(SoundEffect::);     //Victory message for Resistance
 			requestStackPush(States::ResistanceSuccess);
+			std::ofstream outputFile;
+			outputFile.open("highscore.txt", std::ios_base::app);
+			outputFile << "Resistance success! \n";
+			outputFile.close();
 		}
 		else if (mWorld.hasResistanceBaseBeenDestroyed())
 		{
 			//mPlayer.setMissionStatus(Player::LiberatorSuccess);
 			//getContext().sounds->play(SoundEffect::);    //Victory Messagew for Liberators
 			requestStackPush(States::LiberationSuccess);
+			std::ofstream outputFile;
+			outputFile.open("highscore.txt", std::ios_base::app);
+			outputFile << "Liberation success! \n";
+			outputFile.close();
 		}
 		else if (mWorld.hasBaseBeenDestroyed())
 		{
