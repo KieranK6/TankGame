@@ -25,6 +25,7 @@
     <ClInclude Include="BloomEffect.hpp" />
     <ClInclude Include="Button.hpp" />
     <ClInclude Include="Category.hpp" />
+    <ClInclude Include="Collision.h" />
     <ClInclude Include="Command.hpp" />
     <ClInclude Include="CommandQueue.hpp" />
     <ClInclude Include="Component.hpp" />
@@ -80,6 +81,7 @@
     <ClCompile Include="Base.cpp" />
     <ClCompile Include="BloomEffect.cpp" />
     <ClCompile Include="Button.cpp" />
+    <ClCompile Include="Collision.cpp" />
     <ClCompile Include="Command.cpp" />
     <ClCompile Include="CommandQueue.cpp" />
     <ClCompile Include="Component.cpp" />
