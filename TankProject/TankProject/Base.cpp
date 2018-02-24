@@ -26,10 +26,10 @@ Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts
 , mShowExplosion(true)
 , mExplosionBegan(false)
 {
-	mExplosion.setFrameSize(sf::Vector2i(256, 256));
-	//	mExplosion.setNumFrames(16);   //This line causing error
+	mExplosion.setFrameSize(sf::Vector2i(getBoundingRect().width, getBoundingRect().height));
+	mExplosion.setNumFrames(16);   //This line causing error
 	mExplosion.setDuration(sf::seconds(1));
-	//centerOrigin(mExplosion);
+	centerOrigin(mExplosion);
 
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();

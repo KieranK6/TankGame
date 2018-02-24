@@ -73,6 +73,7 @@ MultiplayerGameState::MultiplayerGameState(StateStack& stack, Context context, b
 	{
 		mGameServer.reset(new GameServer(sf::Vector2f(mWindow.getSize())));
 		ip = "127.0.0.1";
+
 	}
 	else
 	{
@@ -153,6 +154,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 			requestStackPush(States::ResistanceSuccess);
 			std::ofstream outputFile;
 			outputFile.open("highscore.txt", std::ios_base::app);
+			
 			outputFile << "Resistance success! \n";
 			outputFile.close();
 		}

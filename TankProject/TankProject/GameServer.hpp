@@ -55,7 +55,7 @@ private:
 	void								setListening(bool enable);
 	void								executionThread();
 	void								tick();
-	sf::Time							now() const;
+	
 
 	void								handleIncomingPackets();
 	void								handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingPeer, bool& detectedTimeout);
@@ -68,6 +68,9 @@ private:
 	void								sendToAll(sf::Packet& packet);
 	void								updateClientState();
 	sf::Vector2f						getSpawnLocation(bool isLiberator, int tankIdentifier);
+
+public:
+	sf::Time							now() const;
 
 
 private:
