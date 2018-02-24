@@ -59,15 +59,22 @@ std::vector<ObstacleData> initializeObstacleData()
 	int pixelWidth = 240;
 	int pixelHeight = 200;
 
+	int wallPixelWidth = 200;
+	int wallPixelHeight = 800;
+
 	std::vector<ObstacleData> data(Obstacle::TypeCount);
 
-	data[Obstacle::Barricade].hitpoints = 100;
+	data[Obstacle::Barricade].hitpoints = 1000;
 	data[Obstacle::Barricade].texture = Textures::Obstacles;
 	data[Obstacle::Barricade].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
-	data[Obstacle::Stone].hitpoints = 150;
+	data[Obstacle::Stone].hitpoints = 1000;
 	data[Obstacle::Stone].texture = Textures::Obstacles;
 	data[Obstacle::Stone].textureRect = sf::IntRect(1 * pixelWidth, 0, pixelWidth, pixelHeight);
+
+	data[Obstacle::Wall].hitpoints = 1000;
+	data[Obstacle::Wall].texture = Textures::Walls;
+	data[Obstacle::Wall].textureRect = sf::IntRect(0, 0, wallPixelWidth, wallPixelHeight);
 
 	return data;
 }
@@ -84,11 +91,11 @@ std::vector<BaseData> initializeBaseData()
 	data[Base::EnemyBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	data[Base::LiberatorsBase].hitpoints = 300;
-	data[Base::LiberatorsBase].texture = Textures::baseResistance;
+	data[Base::LiberatorsBase].texture = Textures::LiberatorsBase;
 	data[Base::LiberatorsBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	data[Base::ResistanceBase].hitpoints = 300;
-	data[Base::ResistanceBase].texture = Textures::baseLiberator;
+	data[Base::ResistanceBase].texture = Textures::ResistanceBase;
 	data[Base::ResistanceBase].textureRect = sf::IntRect(0 * pixelWidth, 0, pixelWidth, pixelHeight);
 
 	return data;

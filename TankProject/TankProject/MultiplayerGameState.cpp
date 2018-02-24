@@ -466,13 +466,9 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 			if (isLiberator)
 			{
 				type = Tank::Hotchkiss;
-				tankPosition.x = 2000.f; //Liberation
+				
 			}
 			
-
-			//tankPosition.x = 2000.f; //Worked on spawning
-			//tankPosition.y = 100.f;
-
 			Tank* tank = mWorld.addTank(tankIdentifier, type);
 			tank->setPosition(tankPosition);
 			tank->setHitpoints(hitpoints);

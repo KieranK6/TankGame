@@ -19,6 +19,7 @@ public:
 	{
 		Stone,
 		Barricade,
+		Wall,
 		TypeCount
 	};
 

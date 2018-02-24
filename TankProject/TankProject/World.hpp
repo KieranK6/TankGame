@@ -71,7 +71,11 @@ private:
 	void handleCircleCollions(Tank&, Obstacle&);
 	void updateSounds();
 
-	void SpawnObstacles(int obstacleCount);
+	void SpawnObstacles(int obstacleCount); //legacy function
+	void SpawnObstacles(); //spawns obstacles
+	void SpawnBaseWalls(); //spawns walls
+	Obstacle::ObType getRandomObstacle();
+	void PlaceObstacle(Obstacle::ObType obstacleType, sf::Vector2f obstaclePosition);
 	void SpawnEnemyBase();
 	void buildScene();
 	void addEnemies(int enemyCount);

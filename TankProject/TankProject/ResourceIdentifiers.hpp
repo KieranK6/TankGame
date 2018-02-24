@@ -22,9 +22,10 @@ namespace Textures
 		Particle,
 		FinishLine,
 		Obstacles,
+		Walls,
 		EnemyBase,
-		baseLiberator,
-		baseResistance,
+		LiberatorsBase,
+		ResistanceBase,
 	};
 }
 

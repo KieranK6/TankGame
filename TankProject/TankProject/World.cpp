@@ -44,7 +44,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	loadTextures();
 	buildScene();
-	//SpawnObstacles(5);
+	SpawnObstacles();
 
 	//bool collisionSoundPlaying = false;
 	
@@ -208,9 +208,10 @@ void World::loadTextures()
 	mTextures.load(Textures::Particle, "Media/Textures/Particle.png");
 	mTextures.load(Textures::FinishLine, "Media/Textures/FinishLine.png");
 	mTextures.load(Textures::Obstacles, "Media/Textures/obstacles.png"); 
+	mTextures.load(Textures::Walls, "Media/Textures/hescoTexture.png");
 	mTextures.load(Textures::EnemyBase, "Media/Textures/base.png");
-	mTextures.load(Textures::baseLiberator, "Media/Textures/baseLiberator.png");
-	mTextures.load(Textures::baseResistance, "Media/Textures/baseResistance.png");
+	mTextures.load(Textures::LiberatorsBase, "Media/Textures/baseLiberator.png");
+	mTextures.load(Textures::ResistanceBase, "Media/Textures/baseResistance.png");
 }
 
 void World::adaptTankPositions()
@@ -336,11 +337,11 @@ void World::handleCollisions()
 			float radiusTank = tank.getTankRadius();
 			float radiusObstacle = obstacle.getObstacleRadius();
 
+			
 			float tankX = tank.getPosition().x;
 			float tankY = tank.getPosition().y;
 			float obstacleX = obstacle.getPosition().x;
 			float obstacleY = obstacle.getPosition().y;
-
 
 			float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
 			float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
@@ -451,12 +452,10 @@ void World::handleCircleCollions(Tank& tank, Obstacle& obstacle)
 	float radiusObstacle = obstacle.getObstacleRadius();
 	
 	//radius of circ + radius of collided obj
-
 	float tankX = tank.getPosition().x;
 	float tankY = tank.getPosition().y;
 	float obstacleX = obstacle.getPosition().x;
 	float obstacleY = obstacle.getPosition().y;
-
 
 	float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
 	float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
@@ -469,9 +468,6 @@ void World::handleCircleCollions(Tank& tank, Obstacle& obstacle)
 		sf::Vector2f moveAmount = tank.getVelocity();
 		tank.move(-moveAmount);
 	}
-
-
-
 }
 
 sf::Vector2f World::normaliseVector(sf::Vector2f passedVector, float magnitude)
@@ -641,36 +637,161 @@ void World::SpawnBase()
 }
 
 
+void World::SpawnObstacles()
+{
+	//Spawns obstacles in preset positions
+	SpawnBaseWalls();
+	int randomObsIndex = 0;
+	Obstacle::ObType curObstacle;
+
+	//Left Two obstacles
+	for (int i = 0; i < 2; i++)
+	{
+		curObstacle = getRandomObstacle();
+
+		sf::Vector2f curPosition; // = getPosition();
+		curPosition.x = (mWorldBounds.width / 2) - 300; //this lane is in center
+		if (i == 0)
+		{
+			curPosition.y = 400; //places obstacle at top of map in center
+		}
+		else if (i == 1) //(float)mWorldBounds.height;
+		{
+			curPosition.y = (float)mWorldBounds.height - 400; //places obstacle in direct center center
+		}
+
+		PlaceObstacle(curObstacle, curPosition);
+	}
+
+
+	//Center three obstacles
+	for (int i = 0; i < 3; i++)
+	{
+		//determine obstacle type
+		curObstacle = getRandomObstacle();
+
+		//determine obstacle position
+		sf::Vector2f curPosition;
+		curPosition.x = (mWorldBounds.width / 2); //this lane is in center
+		if (i == 0)
+		{
+			curPosition.y = 200; //places obstacle at top of map in center
+		}
+		else if (i == 1) //(float)mWorldBounds.height;
+		{
+			curPosition.y = (float)mWorldBounds.height / 2; //places obstacle in direct center center
+		}
+		else if (i == 2)
+		{
+			curPosition.y = (float)mWorldBounds.height - 200.f; //places obstacle at bottom of map
+		}
+			
+		//placeobstacle
+		PlaceObstacle(curObstacle, curPosition);
+	}
+
+
+	//Right Two obstacles
+
+	for (int i = 0; i < 2; i++)
+	{
+		//determine obstacle type
+		curObstacle = getRandomObstacle();
+
+		//determine obstacle position
+		sf::Vector2f curPosition;
+		curPosition.x = (mWorldBounds.width / 2) + 300; //this lane is in center
+		if (i == 0)
+		{
+			curPosition.y = 400; //places obstacle at top of map in center
+		}
+		else if (i == 1) //(float)mWorldBounds.height;
+		{
+			curPosition.y = (float)mWorldBounds.height - 400; //places obstacle in direct center center
+		}
+
+
+
+		//placeobstacle
+		PlaceObstacle(curObstacle, curPosition);
+	}
+
+}
+
+void World::PlaceObstacle(Obstacle::ObType obstacleType, sf::Vector2f obstaclePosition)
+{
+	std::unique_ptr<Obstacle> ob1(new Obstacle(obstacleType, mTextures)); //creates a pointer to an Obstacle object with a random texture
+	ob1->setPosition(obstaclePosition); //Spawns in obstacles at varied positions
+	ob1->setScale(.5f, .5f); //scales down object as too big by default
+	mSceneLayers[Background]->attachChild(std::move(ob1)); //attaches current object as child to the Background scene layer
+}
+
+void World::SpawnBaseWalls()
+{
+	Obstacle::ObType walls = Obstacle::Wall;
+	float xPos1 = mWorldBounds.width / 4 + 100;
+	float xPos2 = mWorldBounds.width - xPos1;
+	sf::Vector2f base1Wall;
+	sf::Vector2f base2Wall;
+
+	base1Wall.x = xPos1;
+	base2Wall.x = xPos2;
+	base1Wall.y = (mWorldBounds.height/2) - 200;
+	base2Wall.y = (mWorldBounds.height / 2) - 200;
+
+	std::unique_ptr<Obstacle> wall1 (new Obstacle(walls, mTextures)); //creates a pointer to an Obstacle object with a random texture
+	wall1->setPosition(base1Wall); //Set pos of wall1
+	wall1->setScale(.5f, .6f); //scales down object as too big by default
+	mSceneLayers[Background]->attachChild(std::move(wall1)); //attaches current object as child to the Background scene layer
+
+	std::unique_ptr<Obstacle> wall2(new Obstacle(walls, mTextures)); //creates a pointer to an Obstacle object with a random texture
+	wall2->setPosition(base2Wall); //Set pos of wall2
+	wall2->setScale(.5f, .6f); //scales down object as too big by default
+	mSceneLayers[Background]->attachChild(std::move(wall2)); //attaches current object as child to the Background scene layer
+}
+
+Obstacle::ObType World::getRandomObstacle()
+{
+	int randomObsIndex = rand() % 2 + 1; //Random num between 1 and 2, for getting a random type of obstacle from vector of obstacle types
+	Obstacle::ObType randomObReturned = Obstacle::Barricade;
+	if (randomObsIndex == 1)
+	{
+		randomObReturned = Obstacle::Stone;
+	}
+	return randomObReturned;
+}
 
 void World::SpawnObstacles(int obstacleCount)
 {
-	std::vector<float> xPositions;
-	xPositions.push_back(150.f);
-	xPositions.push_back(400.f);
-	xPositions.push_back(750.f);
-	float currentValue = 0;
-	int xPos = 0;
-	int randomObsIndex = 0;
+	///Legacy function
+
+	//std::vector<float> xPositions;
+	//xPositions.push_back(150.f);
+	//xPositions.push_back(400.f);
+	//xPositions.push_back(750.f);
+	//float currentValue = 0;
+	//int xPos = 0;
+	//int randomObsIndex = 0;
 
 
-	for (int i = 0; i < obstacleCount; i++)
-	{
-		xPos = rand() % 3; //Random number between 1 and 3, for getting an xPos for obstacle spawning
-		randomObsIndex = rand() % 2 + 1; //Random num between 1 and 2, for getting a random type of obstacle from vector of obstacle types
-		currentValue = xPositions.at(xPos); //sets current x value to one of the three possible values form xPositions vector
+	//for (int i = 0; i < obstacleCount; i++)
+	//{
+	//	xPos = rand() % 3; //Random number between 1 and 3, for getting an xPos for obstacle spawning
+	//	randomObsIndex = rand() % 2 + 1; //Random num between 1 and 2, for getting a random type of obstacle from vector of obstacle types
+	//	currentValue = xPositions.at(xPos); //sets current x value to one of the three possible values form xPositions vector
 
-		Obstacle::ObType barricade = Obstacle::Barricade;
+	//	Obstacle::ObType barricade = Obstacle::Barricade;
 
-		if (randomObsIndex == 1)
-		{
-			barricade = Obstacle::Stone;
-		}
+	//	if (randomObsIndex == 1)
+	//	{
+	//		barricade = Obstacle::Stone;
+	//	}
 
-		std::unique_ptr<Obstacle> ob1(new Obstacle(barricade, mTextures)); //creates a pointer to an Obstacle object with a random texture
-		ob1->setPosition(currentValue + (i * 4), 400 + (200 * i)); //Spawns in obstacles at varied positions
-		ob1->setScale(.5f, .5f); //scales down object as too big by default
-		mSceneLayers[Background]->attachChild(std::move(ob1)); //attaches current object as child to the Background scene layer
-	}
+	//	std::unique_ptr<Obstacle> ob1(new Obstacle(barricade, mTextures)); //creates a pointer to an Obstacle object with a random texture
+	//	ob1->setPosition(currentValue + (i * 4), 400 + (200 * i)); //Spawns in obstacles at varied positions
+	//	ob1->setScale(.5f, .5f); //scales down object as too big by default
+	//	mSceneLayers[Background]->attachChild(std::move(ob1)); //attaches current object as child to the Background scene layer
+	//}
 }
 
 
