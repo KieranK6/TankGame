@@ -10,13 +10,20 @@
 #include <SFML/Graphics/RenderTarget.hpp>
 #include "SceneNode.hpp"
 #include "Base.hpp"
+#include "Collision.h"
 
 #include <algorithm>
 #include <cmath>
+
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <limits>
 #include <iostream>
 #include <vector>
-#include <math.h>
+
+
+#define CLAMP(x, upper, lower) (fmin(upper, fmax(x, lower)))
+
 
 
 World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sounds, bool networked)
@@ -301,7 +308,18 @@ void World::handleCollisions()
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& base = static_cast<Base&>(*pair.second);
 
-			float radiusTank = tank.getTankRadius();
+			if (Collision::BoundingBoxTest(tank.mSprite, base.mSprite))
+			{
+				float opposideTankRotationAngle = ((tank.getRotation()) - 180) * (M_PI / 180); //-270 to get opposide
+
+				sf::Vector2f oppositeUnitDirection = sf::Vector2f(std::cos(opposideTankRotationAngle), std::sin(opposideTankRotationAngle));
+
+				//tank.setVelocity(oppositeUnitDirection*300.f);
+				tank.move((oppositeUnitDirection*10.f));
+
+			}
+
+			/*float radiusTank = tank.getTankRadius();
 			float radiusBase = base.GetBaseRadius();
 
 			float tankX = tank.getPosition().x;
@@ -326,7 +344,7 @@ void World::handleCollisions()
 			{ 
 				///top and left
 				tank.move((moveAmount / 8.f));
-			}
+			}*/
 		}
 
 		else if (matchesCategories(pair, Category::Tank, Category::Obstacle))
@@ -334,34 +352,21 @@ void World::handleCollisions()
 			auto& tank = static_cast<Tank&>(*pair.first);
 			auto& obstacle = static_cast<Obstacle&>(*pair.second);
 
-			float radiusTank = tank.getTankRadius();
-			float radiusObstacle = obstacle.getObstacleRadius();
+			if(Collision::BoundingBoxTest(tank.mSprite, obstacle.mSprite))
+			{	
+				float opposideTankRotationAngle = ((tank.getRotation()) - 180) * (M_PI / 180); //-270 to get opposide
 
-			
-			float tankX = tank.getPosition().x;
-			float tankY = tank.getPosition().y;
-			float obstacleX = obstacle.getPosition().x;
-			float obstacleY = obstacle.getPosition().y;
+				sf::Vector2f oppositeUnitDirection = sf::Vector2f(std::cos(opposideTankRotationAngle), std::sin(opposideTankRotationAngle));
 
-			float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
-			float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
-
-			float distance = std::sqrt((dx * dx) + (dy * dy));
-
-			sf::Vector2f moveAmount = tank.getVelocity();
-			
-			if (distance < (radiusObstacle + radiusTank))
-			{ 
-				///bottom and right
-				//Collision
-				tank.move(-(moveAmount/8.f));
-			}
-			else if (distance > (radiusObstacle - radiusTank))
-			{ 
-				///top and left
-				tank.move((moveAmount / 8.f));
-			}
+				//tank.setVelocity(oppositeUnitDirection*300.f);
+				tank.move((oppositeUnitDirection*10.f));
 				
+			}
+
+
+			
+				
+			
 
 
 			//handleCircleCollions(player, obstacle);
@@ -391,6 +396,34 @@ void World::handleCollisions()
 	
 			//collisionSoundPlaying = true;
 			//player.playLocalSound(mCommandQueue, SoundEffect::Collision);
+
+			//float radiusTank = tank.getTankRadius();
+			//float radiusObstacle = obstacle.getObstacleRadius();
+
+			//
+			//float tankX = tank.getPosition().x;
+			//float tankY = tank.getPosition().y;
+			//float obstacleX = obstacle.getPosition().x;
+			//float obstacleY = obstacle.getPosition().y;
+
+			//float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
+			//float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
+
+			//float distance = std::sqrt((dx * dx) + (dy * dy));
+
+			//sf::Vector2f moveAmount = tank.getVelocity();
+			//
+			//if (distance < (radiusObstacle + radiusTank))
+			//{ 
+			//	///bottom and right
+			//	//Collision
+			//	tank.move(-(moveAmount/8.f));
+			//}
+			//else if (distance > (radiusObstacle - radiusTank))
+			//{ 
+			//	///top and left
+			//	tank.move((moveAmount / 8.f));
+			//}
 		}
 
 		else if (matchesCategories(pair, Category::Obstacle, Category::LiberatorProjectile)
@@ -448,26 +481,26 @@ void World::handleCollisions()
 
 void World::handleCircleCollions(Tank& tank, Obstacle& obstacle)
 {
-	float radiusTank = tank.getTankRadius();
-	float radiusObstacle = obstacle.getObstacleRadius();
-	
-	//radius of circ + radius of collided obj
-	float tankX = tank.getPosition().x;
-	float tankY = tank.getPosition().y;
-	float obstacleX = obstacle.getPosition().x;
-	float obstacleY = obstacle.getPosition().y;
+	//float radiusTank = tank.getTankRadius();
+	//float radiusObstacle = obstacle.getObstacleRadius();
+	//
+	////radius of circ + radius of collided obj
+	//float tankX = tank.getPosition().x;
+	//float tankY = tank.getPosition().y;
+	//float obstacleX = obstacle.getPosition().x;
+	//float obstacleY = obstacle.getPosition().y;
 
-	float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
-	float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
+	//float dx = (tankX + radiusTank) - (obstacleX + radiusObstacle);
+	//float dy = (tankY + radiusTank) - (obstacleY + radiusObstacle);
 
-	float distance = std::sqrt((dx * dx) + (dy * dy));
+	//float distance = std::sqrt((dx * dx) + (dy * dy));
 
-	if (distance < (radiusObstacle + radiusTank))
-	{
-		//Collision
-		sf::Vector2f moveAmount = tank.getVelocity();
-		tank.move(-moveAmount);
-	}
+	//if (distance < (radiusObstacle + radiusTank))
+	//{
+	//	//Collision
+	//	sf::Vector2f moveAmount = tank.getVelocity();
+	//	tank.move(-moveAmount);
+	//}
 }
 
 sf::Vector2f World::normaliseVector(sf::Vector2f passedVector, float magnitude)

@@ -28,6 +28,7 @@ public:
 	unsigned int Obstacle::getCategory() const;
 
 	float getObstacleRadius();
+	sf::Sprite				mSprite;
 
 
 	~Obstacle();
@@ -38,7 +39,7 @@ private:
 
 private:
 	ObType					mType;
-	sf::Sprite				mSprite;
+	
 	float					mObRadius = 40.f;
 	//int						mIdentifier;
 

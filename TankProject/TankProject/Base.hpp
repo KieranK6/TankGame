@@ -34,6 +34,7 @@ public:
 	virtual bool 			isMarkedForRemoval() const;
 	float					GetBaseRadius();
 	baseTeam				mType;
+	sf::Sprite				mSprite;
 
 private:
 	virtual void			drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const;
@@ -42,7 +43,7 @@ private:
 
 private:
 	
-	sf::Sprite				mSprite;
+	
 	TextNode*				mHealthDisplay;
 	//sf::Vector2f			position;
 

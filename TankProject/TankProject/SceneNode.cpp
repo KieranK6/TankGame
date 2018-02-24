@@ -184,28 +184,7 @@ bool SceneNode::isDestroyed() const
 
 bool collision(const SceneNode& lhs, const SceneNode& rhs)
 {
-	sf::FloatRect Rect1 = lhs.getBoundingRect();
-	sf::FloatRect Rect2 = rhs.getBoundingRect();
-	 //right = left + width
-	//bottom = top + height
-
-	float OneRight = Rect1.left + Rect1.width;
-	float OneBottom = Rect1.top + Rect1.height;
-	float TwoRight = Rect2.left + Rect2.width;
-	float TwoBottom = Rect2.top + Rect2.height;
-	
-
-	if (Rect1.left >= TwoRight || OneRight <= Rect2.left ||
-		Rect1.top >= TwoBottom || OneBottom <= Rect2.top) {
-
-		return false;
-
-	}
-	else {
-
-		return true;
-
-	}
+	return lhs.getBoundingRect().intersects(rhs.getBoundingRect());
 }
 
 float distance(const SceneNode& lhs, const SceneNode& rhs)
