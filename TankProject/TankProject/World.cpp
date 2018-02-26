@@ -146,6 +146,7 @@ void World::removeTank(int identifier)
 	if (tank)
 	{
 		tank->destroy();
+
 		mPlayerTanks.erase(std::find(mPlayerTanks.begin(), mPlayerTanks.end(), tank));
 	}
 }

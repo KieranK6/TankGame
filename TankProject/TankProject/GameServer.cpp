@@ -398,15 +398,11 @@ void GameServer::handleIncomingConnections()
 		mTankInfo[mTankIdentifierCounter].turretRotation = 0;
 
 		//Check for if on the resistace team
-		bool isLiberator = true;
-		if (mTankIdentifierCounter % 2 == 0)
-		{
-			isLiberator = false;			
-		}
+		lastConnected = !lastConnected;
 
-		mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(isLiberator, mTankIdentifierCounter);
-		mTankInfo[mTankIdentifierCounter].tankRotation = (isLiberator ? 90 : -90);
-		mTankInfo[mTankIdentifierCounter].isLiberator = isLiberator;
+		mTankInfo[mTankIdentifierCounter].position = getSpawnLocation(lastConnected, mTankIdentifierCounter);
+		mTankInfo[mTankIdentifierCounter].tankRotation = (lastConnected ? 90 : -90);
+		mTankInfo[mTankIdentifierCounter].isLiberator = lastConnected;
 
 		sf::Packet packet;
 		packet << static_cast<sf::Int8>(Server::SpawnSelf);
@@ -419,7 +415,7 @@ void GameServer::handleIncomingConnections()
 
 		mPeers[mConnectedPlayers]->tankIdentifiers.push_back(mTankIdentifierCounter);
 
-		broadcastMessage("New player!");
+		broadcastMessage("Someone has joined the fight!");
 		informWorldState(mPeers[mConnectedPlayers]->socket);
 		notifyPlayerSpawn(mTankIdentifierCounter++);
 

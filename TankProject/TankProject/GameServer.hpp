@@ -82,6 +82,7 @@ private:
 
 	std::size_t							mMaxConnectedPlayers;
 	std::size_t							mConnectedPlayers;
+	bool								lastConnected;
 
 	sf::FloatRect						mBattleFieldRect;
 	float								mBattleFieldScrollSpeed;

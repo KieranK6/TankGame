@@ -155,7 +155,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 			std::ofstream outputFile;
 			outputFile.open("highscore.txt", std::ios_base::app);
 			
-			outputFile << "Resistance success! \n";
+			outputFile << "Vive Le Resistance! \n";
 			outputFile.close();
 		}
 		else if (mWorld.hasResistanceBaseBeenDestroyed())
@@ -165,7 +165,8 @@ bool MultiplayerGameState::update(sf::Time dt)
 			requestStackPush(States::LiberationSuccess);
 			std::ofstream outputFile;
 			outputFile.open("highscore.txt", std::ios_base::app);
-			outputFile << "Liberation success! \n";
+
+			outputFile << "OohRah! Operation Liberation Success! \n";
 			outputFile.close();
 		}
 		else if (mWorld.hasBaseBeenDestroyed())
