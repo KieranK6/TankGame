@@ -56,7 +56,7 @@ void Base::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	else
 	{
 		target.draw(mSprite, states);
-		drawBoundingCirc(target, states, mBaseRadius);
+		//drawBoundingCirc(target, states, mBaseRadius);
 	}
 }
 

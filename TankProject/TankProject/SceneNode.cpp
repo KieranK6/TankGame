@@ -92,7 +92,7 @@ void SceneNode::drawBoundingRect(sf::RenderTarget& target, sf::RenderStates) con
 	shape.setOutlineColor(sf::Color::Green);
 	shape.setOutlineThickness(1.f);
 
-	target.draw(shape);
+	//target.draw(shape);
 }
 
 void SceneNode::drawBoundingCirc(sf::RenderTarget& target, sf::RenderStates, float mRadius) const
