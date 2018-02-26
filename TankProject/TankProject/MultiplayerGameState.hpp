@@ -25,7 +25,7 @@ public:
 	void						onDestroy();
 
 	void						disableAllRealtimeActions();
-
+	void						FadeDisplayText(sf::Time dt);
 
 private:
 	void						updateBroadcastMessage(sf::Time elapsedTime);
@@ -55,6 +55,8 @@ private:
 
 	sf::Text					mPlayerInvitationText;
 	sf::Time					mPlayerInvitationTime;
+	bool						mFadeText;
+	sf::Color					mTextColor;
 
 	sf::Text					mFailedConnectionText;
 	sf::Clock					mFailedConnectionClock;

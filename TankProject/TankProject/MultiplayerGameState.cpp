@@ -103,7 +103,7 @@ void MultiplayerGameState::draw()
 		if (!mBroadcasts.empty())
 			mWindow.draw(mBroadcastText);
 
-		if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
+		//if (mLocalPlayerIdentifiers.size() < 2 && mPlayerInvitationTime < sf::seconds(0.5f))
 			mWindow.draw(mPlayerInvitationText);
 	}
 	else
@@ -243,10 +243,9 @@ bool MultiplayerGameState::update(sf::Time dt)
 
 		updateBroadcastMessage(dt);
 
-		// Time counter for blinking 2nd player text
-		mPlayerInvitationTime += dt;
-		if (mPlayerInvitationTime > sf::seconds(1.f))
-			mPlayerInvitationTime = sf::Time::Zero;
+
+		//-- fade function
+		FadeDisplayText(dt);
 
 		// Events occurring in the game
 		GameActions::Action gameAction;
@@ -368,6 +367,29 @@ void MultiplayerGameState::updateBroadcastMessage(sf::Time elapsedTime)
 			centerOrigin(mBroadcastText);
 			mBroadcastElapsedTime = sf::Time::Zero;
 		}
+	}
+}
+
+void MultiplayerGameState::FadeDisplayText(sf::Time dt)
+{
+	mPlayerInvitationTime += dt;
+	mTextColor = mPlayerInvitationText.getFillColor();
+
+	if (mFadeText && mTextColor.a < 254)
+	{
+		mTextColor.a += 2.0f;
+	}
+	else if (!mFadeText && mTextColor.a > 2)
+	{
+		mTextColor.a -= 2.0f;
+	}
+
+	mPlayerInvitationText.setFillColor(mTextColor);
+
+	if (mPlayerInvitationTime >= sf::seconds(4.0f))
+	{
+		mFadeText = !mFadeText;
+		mPlayerInvitationTime = sf::Time::Zero;
 	}
 }
 
