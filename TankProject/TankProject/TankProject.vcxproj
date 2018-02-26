@@ -38,6 +38,7 @@
     <ClInclude Include="GameServer.hpp" />
     <ClInclude Include="GameState.hpp" />
     <ClInclude Include="KeyBinding.hpp" />
+    <ClInclude Include="KieranCiaranDisplay.h" />
     <ClInclude Include="Label.hpp" />
     <ClInclude Include="MenuState.hpp" />
     <ClInclude Include="MultiplayerGameState.hpp" />
@@ -93,6 +94,7 @@
     <ClCompile Include="GameServer.cpp" />
     <ClCompile Include="GameState.cpp" />
     <ClCompile Include="KeyBinding.cpp" />
+    <ClCompile Include="KieranCiaranDisplay.cpp" />
     <ClCompile Include="Label.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="MenuState.cpp" />
