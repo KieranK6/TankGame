@@ -76,11 +76,11 @@ bool KieranCiaranDisplay::update(sf::Time dt)
 bool KieranCiaranDisplay::handleEvent(const sf::Event& event)
 {
 	//If any key is pressed, trigger the next screen
-	if (event.type == sf::Event::KeyReleased)
+	/*if (event.type == sf::Event::KeyReleased)
 	{
 		requestStackPop();
 		requestStackPush(States::Title);
-	}
+	}*/
 
 	return true;
 }
