@@ -28,7 +28,7 @@ Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts
 , mExplosionBegan(false)
 {
 	mBaseExplosion.setFrameSize(sf::Vector2i(getBoundingRect().width, getBoundingRect().height));
-	mBaseExplosion.setNumFrames(16);   //This line causing error
+	mBaseExplosion.setNumFrames(16); 
 	mBaseExplosion.setDuration(sf::seconds(1));
 
 	centerOrigin(mBaseExplosion);

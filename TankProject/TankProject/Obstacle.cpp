@@ -42,7 +42,7 @@ void Obstacle::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) co
 {
 	
 		target.draw(mSprite, states); //draws sprite onto target
-		drawBoundingCirc(target, states, mObRadius);
+		//drawBoundingCirc(target, states, mObRadius);
 }
 
 unsigned int Obstacle::getCategory() const

@@ -77,6 +77,7 @@ private:
 	void handleCollisions();
 	void handleCircleCollions(Tank&, Obstacle&);
 	void updateSounds();
+	void updateTexts();
 
 	void SpawnObstacles(int obstacleCount); //legacy function
 	void SpawnObstacles(); //spawns obstacles
@@ -94,6 +95,8 @@ private:
 	void enemyTurretTargeting();
 	void updateBase();
 	void SpawnBase();
+
+	TextNode*				mLibKillDisplay;
 
 	sf::Vector2f normaliseVector(sf::Vector2f passedVector, float magnitude);
 	float getMagnitude(sf::Vector2f passedVelocity);

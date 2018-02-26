@@ -65,7 +65,7 @@ public:
 
 	void 					fire();
 	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect);
-	void					playLocalSound(SoundEffect::ID effect, bool looped);
+	void					playLocalSound(CommandQueue& commands, SoundEffect::ID effect, bool looped);
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
 	void					guideTurretTowards(sf::Vector2f position);

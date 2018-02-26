@@ -63,6 +63,7 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
+
 }
 
 float World::getResistanceKills() const

@@ -113,7 +113,7 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 	turretSprite = sf::Sprite(textures.get(TableTurrets[turretType].texture), TableTurrets[turretType].textureRect);
 	centerOrigin(turretSprite);
 
-	playLocalSound(SoundEffect::TankIdle, true);
+	//playLocalSound(SoundEffect::TankIdle, true); 
 
 	updateTexts();
 }
@@ -136,7 +136,7 @@ void Tank::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 	{
 		target.draw(mSprite, states);
 		target.draw(turretSprite, states);
-		drawBoundingCirc(target, states, mRadius);
+		//drawBoundingCirc(target, states, mRadius);
 	}
 }
 
@@ -200,15 +200,15 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 	
 	}
 
-	
+	sf::Vector2f curVelocity = getVelocity();
 
-	/*if () 
-	{
-		playLocalSound(commands, SoundEffect::TankMove);
-	}
-	else
-		playLocalSound(commands, SoundEffect::TankIdle);
-*/
+	//if (curVelocity.x > 0.1f || curVelocity.y > 0.1f)
+	//{
+	//	playLocalSound(commands, SoundEffect::TankMove, true); //Wont work
+	//}
+	//else
+	//	playLocalSound(commands, SoundEffect::TankIdle, true);
+
 	// Check if bullets are fired
 	checkProjectileLaunch(dt, commands);
 
@@ -380,13 +380,13 @@ void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect)
 	command.action = derivedAction<SoundNode>(
 		[effect, worldPosition](SoundNode& node, sf::Time)
 	{
-		node.playSound(effect, worldPosition);
+		node.playSound(effect, worldPosition); 
 	});
 
 	commands.push(command);
 }
 
-void Tank::playLocalSound(SoundEffect::ID effect, bool looped)
+void Tank::playLocalSound(CommandQueue& commands, SoundEffect::ID effect, bool looped)
 {
 	sf::Vector2f worldPosition = getWorldPosition();
 
@@ -395,10 +395,10 @@ void Tank::playLocalSound(SoundEffect::ID effect, bool looped)
 	command.action = derivedAction<SoundNode>(
 		[effect, worldPosition, looped](SoundNode& node, sf::Time)
 	{
-		node.playSound(effect, worldPosition, looped);
+		node.playSound(effect, worldPosition, looped); //Line not getting hit
 	});
 
-	
+	commands.push(command);
 
 	
 }
