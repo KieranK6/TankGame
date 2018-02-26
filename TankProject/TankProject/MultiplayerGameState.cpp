@@ -123,7 +123,7 @@ void MultiplayerGameState::onDestroy()
 	{
 		// Inform server this client is dying
 		sf::Packet packet;
-		packet << static_cast<sf::Int32>(Client::Quit);
+		packet << static_cast<sf::Int8>(Client::Quit);
 		mSocket.send(packet);
 	}
 }
@@ -222,7 +222,7 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mSocket.receive(packet) == sf::Socket::Done)
 		{
 			mTimeSinceLastPacket = sf::seconds(0.f);
-			sf::Int32 packetType;
+			sf::Int8 packetType;
 			packet >> packetType;
 			handlePacket(packetType, packet);
 		}
@@ -252,8 +252,8 @@ bool MultiplayerGameState::update(sf::Time dt)
 		while (mWorld.pollGameAction(gameAction))
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Client::GameEvent);
-			packet << static_cast<sf::Int32>(gameAction.type);
+			packet << static_cast<sf::Int8>(Client::GameEvent);
+			packet << static_cast<sf::Int8>(gameAction.type);
 			packet << gameAction.position.x;
 			packet << gameAction.position.y;
 
@@ -264,13 +264,13 @@ bool MultiplayerGameState::update(sf::Time dt)
 		if (mTickClock.getElapsedTime() > sf::seconds(1.f / 20.f))
 		{
 			sf::Packet positionUpdatePacket;
-			positionUpdatePacket << static_cast<sf::Int32>(Client::PositionUpdate);
-			positionUpdatePacket << static_cast<sf::Int32>(mLocalPlayerIdentifiers.size());
+			positionUpdatePacket << static_cast<sf::Int8>(Client::PositionUpdate);
+			positionUpdatePacket << static_cast<sf::Int8>(mLocalPlayerIdentifiers.size());
 
-			FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
+			FOREACH(sf::Int8 identifier, mLocalPlayerIdentifiers)
 			{
 				if (Tank* tank = mWorld.getTank(identifier))
-					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << tank->getRotation() << tank->getTurretRotation() << static_cast<sf::Int32>(tank->getHitpoints()) << static_cast<sf::Int32>(tank->getMissileAmmo());
+					positionUpdatePacket << identifier << tank->getPosition().x << tank->getPosition().y << tank->getRotation() << tank->getTurretRotation() << static_cast<sf::Int8>(tank->getHitpoints()) << static_cast<sf::Int8>(tank->getMissileAmmo());
 			}
 
 			mSocket.send(positionUpdatePacket);
@@ -294,7 +294,7 @@ void MultiplayerGameState::disableAllRealtimeActions()
 {
 	mActiveState = false;
 
-	FOREACH(sf::Int32 identifier, mLocalPlayerIdentifiers)
+	FOREACH(sf::Int8 identifier, mLocalPlayerIdentifiers)
 		mPlayers[identifier]->disableAllRealtimeActions();
 }
 
@@ -313,7 +313,7 @@ bool MultiplayerGameState::handleEvent(const sf::Event& event)
 		if (event.key.code == sf::Keyboard::Return && mLocalPlayerIdentifiers.size() == 1)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Client::RequestCoopPartner);
+			packet << static_cast<sf::Int8>(Client::RequestCoopPartner);
 			
 			bool isLiberator;
 			if (playerTank->getType() == Tank::Hotchkiss)
@@ -370,7 +370,7 @@ void MultiplayerGameState::updateBroadcastMessage(sf::Time elapsedTime)
 	}
 }
 
-void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet)
+void MultiplayerGameState::handlePacket(sf::Int8 packetType, sf::Packet& packet)
 {
 	switch (packetType)
 	{
@@ -393,7 +393,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Sent by the server to order to spawn player 1 tank on connect
 	case Server::SpawnSelf:
 	{
-		sf::Int32 tankIdentifier;
+		sf::Int8 tankIdentifier;
 		bool isLiberator;
 		sf::Vector2f tankPosition;// = LiberatorTank->getPosition();
 		float tankRotation, turretRotation;
@@ -425,7 +425,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::PlayerConnect:
 	{
-		sf::Int32 tankIdentifier;
+		sf::Int8 tankIdentifier;
 		bool isLiberator;
 		sf::Vector2f tankPosition;
 		float tankRotation, turretRotation;
@@ -453,7 +453,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::PlayerDisconnect:
 	{
-		sf::Int32 tankIdentifier;
+		sf::Int8 tankIdentifier;
 		packet >> tankIdentifier;
 
 		mWorld.removeTank(tankIdentifier);
@@ -463,15 +463,15 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// 
 	case Server::InitialState:
 	{
-		sf::Int32 tankCount;
+		sf::Int8 tankCount;
 
 		packet >> tankCount;
-		for (sf::Int32 i = 0; i < tankCount; ++i)
+		for (sf::Int8 i = 0; i < tankCount; ++i)
 		{
-			sf::Int32 tankIdentifier;
+			sf::Int8 tankIdentifier;
 			bool isLiberator;
-			sf::Int32 hitpoints;
-			sf::Int32 missileAmmo;
+			sf::Int8 hitpoints;
+			sf::Int8 missileAmmo;
 			sf::Vector2f tankPosition;
 			float tankRotation, turretRotation;
 
@@ -498,7 +498,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	//
 	case Server::AcceptCoopPartner:
 	{
-		sf::Int32 tankIdentifier;
+		sf::Int8 tankIdentifier;
 		bool isLiberator;
 		Tank::Type type;
 
@@ -522,8 +522,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Player event (like missile fired) occurs
 	case Server::PlayerEvent:
 	{
-		sf::Int32 tankIdentifier;
-		sf::Int32 action;
+		sf::Int8 tankIdentifier;
+		sf::Int8 action;
 		packet >> tankIdentifier >> action;
 
 		auto itr = mPlayers.find(tankIdentifier);
@@ -534,8 +534,8 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Player's movement or fire keyboard state changes
 	case Server::PlayerRealtimeChange:
 	{
-		sf::Int32 tankIdentifier;
-		sf::Int32 action;
+		sf::Int8 tankIdentifier;
+		sf::Int8 action;
 		bool actionEnabled;
 		packet >> tankIdentifier >> action >> actionEnabled;
 
@@ -548,7 +548,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::SpawnEnemy:
 	{
 		float height;
-		sf::Int32 type;
+		sf::Int8 type;
 		float relativeX;
 		packet >> type >> height >> relativeX;
 
@@ -565,7 +565,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	// Pickup created
 	case Server::SpawnPickup:
 	{
-		sf::Int32 type;
+		sf::Int8 type;
 		sf::Vector2f position;
 		packet >> type >> position.x >> position.y;
 
@@ -576,7 +576,7 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 	case Server::UpdateClientState:
 	{
 		float currentWorldPosition;
-		sf::Int32 aircraftCount;
+		sf::Int8 aircraftCount;
 		packet >> currentWorldPosition >> aircraftCount;
 
 		float currentViewPosition = mWorld.getViewBounds().top + mWorld.getViewBounds().height;
@@ -584,10 +584,10 @@ void MultiplayerGameState::handlePacket(sf::Int32 packetType, sf::Packet& packet
 		// Set the world's scroll compensation according to whether the view is behind or too advanced
 		//mWorld.setWorldScrollCompensation(currentViewPosition / currentWorldPosition);
 
-		for (sf::Int32 i = 0; i < aircraftCount; ++i)
+		for (sf::Int8 i = 0; i < aircraftCount; ++i)
 		{
 			sf::Vector2f tankPosition;
-			sf::Int32 tankIdentifier;
+			sf::Int8 tankIdentifier;
 			float tankRotation, turretRotation;
 			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation;
 

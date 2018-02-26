@@ -40,14 +40,14 @@ GameServer::~GameServer()
 	mThread.wait();
 }
 
-void GameServer::notifyPlayerRealtimeChange(sf::Int32 tankIdentifier, sf::Int32 action, bool actionEnabled)
+void GameServer::notifyPlayerRealtimeChange(sf::Int8 tankIdentifier, sf::Int8 action, bool actionEnabled)
 {
 	for (std::size_t i = 0; i < mConnectedPlayers; ++i)
 	{
 		if (mPeers[i]->ready)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Server::PlayerRealtimeChange);
+			packet << static_cast<sf::Int8>(Server::PlayerRealtimeChange);
 			packet << tankIdentifier;
 			packet << action;
 			packet << actionEnabled;
@@ -57,14 +57,14 @@ void GameServer::notifyPlayerRealtimeChange(sf::Int32 tankIdentifier, sf::Int32 
 	}
 }
 
-void GameServer::notifyPlayerEvent(sf::Int32 tankIdentifier, sf::Int32 action)
+void GameServer::notifyPlayerEvent(sf::Int8 tankIdentifier, sf::Int8 action)
 {
 	for (std::size_t i = 0; i < mConnectedPlayers; ++i)
 	{
 		if (mPeers[i]->ready)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Server::PlayerEvent);
+			packet << static_cast<sf::Int8>(Server::PlayerEvent);
 			packet << tankIdentifier;
 			packet << action;
 
@@ -73,14 +73,14 @@ void GameServer::notifyPlayerEvent(sf::Int32 tankIdentifier, sf::Int32 action)
 	}
 }
 
-void GameServer::notifyPlayerSpawn(sf::Int32 tankIdentifier)
+void GameServer::notifyPlayerSpawn(sf::Int8 tankIdentifier)
 {
 	for (std::size_t i = 0; i < mConnectedPlayers; ++i)
 	{
 		if (mPeers[i]->ready)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Server::PlayerConnect);
+			packet << static_cast<sf::Int8>(Server::PlayerConnect);
 			packet << tankIdentifier 
 				<< mTankInfo[tankIdentifier].isLiberator 
 				<< mTankInfo[tankIdentifier].position.x 
@@ -162,7 +162,7 @@ void GameServer::tick()
 	//if (allAircraftsDone)
 	//{
 	//	sf::Packet missionSuccessPacket;
-	//	missionSuccessPacket << static_cast<sf::Int32>(Server::MissionSuccess);
+	//	missionSuccessPacket << static_cast<sf::Int8>(Server::MissionSuccess);
 	//	sendToAll(missionSuccessPacket);
 	//}
 
@@ -199,8 +199,8 @@ void GameServer::tick()
 	//		for (std::size_t i = 0; i < enemyCount; ++i)
 	//		{
 	//			sf::Packet packet;
-	//			packet << static_cast<sf::Int32>(Server::SpawnEnemy);
-	//			packet << static_cast<sf::Int32>(1 + randomInt(Tank::TypeCount - 1));
+	//			packet << static_cast<sf::Int8>(Server::SpawnEnemy);
+	//			packet << static_cast<sf::Int8>(1 + randomInt(Tank::TypeCount - 1));
 	//			packet << mWorldHeight - mBattleFieldRect.top + 500;
 	//			packet << nextSpawnPosition;
 
@@ -253,7 +253,7 @@ void GameServer::handleIncomingPackets()
 
 void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingPeer, bool& detectedTimeout)
 {
-	sf::Int32 packetType;
+	sf::Int8 packetType;
 	packet >> packetType;
 
 	switch (packetType)
@@ -266,8 +266,8 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::PlayerEvent:
 	{
-		sf::Int32 tankIdentifier;
-		sf::Int32 action;
+		sf::Int8 tankIdentifier;
+		sf::Int8 action;
 		packet >> tankIdentifier >> action;
 
 		notifyPlayerEvent(tankIdentifier, action);
@@ -275,8 +275,8 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::PlayerRealtimeChange:
 	{
-		sf::Int32 tankIdentifier;
-		sf::Int32 action;
+		sf::Int8 tankIdentifier;
+		sf::Int8 action;
 		bool actionEnabled;
 		packet >> tankIdentifier >> action >> actionEnabled;
 		mTankInfo[tankIdentifier].realtimeActions[action] = actionEnabled;
@@ -296,7 +296,7 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 		mTankInfo[mTankIdentifierCounter].isLiberator = isLiberator;
 
 		sf::Packet requestPacket;
-		requestPacket << static_cast<sf::Int32>(Server::AcceptCoopPartner);
+		requestPacket << static_cast<sf::Int8>(Server::AcceptCoopPartner);
 		requestPacket << mTankIdentifierCounter;
 		requestPacket << isLiberator;
 		requestPacket << mTankInfo[mTankIdentifierCounter].position.x;
@@ -311,7 +311,7 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 			if (peer.get() != &receivingPeer && peer->ready)
 			{
 				sf::Packet notifyPacket;
-				notifyPacket << static_cast<sf::Int32>(Server::PlayerConnect);
+				notifyPacket << static_cast<sf::Int8>(Server::PlayerConnect);
 				notifyPacket << mTankIdentifierCounter;
 				notifyPacket << mTankInfo[mTankIdentifierCounter].isLiberator;
 				notifyPacket << mTankInfo[mTankIdentifierCounter].position.x;
@@ -326,14 +326,14 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::PositionUpdate:
 	{
-		sf::Int32 numTanks;
+		sf::Int8 numTanks;
 		packet >> numTanks;
 
-		for (sf::Int32 i = 0; i < numTanks; ++i)
+		for (sf::Int8 i = 0; i < numTanks; ++i)
 		{
-			sf::Int32 tankIdentifier;
-			sf::Int32 tankHitpoints;
-			sf::Int32 missileAmmo;
+			sf::Int8 tankIdentifier;
+			sf::Int8 tankHitpoints;
+			sf::Int8 missileAmmo;
 			sf::Vector2f tankPosition;
 			float tankRotation, turretRotation;
 			packet >> tankIdentifier >> tankPosition.x >> tankPosition.y >> tankRotation >> turretRotation >> tankHitpoints >> missileAmmo;
@@ -347,7 +347,7 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 
 	case Client::GameEvent:
 	{
-		sf::Int32 action;
+		sf::Int8 action;
 		float x;
 		float y;
 
@@ -360,8 +360,8 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 		if (action == GameActions::EnemyExplode && randomInt(3) == 0 && &receivingPeer == mPeers[0].get())
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Server::SpawnPickup);
-			packet << static_cast<sf::Int32>(randomInt(Pickup::TypeCount));
+			packet << static_cast<sf::Int8>(Server::SpawnPickup);
+			packet << static_cast<sf::Int8>(randomInt(Pickup::TypeCount));
 			packet << x;
 			packet << y;
 
@@ -374,9 +374,9 @@ void GameServer::handleIncomingPacket(sf::Packet& packet, RemotePeer& receivingP
 void GameServer::updateClientState()
 {
 	sf::Packet updateClientStatePacket;
-	updateClientStatePacket << static_cast<sf::Int32>(Server::UpdateClientState);
+	updateClientStatePacket << static_cast<sf::Int8>(Server::UpdateClientState);
 	updateClientStatePacket << static_cast<float>(mBattleFieldRect.top + mBattleFieldRect.height);
-	updateClientStatePacket << static_cast<sf::Int32>(mTankInfo.size());
+	updateClientStatePacket << static_cast<sf::Int8>(mTankInfo.size());
 
 	FOREACH(auto tank, mTankInfo)
 		updateClientStatePacket << tank.first << tank.second.position.x << tank.second.position.y << tank.second.tankRotation << tank.second.turretRotation;
@@ -409,7 +409,7 @@ void GameServer::handleIncomingConnections()
 		mTankInfo[mTankIdentifierCounter].isLiberator = isLiberator;
 
 		sf::Packet packet;
-		packet << static_cast<sf::Int32>(Server::SpawnSelf);
+		packet << static_cast<sf::Int8>(Server::SpawnSelf);
 		packet << mTankIdentifierCounter;
 		packet << mTankInfo[mTankIdentifierCounter].isLiberator;
 		packet << mTankInfo[mTankIdentifierCounter].position.x;
@@ -461,9 +461,9 @@ void GameServer::handleDisconnections()
 		if ((*itr)->timedOut)
 		{
 			// Inform everyone of the disconnection, erase 
-			FOREACH(sf::Int32 identifier, (*itr)->tankIdentifiers)
+			FOREACH(sf::Int8 identifier, (*itr)->tankIdentifiers)
 			{
-				sendToAll(sf::Packet() << static_cast<sf::Int32>(Server::PlayerDisconnect) << identifier);
+				sendToAll(sf::Packet() << static_cast<sf::Int8>(Server::PlayerDisconnect) << identifier);
 
 				mTankInfo.erase(identifier);
 			}
@@ -493,14 +493,14 @@ void GameServer::handleDisconnections()
 void GameServer::informWorldState(sf::TcpSocket& socket)
 {
 	sf::Packet packet;
-	packet << static_cast<sf::Int32>(Server::InitialState);
-	packet << static_cast<sf::Int32>(mTankCount);
+	packet << static_cast<sf::Int8>(Server::InitialState);
+	packet << static_cast<sf::Int8>(mTankCount);
 
 	for (std::size_t i = 0; i < mConnectedPlayers; ++i)
 	{
 		if (mPeers[i]->ready)
 		{
-			FOREACH(sf::Int32 identifier, mPeers[i]->tankIdentifiers)
+			FOREACH(sf::Int8 identifier, mPeers[i]->tankIdentifiers)
 				packet << identifier << mTankInfo[identifier].isLiberator << mTankInfo[identifier].position.x << mTankInfo[identifier].position.y << mTankInfo[identifier].tankRotation << mTankInfo[identifier].turretRotation << mTankInfo[identifier].hitpoints << mTankInfo[identifier].missileAmmo;
 		}
 	}
@@ -515,7 +515,7 @@ void GameServer::broadcastMessage(const std::string& message)
 		if (mPeers[i]->ready)
 		{
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Server::BroadcastMessage);
+			packet << static_cast<sf::Int8>(Server::BroadcastMessage);
 			packet << message;
 
 			mPeers[i]->socket.send(packet);
