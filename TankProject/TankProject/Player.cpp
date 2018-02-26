@@ -101,7 +101,7 @@ struct TankFireTrigger
 	int tankID;
 };
 
-Player::Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* binding)
+Player::Player(sf::TcpSocket* socket, sf::Int8 identifier, const KeyBinding* binding)
 	: mKeyBinding(binding)
 	, mCurrentMissionStatus(MissionRunning)
 	, mIdentifier(identifier)
@@ -126,9 +126,9 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 			if (mSocket)
 			{
 				sf::Packet packet;
-				packet << static_cast<sf::Int32>(Client::PlayerEvent);
+				packet << static_cast<sf::Int8>(Client::PlayerEvent);
 				packet << mIdentifier;
-				packet << static_cast<sf::Int32>(action);
+				packet << static_cast<sf::Int8>(action);
 				mSocket->send(packet);
 			}
 
@@ -147,9 +147,9 @@ void Player::handleEvent(const sf::Event& event, CommandQueue& commands)
 		{
 			// Send realtime change over network
 			sf::Packet packet;
-			packet << static_cast<sf::Int32>(Client::PlayerRealtimeChange);
+			packet << static_cast<sf::Int8>(Client::PlayerRealtimeChange);
 			packet << mIdentifier;
-			packet << static_cast<sf::Int32>(action);
+			packet << static_cast<sf::Int8>(action);
 			packet << (event.type == sf::Event::KeyPressed);
 			mSocket->send(packet);
 		}
@@ -167,9 +167,9 @@ void Player::disableAllRealtimeActions()
 	FOREACH(auto& action, mActionProxies)
 	{
 		sf::Packet packet;
-		packet << static_cast<sf::Int32>(Client::PlayerRealtimeChange);
+		packet << static_cast<sf::Int8>(Client::PlayerRealtimeChange);
 		packet << mIdentifier;
-		packet << static_cast<sf::Int32>(action.first);
+		packet << static_cast<sf::Int8>(action.first);
 		packet << false;
 		mSocket->send(packet);
 	}

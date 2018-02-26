@@ -16,7 +16,7 @@
 const sf::Time Application::TimePerFrame = sf::seconds(1.f / 60.f);
 
 Application::Application()
-	: mWindow(sf::VideoMode(1024, 768), "Freedom by Force", sf::Style::Close)
+	: mWindow(sf::VideoMode(1024, 768), "Freedom By Force", sf::Style::Close)
 	, mTextures()
 	, mFonts()
 	, mMusic()

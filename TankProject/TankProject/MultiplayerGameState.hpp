@@ -25,11 +25,11 @@ public:
 	void						onDestroy();
 
 	void						disableAllRealtimeActions();
-
+	void						FadeDisplayText(sf::Time dt);
 
 private:
 	void						updateBroadcastMessage(sf::Time elapsedTime);
-	void						handlePacket(sf::Int32 packetType, sf::Packet& packet);
+	void						handlePacket(sf::Int8 packetType, sf::Packet& packet);
 
 
 private:
@@ -43,7 +43,7 @@ private:
 
 	Tank						*playerTank, *secondPlayerTank;
 	std::map<int, PlayerPtr>	mPlayers;
-	std::vector<sf::Int32>		mLocalPlayerIdentifiers;
+	std::vector<sf::Int8>		mLocalPlayerIdentifiers;
 	sf::TcpSocket				mSocket;
 	bool						mConnected;
 	std::unique_ptr<GameServer> mGameServer;
@@ -55,6 +55,8 @@ private:
 
 	sf::Text					mPlayerInvitationText;
 	sf::Time					mPlayerInvitationTime;
+	bool						mFadeText;
+	sf::Color					mTextColor;
 
 	sf::Text					mFailedConnectionText;
 	sf::Clock					mFailedConnectionClock;

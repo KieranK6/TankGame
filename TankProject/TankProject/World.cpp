@@ -176,6 +176,7 @@ void World::removeTank(int identifier)
 			addLiberatorKill();
 		}
 		tank->destroy();
+
 		mPlayerTanks.erase(std::find(mPlayerTanks.begin(), mPlayerTanks.end(), tank));
 	}
 }

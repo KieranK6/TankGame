@@ -18,9 +18,9 @@ public:
 	explicit							GameServer(sf::Vector2f battlefieldSize);
 	~GameServer();
 
-	void								notifyPlayerSpawn(sf::Int32 tankIdentifier);
-	void								notifyPlayerRealtimeChange(sf::Int32 tankIdentifier, sf::Int32 action, bool actionEnabled);
-	void								notifyPlayerEvent(sf::Int32 tankIdentifier, sf::Int32 action);
+	void								notifyPlayerSpawn(sf::Int8 tankIdentifier);
+	void								notifyPlayerRealtimeChange(sf::Int8 tankIdentifier, sf::Int8 action, bool actionEnabled);
+	void								notifyPlayerEvent(sf::Int8 tankIdentifier, sf::Int8 action);
 
 private:
 	// A GameServerRemotePeer refers to one instance of the game, may it be local or from another computer
@@ -30,7 +30,7 @@ private:
 
 		sf::TcpSocket			socket;
 		sf::Time				lastPacketTime;
-		std::vector<sf::Int32>	tankIdentifiers;
+		std::vector<sf::Int8>	tankIdentifiers;
 		bool					ready;
 		bool					timedOut;
 	};
@@ -42,9 +42,9 @@ private:
 		sf::Vector2f				position;
 		float						tankRotation;
 		float						turretRotation;
-		sf::Int32					hitpoints;
-		sf::Int32                   missileAmmo;
-		std::map<sf::Int32, bool>	realtimeActions;
+		sf::Int8					hitpoints;
+		sf::Int8                   missileAmmo;
+		std::map<sf::Int8, bool>	realtimeActions;
 	};
 
 	// Unique pointer to remote peers
@@ -82,15 +82,16 @@ private:
 
 	std::size_t							mMaxConnectedPlayers;
 	std::size_t							mConnectedPlayers;
+	bool								lastConnected;
 
 	sf::FloatRect						mBattleFieldRect;
 	float								mBattleFieldScrollSpeed;
 
 	std::size_t							mTankCount;
-	std::map<sf::Int32, TankInfo>		mTankInfo;
+	std::map<sf::Int8, TankInfo>		mTankInfo;
 
 	std::vector<PeerPtr>				mPeers;
-	sf::Int32							mTankIdentifierCounter;
+	sf::Int8							mTankIdentifierCounter;
 	bool								mWaitingThreadEnd;
 
 	sf::Time							mLastSpawnTime;

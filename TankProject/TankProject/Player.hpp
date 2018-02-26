@@ -28,7 +28,7 @@ public:
 
 
 public:
-	Player(sf::TcpSocket* socket, sf::Int32 identifier, const KeyBinding* binding);
+	Player(sf::TcpSocket* socket, sf::Int8 identifier, const KeyBinding* binding);
 
 	void					handleEvent(const sf::Event& event, CommandQueue& commands);
 	void					handleRealtimeInput(CommandQueue& commands);
