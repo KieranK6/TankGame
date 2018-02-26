@@ -60,6 +60,7 @@ namespace GameActions
 	enum Type
 	{
 		EnemyExplode,
+		KillCount,
 	};
 
 	struct Action
@@ -74,7 +75,14 @@ namespace GameActions
 		{
 		}
 
+		Action(Type type, bool isLiberator)
+			: type(type)
+			, isLiberator(isLiberator)
+		{
+		}
+
 		Type			type;
 		sf::Vector2f	position;
+		bool			isLiberator;
 	};
 }

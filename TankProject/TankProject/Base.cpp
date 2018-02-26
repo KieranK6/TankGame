@@ -23,13 +23,16 @@ namespace
 Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts) : Entity(Table[type].hitpoints)
 , mType(type)
 , mSprite(textures.get(Table[type].texture), Table[type].textureRect)
+, mBaseExplosion(textures.get(Textures::Explosion))
 , mShowExplosion(true)
 , mExplosionBegan(false)
 {
-	mExplosion.setFrameSize(sf::Vector2i(getBoundingRect().width, getBoundingRect().height));
-	mExplosion.setNumFrames(16);   //This line causing error
-	mExplosion.setDuration(sf::seconds(1));
-	centerOrigin(mExplosion);
+	mBaseExplosion.setFrameSize(sf::Vector2i(getBoundingRect().width, getBoundingRect().height));
+	mBaseExplosion.setNumFrames(16);   //This line causing error
+	mBaseExplosion.setDuration(sf::seconds(1));
+
+	centerOrigin(mBaseExplosion);
+	centerOrigin(mSprite);
 
 	std::unique_ptr<TextNode> healthDisplay(new TextNode(fonts, ""));
 	mHealthDisplay = healthDisplay.get();
@@ -38,7 +41,7 @@ Base::Base(baseTeam type, const TextureHolder& textures, const FontHolder& fonts
 	mHealthDisplay->setRotation(-getRotation());
 
 	updateTexts();
-	centerOrigin(mSprite);
+	
 }
 
 sf::FloatRect Base::getBoundingRect() const
@@ -49,7 +52,7 @@ sf::FloatRect Base::getBoundingRect() const
 void Base::drawCurrent(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	if (isDestroyed() && mShowExplosion)
-		target.draw(mExplosion, states);
+		target.draw(mBaseExplosion, states);
 	else
 	{
 		target.draw(mSprite, states);
@@ -70,13 +73,27 @@ void Base::updateCurrent(sf::Time dt, CommandQueue& commands)
 	// Entity has been destroyed: Possibly drop pickup, mark for removal
 	if (isDestroyed())
 	{
-		mExplosion.update(dt);
+		mBaseExplosion.update(dt);
 
 		// Play explosion sound only once
 		if (!mExplosionBegan)
 		{
 			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
 			playLocalSound(commands, soundEffect);
+
+			// Emit network game action for enemy explosions
+			
+				sf::Vector2f position = getWorldPosition();
+
+				Command command;
+				command.category = Category::Network;
+				command.action = derivedAction<NetworkNode>([position](NetworkNode& node, sf::Time)
+				{
+					node.notifyGameAction(GameActions::EnemyExplode, position);
+				});
+
+				commands.push(command);
+			
 
 			mExplosionBegan = true;
 		}
@@ -118,7 +135,7 @@ unsigned int Base::getCategory() const
 
 bool Base::isMarkedForRemoval() const
 {
-	return isDestroyed() && (mExplosion.isFinished() || !mShowExplosion);
+	return isDestroyed() && (mBaseExplosion.isFinished() || !mShowExplosion);
 }
 
 void Base::remove()
