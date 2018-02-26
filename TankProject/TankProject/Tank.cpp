@@ -90,6 +90,9 @@ Tank::Tank(Type type, const TextureHolder& textures, const FontHolder& fonts)
 
 	ammoCount = Table[type].ammoCount;
 
+
+	
+
 	//adds turret type depending on what type of tank it is
 	switch (type)
 	{
@@ -191,23 +194,53 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 		return;
 	}
 
+	rotateDelayTime += dt;
 
-
-	if (isTankRotating)
+	if (isTankRotating && !isRotateSoundPlaying)
 	{
 		
 		playLocalSound(commands, SoundEffect::TankTurretRotate);
-	
+		isRotateSoundPlaying = true;
 	}
 
-	sf::Vector2f curVelocity = getVelocity();
+	if (isRotateSoundPlaying)
+	{
+		if (rotateDelayTime >= sf::seconds((getMaxTurretRotationSpeed() / sqrt(turretRotationVelocity * turretRotationVelocity)) / 10))
+		{
+			isRotateSoundPlaying = false;
+			rotateDelayTime = sf::Time::Zero;
+		}
+	}
 
-	//if (curVelocity.x > 0.1f || curVelocity.y > 0.1f)
-	//{
-	//	playLocalSound(commands, SoundEffect::TankMove, true); //Wont work
-	//}
-	//else
-	//	playLocalSound(commands, SoundEffect::TankIdle, true);
+
+	idleDelayTime += dt;
+
+	if (!mEngineIdleLooping)
+	{
+		playLocalSound(commands, SoundEffect::TankIdle);
+		mEngineIdleLooping = true;
+	}
+
+	if (mEngineIdleLooping)
+	{
+		if (idleDelayTime >= sf::seconds(3.3f))
+		{
+			mEngineIdleLooping = false;
+			idleDelayTime = sf::Time::Zero;
+		}
+	}
+	
+
+
+
+	/*sf::Vector2f curVelocity = getVelocity();
+
+	if (curVelocity.x > 0.1f || curVelocity.y > 0.1f)
+	{
+		playLocalSound(commands, SoundEffect::TankMove); 
+	}
+	else
+		playLocalSound(commands, SoundEffect::TankIdle);*/
 
 	// Check if bullets are fired
 	checkProjectileLaunch(dt, commands);

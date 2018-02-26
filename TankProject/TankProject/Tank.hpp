@@ -69,7 +69,13 @@ public:
 	void					accelerateTurretRotation(float rotationVelocity);
 	void					setTurretRotationVelocity(float rotationVelocity);
 	void					guideTurretTowards(sf::Vector2f position);
+
 	void					playRotateSound();
+	bool					mEngineIdleLooping;
+	bool					mEngineDriveLoop;
+	bool					isRotateSoundPlaying;
+	sf::Time				rotateDelayTime;
+	sf::Time				idleDelayTime;
 
 	sf::Sprite				mSprite;
 
