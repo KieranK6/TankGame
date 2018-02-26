@@ -47,7 +47,7 @@ private:
 	TextNode*				mHealthDisplay;
 	//sf::Vector2f			position;
 
-	Animation				mExplosion;
+	Animation				mBaseExplosion;
 	bool 					mShowExplosion;
 	bool					mExplosionBegan;
 	bool					mPlayedExplosionSound;
