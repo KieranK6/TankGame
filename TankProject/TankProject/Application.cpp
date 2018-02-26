@@ -10,6 +10,7 @@
 #include "PauseState.hpp"
 #include "SettingsState.hpp"
 #include "GameOverState.hpp"
+#include "KieranCiaranDisplay.h"
 
 
 
@@ -42,7 +43,7 @@ Application::Application()
 	mStatisticsText.setCharacterSize(10u);
 
 	registerStates();
-	mStateStack.pushState(States::Title);
+	mStateStack.pushState(States::CiaranKieran);
 
 	mMusic.setVolume(25.f);
 }
@@ -117,6 +118,7 @@ void Application::updateStatistics(sf::Time dt)
 
 void Application::registerStates()
 {
+	mStateStack.registerState<KieranCiaranDisplay>(States::CiaranKieran);
 	mStateStack.registerState<TitleState>(States::Title);
 	mStateStack.registerState<MenuState>(States::Menu);
 	mStateStack.registerState<MultiplayerMenuState>(States::MultiplayerMenu);
