@@ -46,7 +46,7 @@ bool GameState::update(sf::Time dt)
 		mPlayer.setMissionStatus(Player::LiberatorSuccess);
 		//getContext().sounds->play(SoundEffect::);    //Victory Messagew for Liberators
 		requestStackPush(States::LiberationSuccess);
-		
+
 	}
 	else if (mWorld.hasBaseBeenDestroyed())
 	{
