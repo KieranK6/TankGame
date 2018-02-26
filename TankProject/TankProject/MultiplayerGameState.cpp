@@ -154,8 +154,12 @@ bool MultiplayerGameState::update(sf::Time dt)
 			requestStackPush(States::ResistanceSuccess);
 			std::ofstream outputFile;
 			outputFile.open("highscore.txt", std::ios_base::app);
+
+			outputFile << "Resistance success! They got " << mWorld.getResistanceKills() << " Kills \n";
+
 			
 			outputFile << "Vive Le Resistance! \n";
+
 			outputFile.close();
 		}
 		else if (mWorld.hasResistanceBaseBeenDestroyed())
@@ -166,7 +170,11 @@ bool MultiplayerGameState::update(sf::Time dt)
 			std::ofstream outputFile;
 			outputFile.open("highscore.txt", std::ios_base::app);
 
+			outputFile << "Liberation success! They got " << mWorld.getLiberationKills() << " Kills \n";
+
+
 			outputFile << "OohRah! Operation Liberation Success! \n";
+
 			outputFile.close();
 		}
 		else if (mWorld.hasBaseBeenDestroyed())
@@ -256,6 +264,16 @@ bool MultiplayerGameState::update(sf::Time dt)
 			packet << static_cast<sf::Int8>(gameAction.type);
 			packet << gameAction.position.x;
 			packet << gameAction.position.y;
+
+			if(gameAction.type == GameActions::KillCount)
+			{ ///Check for kills, increment kill count for team
+				//bool isLibertor = gameAction.isLiberator;
+				//if liberator
+				//mWorld.addResistanceKill;
+
+				//if resistance
+				//mWorld.addLiberatorKill;
+			}
 
 			mSocket.send(packet);
 		}

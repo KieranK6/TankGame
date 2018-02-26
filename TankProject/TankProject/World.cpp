@@ -49,6 +49,9 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 {
 	mSceneTexture.create(mTarget.getSize().x, mTarget.getSize().y);
 
+	LiberatorKills = 0;
+	ResistanceKills = 0;
+
 	loadTextures();
 	buildScene();
 	SpawnObstacles();
@@ -58,9 +61,28 @@ World::World(sf::RenderTarget& outputTarget, FontHolder& fonts, SoundPlayer& sou
 	//SpawnEnemyBase();
 	SpawnBase();
 
-
 	// Prepare the view
 	mWorldView.setCenter(mSpawnPosition);
+}
+
+float World::getResistanceKills() const
+{
+	return ResistanceKills;
+}
+
+float World::getLiberationKills() const
+{
+	return LiberatorKills;
+}
+
+void World::addResistanceKill()
+{
+	ResistanceKills += 1;
+}
+
+void World::addLiberatorKill()
+{
+	LiberatorKills += 1;
 }
 
 void World::setWorldScrollCompensation(float compensation)
@@ -145,6 +167,14 @@ void World::removeTank(int identifier)
 	Tank* tank = getTank(identifier);
 	if (tank)
 	{
+		if (tank->isAllied())
+		{
+			addResistanceKill();
+		}
+		else
+		{
+			addLiberatorKill();
+		}
 		tank->destroy();
 
 		mPlayerTanks.erase(std::find(mPlayerTanks.begin(), mPlayerTanks.end(), tank));
@@ -359,17 +389,13 @@ void World::handleCollisions()
 
 				sf::Vector2f oppositeUnitDirection = sf::Vector2f(std::cos(opposideTankRotationAngle), std::sin(opposideTankRotationAngle));
 
+				//float playerMAG = getMagnitude(oppositeUnitDirection);
+				//sf::Vector2f normalizedOppositeUnitDirection = normaliseVector(oppositeUnitDirection, playerMAG);
+
 				//tank.setVelocity(oppositeUnitDirection*300.f);
 				tank.move((oppositeUnitDirection*10.f));
 				
 			}
-
-
-			
-				
-			
-
-
 			//handleCircleCollions(player, obstacle);
 
 			// Apply pickup effect to player, destroy projectile

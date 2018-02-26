@@ -37,6 +37,13 @@ public:
 	void update(sf::Time dt);
 	void draw();
 
+	float LiberatorKills;
+	float ResistanceKills;
+	float getLiberationKills() const;
+	float getResistanceKills() const;
+	void addResistanceKill();
+	void addLiberatorKill();
+
 	sf::FloatRect getViewBounds() const;
 	CommandQueue& getCommandQueue();
 	Tank* addTank(int identifier, Tank::Type type);

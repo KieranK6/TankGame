@@ -169,6 +169,8 @@ void Tank::updateCurrent(sf::Time dt, CommandQueue& commands)
 			SoundEffect::ID soundEffect = (randomInt(2) == 0) ? SoundEffect::Explosion1 : SoundEffect::Explosion2;
 			playLocalSound(commands, soundEffect);
 
+			
+
 			// Emit network game action for enemy explosions
 			if (!isAllied())
 			{
@@ -238,6 +240,7 @@ sf::FloatRect Tank::getBoundingRect() const
 
 bool Tank::isMarkedForRemoval() const
 {
+
 	return isDestroyed() && (mExplosion.isFinished() || !mShowExplosion);
 }
 
